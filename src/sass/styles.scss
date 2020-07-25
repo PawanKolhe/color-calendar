@@ -6,10 +6,11 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Work Sans', sans-serif;
+  background-color: #fafafa;
 }
 
 .color-light {
-  color: rgba($color: #999999, $alpha: 1.0);
+  color: #c8ccec;
 }
 
 .container {
@@ -22,20 +23,23 @@ html, body {
 
 .calendar {
   height: auto;
-  background-color: whitesmoke;
-  border-radius: 0.6rem;
-  padding: 10px;
+  // background-color: whitesmoke;
+  border-radius: 0.5rem;
+  padding: 15px;
+  box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+  color: #3F51B5;
 
   .calendar__header {
     font-family: 'Work Sans', sans-serif;
-    padding: 5px 10px;
-    margin-bottom: 10px;
+    padding: 10px 10px;
+    margin-bottom: 5px;
   }
   .calendar__month {
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 auto;
     text-align: center;
+    color: #3F51B5;
   }
 
   .calendar__body {
@@ -44,26 +48,44 @@ html, body {
   }
   .calendar__weekdays {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(7, minmax(35px, 50px));
+    margin-bottom: 5px;
 
     .calendar__weekday {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 40px;
-      padding: 0 15px;
       font-weight: 600;
     }
   }
   .calendar__days {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(7, minmax(20px, 50px));
 
     .calendar_day {
+      position: relative;
       height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .calendar_day-today {
+      font-weight: 700;
+      z-index: 101;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        border-radius: 0.5rem;
+        background-color: #f1f1f8;
+        z-index: -1;
+      }
     }
   }
 }

@@ -3,14 +3,15 @@ import '../sass/styles.scss';
 
 /**=================== INITIALIZE ===================**/
 
-const currentDate = new Date();
-console.log('Today: ', currentDate);
+let today = new Date();
 
 let daysInPrevMonth = [];
 let daysInCurrentMonth = [];
 let daysInNextMonth = [];
 
 /**=================== GENERATE DAYS ===================**/
+
+let currentDate = new Date();
 
 // Previous Month
 let firstDayPrevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).getDay();
@@ -58,7 +59,7 @@ for(let i = 0; i < firstDayCurrentMonth; i++) {
 // Current Month
 daysInCurrentMonth.forEach(day => {
   calendarDays.innerHTML += `
-    <div class="calendar_day">${day.day}</div>
+    <div class="calendar_day ${day.day == today.getDate() ? 'calendar_day-today' : ''}">${day.day}</div>
   `;
   insertCount++;
 });
