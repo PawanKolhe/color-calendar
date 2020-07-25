@@ -17,4 +17,14 @@ html, body {
 
 .calendar {
   height: auto;
+  background-color: whitesmoke;
+  border-radius: 0.3rem;
+
+  .calendar__body {
+    height: auto;
+  }
+  .calendar__weekdays {
+    display: flex;
+    flex-direction: row;
+  }
 }
