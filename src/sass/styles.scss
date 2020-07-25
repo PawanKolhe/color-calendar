@@ -5,7 +5,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Comfortaa', sans-serif;
   background-color: #fafafa;
 }
 
@@ -23,11 +23,13 @@ html, body {
 
 .calendar {
   height: auto;
-  // background-color: whitesmoke;
+  font-family: Comfortaa, sans-serif;
   border-radius: 0.5rem;
   padding: 15px;
   box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
   color: #3F51B5;
+  background-color: white;
+  border: 1px solid #3F51B5;
 
   .calendar__header {
     font-family: 'Work Sans', sans-serif;
@@ -44,12 +46,12 @@ html, body {
 
   .calendar__body {
     height: auto;
-    font-family: 'Comfortaa', sans-serif;
   }
   .calendar__weekdays {
     display: grid;
     grid-template-columns: repeat(7, minmax(35px, 50px));
     margin-bottom: 5px;
+    font-family: 'Work Sans', sans-serif;
 
     .calendar__weekday {
       display: flex;
@@ -62,6 +64,7 @@ html, body {
   .calendar__days {
     display: grid;
     grid-template-columns: repeat(7, minmax(20px, 50px));
+    font-family: Comfortaa, sans-serif;
 
     .calendar_day {
       position: relative;
