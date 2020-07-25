@@ -40,6 +40,13 @@ for (let i = 0; i < numOfDays_NextMonth; i++) {
 // console.log(firstDay_CurrentMonth, numOfDays_CurrentMonth, daysIn_CurrentMonth);
 // console.log(firstDay_NextMonth, numOfDays_NextMonth, daysIn_NextMonth);
 
+/**=================== RENDER MONTH AND YEAR ===================**/
+
+const calendarMonthYear = document.querySelector('.calendar__month');
+calendarMonthYear.innerHTML = `
+  ${new Intl.DateTimeFormat('default', {month: 'long'}).format(currentDate)} ${currentDate.getFullYear()}
+`;
+
 /**=================== RENDER WEEKDAYS ===================**/
 
 const calendarWeekdays = document.querySelector('.calendar__weekdays');
