@@ -8,6 +8,10 @@ html, body {
   font-family: 'Work Sans', sans-serif;
 }
 
+.color-light {
+  color: rgba($color: #999999, $alpha: 1.0);
+}
+
 .container {
   width: 100vw;
   height: 100vh;
@@ -19,7 +23,7 @@ html, body {
 .calendar {
   height: auto;
   background-color: whitesmoke;
-  border-radius: 0.3rem;
+  border-radius: 0.6rem;
   padding: 10px;
 
   .calendar__header {
@@ -39,16 +43,27 @@ html, body {
     font-family: 'Comfortaa', sans-serif;
   }
   .calendar__weekdays {
-    display: flex;
-    flex-direction: row;
-    font-weight: 600;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
     .calendar__weekday {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 25px;
-      padding: 0 10px;
+      height: 40px;
+      padding: 0 15px;
+      font-weight: 600;
+    }
+  }
+  .calendar__days {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    .calendar_day {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
