@@ -9,10 +9,6 @@ html, body {
   background-color: #fafafa;
 }
 
-.color-light {
-  color: #c8ccec;
-}
-
 .container {
   width: 100vw;
   height: 100vh;
@@ -30,65 +26,73 @@ html, body {
   color: #3F51B5;
   background-color: white;
   border: 1px solid #3F51B5;
+}
 
-  .calendar__header {
-    font-family: 'Work Sans', sans-serif;
-    padding: 10px 10px;
-    margin-bottom: 5px;
-  }
-  .calendar__month {
-    font-size: 1.5rem;
+.calendar__header {
+  font-family: 'Work Sans', sans-serif;
+  padding: 10px 10px;
+  margin-bottom: 5px;
+}
+
+.calendar__month {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 auto;
+  text-align: center;
+  color: #3F51B5;
+}
+
+.calendar__body {
+  height: auto;
+}
+
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(35px, 50px));
+  margin-bottom: 5px;
+  font-family: 'Work Sans', sans-serif;
+
+  .calendar__weekday {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
     font-weight: 600;
-    margin: 0 auto;
-    text-align: center;
-    color: #3F51B5;
+  }
+}
+
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(20px, 50px));
+  font-family: Comfortaa, sans-serif;
+
+  .calendar_day {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .calendar__body {
-    height: auto;
-  }
-  .calendar__weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(35px, 50px));
-    margin-bottom: 5px;
-    font-family: 'Work Sans', sans-serif;
+  .calendar_day-today {
+    font-weight: 700;
+    z-index: 101;
 
-    .calendar__weekday {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 40px;
-      font-weight: 600;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      border-radius: 0.5rem;
+      background-color: #f1f1f8;
+      z-index: -1;
     }
   }
-  .calendar__days {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(20px, 50px));
-    font-family: Comfortaa, sans-serif;
-
-    .calendar_day {
-      position: relative;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .calendar_day-today {
-      font-weight: 700;
-      z-index: 101;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        height: 80%;
-        border-radius: 0.5rem;
-        background-color: #f1f1f8;
-        z-index: -1;
-      }
-    }
+  
+  .calendar_day-other {
+    color: #c8ccec;
   }
 }
