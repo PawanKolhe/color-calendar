@@ -2,7 +2,7 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // This is the main configuration object.
 // Here you write different options and tell Webpack what to do
@@ -97,7 +97,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Calendar',
       // Load a custom template (lodash by default)
-      template: path.join(__dirname, "src") + '/index.html',
+      template: path.join(__dirname, "src/index.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "bundle.css",

@@ -5,6 +5,7 @@
 html, body {
   margin: 0;
   padding: 0;
+  font-family: 'Work Sans', sans-serif;
 }
 
 .container {
@@ -19,12 +20,35 @@ html, body {
   height: auto;
   background-color: whitesmoke;
   border-radius: 0.3rem;
+  padding: 10px;
+
+  .calendar__header {
+    font-family: 'Work Sans', sans-serif;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+  .calendar__month {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 auto;
+    text-align: center;
+  }
 
   .calendar__body {
     height: auto;
+    font-family: 'Comfortaa', sans-serif;
   }
   .calendar__weekdays {
     display: flex;
     flex-direction: row;
+    font-weight: 600;
+
+    .calendar__weekday {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 25px;
+      padding: 0 10px;
+    }
   }
 }
