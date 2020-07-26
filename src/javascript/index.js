@@ -1,7 +1,5 @@
 import 'normalize.css';
 import '../sass/styles.scss';
-import BackAngleArrow from '../images/chevron-back-outline.svg';
-import ForwardAngleArrow from '../images/chevron-forward-outline.svg';
 
 class Calendar {
 
