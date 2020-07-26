@@ -54,6 +54,10 @@
        url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
+:root {
+  --calendar-color-primary: #3f51b5;
+}
+
 .calendar {
   height: auto;
   font-family: Comfortaa, sans-serif;
@@ -63,6 +67,7 @@
   color: var(--calendar-color-primary);
   background-color: white;
   border: 1px solid var(--calendar-color-primary);
+  box-sizing: border-box;
 }
 
 .calendar__header {

@@ -2,7 +2,7 @@
   "name": "calendar",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/bundle.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "start": "webpack-dev-server --open",
     "dev": "webpack --watch",
@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pawan Kolhe <contact@pawankolhe.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
@@ -38,8 +38,5 @@
   "keywords": [
     "calendar",
     "cal"
-  ],
-  "files": [
-    "dist"
   ]
 }

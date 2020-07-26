@@ -1,11 +1,10 @@
 import 'normalize.css';
 import '@iconscout/unicons/css/unicons.css'
-import '../sass/styles.scss';
 import '../sass/calendar.scss';
 
 class Calendar {
 
-  constructor({ id = '#calendar', startWeekday = 0, weekdayType = 'short', monthDisplayType = 'long', color = '#3F51B5' }) {
+  constructor({ id = '#calendar', startWeekday = 0, weekdayType = 'short', monthDisplayType = 'long', color = '#3F51B5' } = {}) {
     this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
     switch(weekdayType) {
@@ -87,6 +86,10 @@ class Calendar {
 
   handleNextMonthButtonClick() {
     this.updateCurrentDate(1);
+  }
+
+  resetCurrentDate() {
+    this.updateCurrentDate(0);
   }
 
   updateCurrentDate(offset) {
@@ -171,11 +174,6 @@ class Calendar {
 
 }
 
-const options = {
-  id: '#calendar',
-  startWeekday: 0,
-  weekdayType: 'short',
-  monthDisplayType: 'long',
-  color: 'green'
-}
-new Calendar(options);
+window.Calendar = Calendar;
+global.Calendar = Calendar;
+globalThis.Calendar = Calendar;

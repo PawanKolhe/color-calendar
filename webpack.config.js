@@ -98,6 +98,7 @@ module.exports = {
       title: 'Calendar',
       // Load a custom template (lodash by default)
       template: path.join(__dirname, "src/index.html"),
+      inject: 'head'
     }),
     new MiniCssExtractPlugin({
       filename: "bundle.css",

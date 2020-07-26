@@ -5,11 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= htmlWebpackPlugin.options.title %></title>
 
-  <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.11/css/unicons.css"> -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Comfortaa", sans-serif;
+      background-color: #fafafa;
+    }
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <div id="calendar" style="width:375px;margin-left: 15px;margin-right: 15px;"></div>
   </div>
+  <script defer>
+    const myCalendar = new Calendar({
+      id: '#calendar',
+      startWeekday: 0,
+      weekdayType: 'short',
+      monthDisplayType: 'long',
+      color: '#3f51b5'
+    });
+  </script>
 </body>
 </html>
