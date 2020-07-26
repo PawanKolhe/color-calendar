@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/bundle.js",
   "scripts": {
-    "start": "webpack-dev-server --open --quiet --no-info",
+    "start": "webpack-dev-server --open",
     "dev": "webpack --watch",
     "build": "webpack --config webpack.config.js",
     "build-production": "cross-env NODE_ENV=production webpack --mode=production --devtools=false",
@@ -32,11 +32,14 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@iconscout/unicons": "^2.1.11",
     "normalize.css": "^8.0.1"
   },
   "keywords": [
     "calendar",
     "cal"
   ],
-  "files": [ "dist" ]
+  "files": [
+    "dist"
+  ]
 }

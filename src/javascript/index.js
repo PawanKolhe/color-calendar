@@ -1,13 +1,30 @@
 import 'normalize.css';
 import '../sass/styles.scss';
 
+import '@iconscout/unicons/css/unicons.css'
+
 class Calendar {
 
-  constructor(id = '#calendar', start_weekday = 0) {
+  constructor({ id = '#calendar', startWeekday = 0, weekdayType = 'short', monthDisplayType = 'long', color = '#3F51B5' }) {
+    this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
-    this.WEEKDAYS_1_CHAR = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    switch(weekdayType) {
+      case 'long':
+        this.WEEKDAYS = ['SUN', 'MON', 'THU', 'WED', 'TUE', 'FRI', 'SAT'];
+      default:
+        this.WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    }
+    this.WEEKDAYS = weekdayType === 'short' ? 
+      ['S', 'M', 'T', 'W', 'T', 'F', 'S'] : 
+      ['SUN', 'MON', 'THU', 'WED', 'TUE', 'FRI', 'SAT'];
     this.id = id;
-    this.START_WEEKDAY = start_weekday;  // Sun-0, Mon-1, Tue-2, Wed-3, Thu-4, Fri-5, Sat-6
+    this.START_WEEKDAY = startWeekday;  // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
+    this.color = color;
+    
+    // Set calendar color
+    let root = document.documentElement;
+    root.style.setProperty('--calendar-color-primary', this.color);
+
     this.today = new Date();
     this.currentDate = new Date();
 
@@ -73,13 +90,13 @@ class Calendar {
   }
 
   updateCurrentDate(offset) {
-    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + offset, 1);
+    this.currentDate = new Date(this.currentDate.getFullYear(), offset === 0 ? this.today.getMonth() : this.currentDate.getMonth() + offset, 1);
     this.updateCalendar();
   }
 
   updateMonthYear() {
     this.calendarMonthYear.innerHTML = `
-      ${new Intl.DateTimeFormat('default', {month: 'long'}).format(this.currentDate)} ${this.currentDate.getFullYear()}
+      ${new Intl.DateTimeFormat('default', {month: this.monthDisplayType}).format(this.currentDate)} ${this.currentDate.getFullYear()}
     `;
   }
 
@@ -87,7 +104,7 @@ class Calendar {
     this.calendarWeekdays.innerHTML = '';
     for(let i = 0; i < 7; i++) {
       this.calendarWeekdays.innerHTML += `
-        <div class="calendar__weekday">${this.WEEKDAYS_1_CHAR[(i + this.START_WEEKDAY) % 7]}</div>
+        <div class="calendar__weekday">${this.WEEKDAYS[(i + this.START_WEEKDAY) % 7]}</div>
       `;
     }
   }
@@ -154,4 +171,11 @@ class Calendar {
 
 }
 
-new Calendar('#calendar');
+const options = {
+  id: '#calendar',
+  startWeekday: 0,
+  weekdayType: 'short',
+  monthDisplayType: 'long',
+  color: 'green'
+}
+new Calendar(options);
