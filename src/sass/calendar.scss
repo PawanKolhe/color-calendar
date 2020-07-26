@@ -1,0 +1,163 @@
+/* work-sans-regular - latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('../fonts/Work Sans/work-sans-v8-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Work Sans/work-sans-v8-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* work-sans-700 - latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+       url('../fonts/Work Sans/work-sans-v8-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Work Sans/work-sans-v8-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* work-sans-600 - latin */
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local(''),
+       url('../fonts/Work Sans/work-sans-v8-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Work Sans/work-sans-v8-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* comfortaa-regular - latin */
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* comfortaa-600 - latin */
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: normal;
+  font-weight: 600;
+  src: local(''),
+       url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* comfortaa-700 - latin */
+@font-face {
+  font-family: 'Comfortaa';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+       url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+.calendar {
+  height: auto;
+  font-family: Comfortaa, sans-serif;
+  border-radius: 0.5rem;
+  padding: 15px;
+  box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+  color: var(--calendar-color-primary);
+  background-color: white;
+  border: 1px solid var(--calendar-color-primary);
+}
+
+.calendar__header {
+  font-family: "Work Sans", sans-serif;
+  padding: 10px 0;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar__month {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--calendar-color-primary);
+}
+
+.calendar__arrow {
+  width: calc(100% / 7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  i {
+    color: var(--calendar-color-primary);
+    font-size: 1.3rem;
+  }
+}
+
+.calendar__body {
+  height: auto;
+}
+
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(35px, 55px));
+  margin-bottom: 5px;
+  font-family: "Work Sans", sans-serif;
+
+  .calendar__weekday {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-weight: 600;
+  }
+}
+
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(20px, 55px));
+  grid-template-rows: repeat(6, minmax(30px, 40px));
+  font-family: Comfortaa, sans-serif;
+
+  .calendar__day {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .calendar__day-today {
+    font-weight: 700;
+    z-index: 101;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 85%;
+      height: 90%;
+      border-radius: 0.5rem;
+      // background-color: #f1f1f8;
+      background-color: var(--calendar-color-primary);
+      opacity: 0.07;
+      z-index: -1;
+    }
+  }
+
+  .calendar__day-other {
+    // color: #c8ccec;
+    color: var(--calendar-color-primary);
+    opacity: 0.3;
+  }
+}
