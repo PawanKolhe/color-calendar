@@ -3,6 +3,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin");
 
 // This is the main configuration object.
 // Here you write different options and tell Webpack what to do
@@ -15,6 +16,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    library: "LIB",
+    libraryTarget: "var"
   },
 
   module: {
@@ -93,7 +96,7 @@ module.exports = {
   },
 
   plugins: [
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Calendar',
       // Load a custom template (lodash by default)
@@ -103,6 +106,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "bundle.css",
     }),
+    new EsmWebpackPlugin(),
   ],
 
   // Default mode for Webpack is production.

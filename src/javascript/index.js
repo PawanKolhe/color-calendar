@@ -2,7 +2,7 @@ import 'normalize.css';
 import '@iconscout/unicons/css/unicons.css'
 import '../sass/calendar.scss';
 
-class Calendar {
+export class Calendar {
 
   constructor({ id = '#calendar', startWeekday = 0, weekdayType = 'short', monthDisplayType = 'long', color = '#3F51B5' } = {}) {
     this.monthDisplayType = monthDisplayType;
@@ -173,7 +173,3 @@ class Calendar {
   }
 
 }
-
-window.Calendar = Calendar;
-global.Calendar = Calendar;
-globalThis.Calendar = Calendar;
