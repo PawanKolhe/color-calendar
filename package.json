@@ -2,7 +2,7 @@
   "name": "calendar",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "./dist/bundle.js",
   "scripts": {
     "start": "webpack-dev-server --open --quiet --no-info",
     "dev": "webpack --watch",
@@ -33,5 +33,10 @@
   },
   "dependencies": {
     "normalize.css": "^8.0.1"
-  }
+  },
+  "keywords": [
+    "calendar",
+    "cal"
+  ],
+  "files": [ "dist" ]
 }

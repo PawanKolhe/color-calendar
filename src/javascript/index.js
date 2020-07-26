@@ -1,97 +1,136 @@
 import 'normalize.css';
 import '../sass/styles.scss';
+import BackAngleArrow from '../images/chevron-back-outline.svg';
+import ForwardAngleArrow from '../images/chevron-forward-outline.svg';
 
-/**=================== INITIALIZE ===================**/
+class Calendar {
 
-const START_WEEKDAY = 0;  // Sun-0, Mon-1, Tue-2, Wed-3, Thu-4, Fri-5, Sat-6
-const DAYS_TO_DISPLAY = 42;
-const today = new Date();
+  constructor(id = '#calendar', start_weekday = 0) {
+    this.DAYS_TO_DISPLAY = 42;
+    this.WEEKDAYS_1_CHAR = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    this.id = id;
+    this.START_WEEKDAY = start_weekday;  // Sun-0, Mon-1, Tue-2, Wed-3, Thu-4, Fri-5, Sat-6
+    this.today = new Date();
+    this.currentDate = new Date();
 
-let daysIn_PrevMonth = [];
-let daysIn_CurrentMonth = [];
-let daysIn_NextMonth = [];
+    this.calendar = document.querySelector(id);
 
-/**=================== GENERATE DAYS ===================**/
+    this.daysIn_PrevMonth = [];
+    this.daysIn_CurrentMonth = [];
+    this.daysIn_NextMonth = [];
 
-let currentDate = new Date();
+    this.initializeLayout();
+    this.updateMonthYear();
+    this.generateWeekdays();
+    this.generateDays();
+    this.renderDays();
+  }
 
-// Previous Month
-let firstDay_PrevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1).getDay();
-let numOfDays_PrevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-for (let i = 0; i < numOfDays_PrevMonth; i++) {
-  daysIn_PrevMonth.push({ day: i + 1, selected: false });
+  initializeLayout() {
+    this.calendar.innerHTML = `
+      <div class="calendar">
+        <div class="calendar__header">
+          <div class="calendar__arrow calendar__arrow-prev"><i class="uil uil-angle-left-b"></i></div>
+          <div class="calendar__month"></div>
+          <div class="calendar__arrow calendar__arrow-next"><i class="uil uil-angle-right-b"></i></div>
+        </div>
+        <div class="calendar__body">
+          <div class="calendar__weekdays"></div>
+          <div class="calendar__days"></div>
+        </div>
+      </div>
+    `;
+    this.calendarMonthYear = document.querySelector(`${this.id} .calendar__month`);
+    this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`);
+    this.calendarDays = document.querySelector(`${this.id} .calendar__days`);
+    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev`);
+    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next`);
+    this.prevButton.addEventListener('click', this.handlePrevMonthButtonClick);
+    this.nextButton.addEventListener('click', this.handleNextMonthButtonClick);
+  }
+
+  handlePrevMonthButtonClick() {
+    console.log('Prev');
+  }
+
+  handleNextMonthButtonClick() {
+    console.log('Next');
+  }
+
+  updateMonthYear() {
+    this.calendarMonthYear.innerHTML = `
+      ${new Intl.DateTimeFormat('default', {month: 'long'}).format(this.currentDate)} ${this.currentDate.getFullYear()}
+    `;
+  }
+
+  generateWeekdays() {
+    this.calendarWeekdays.innerHTML = '';
+    for(let i = 0; i < 7; i++) {
+      this.calendarWeekdays.innerHTML += `
+        <div class="calendar__weekday">${this.WEEKDAYS_1_CHAR[(i + this.START_WEEKDAY) % 7]}</div>
+      `;
+    }
+  }
+
+  generateDays() {
+    // Previous Month
+    // this.firstDay_PrevMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1).getDay();
+    this.numOfDays_PrevMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 0).getDate();
+    // for (let i = 0; i < this.numOfDays_PrevMonth; i++) {
+    //   this.daysIn_PrevMonth.push({ day: i + 1, selected: false });
+    // }
+
+    // Current Month
+    this.firstDay_CurrentMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getDay();
+    this.numOfDays_CurrentMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
+    for (let i = 0; i < this.numOfDays_CurrentMonth; i++) {
+      this.daysIn_CurrentMonth.push({ day: i + 1, selected: false });
+    }
+
+    // Next Month
+    // this.firstDay_NextMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1).getDay();
+    // this.numOfDays_NextMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 0).getDate();
+    // for (let i = 0; i < this.numOfDays_NextMonth; i++) {
+    //   this.daysIn_NextMonth.push({ day: i + 1, selected: false });
+    // }
+  }
+
+  renderDays() {
+    this.calendarDays.innerHTML = '';
+    let insertCount = 0;
+
+    // Weekday Offset calculation
+    let dayOffset;
+    if(this.firstDay_CurrentMonth < this.START_WEEKDAY) {
+      dayOffset =  7 + this.firstDay_CurrentMonth - this.START_WEEKDAY;
+    } else {
+      dayOffset = this.firstDay_CurrentMonth - this.START_WEEKDAY;
+    }
+
+    // Prev Month (Light)
+    for(let i = 0; i < dayOffset; i++) {
+      this.calendarDays.innerHTML += `
+        <div class="calendar__day calendar__day-other">${this.numOfDays_PrevMonth + 1 - dayOffset + i}</div>
+      `;
+      insertCount++;
+    }
+
+    // Current Month
+    this.daysIn_CurrentMonth.forEach(day => {
+      this.calendarDays.innerHTML += `
+        <div class="calendar__day${day.day == this.today.getDate() ? ' calendar__day-today' : ''}">${day.day}</div>
+      `;
+      insertCount++;
+    });
+
+    // Next Month (Light)
+    for(let i = 0; i < this.DAYS_TO_DISPLAY - insertCount; i++) {
+      this.calendarDays.innerHTML += `
+        <div class="calendar__day calendar__day-other">${i + 1}</div>
+      `;
+    }
+  }
+
 }
 
-// Current Month
-let firstDay_CurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-let numOfDays_CurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-for (let i = 0; i < numOfDays_CurrentMonth; i++) {
-  daysIn_CurrentMonth.push({ day: i + 1, selected: false });
-}
-
-// Next Month
-let firstDay_NextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1).getDay();
-let numOfDays_NextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-for (let i = 0; i < numOfDays_NextMonth; i++) {
-  daysIn_NextMonth.push({ day: i + 1, selected: false });
-}
-
-// console.log(firstDay_PrevMonth, numOfDays_PrevMonth, daysIn_PrevMonth);
-// console.log(firstDay_CurrentMonth, numOfDays_CurrentMonth, daysIn_CurrentMonth);
-// console.log(firstDay_NextMonth, numOfDays_NextMonth, daysIn_NextMonth);
-
-/**=================== RENDER MONTH AND YEAR ===================**/
-
-const calendarMonthYear = document.querySelector('.calendar__month');
-calendarMonthYear.innerHTML = `
-  ${new Intl.DateTimeFormat('default', {month: 'long'}).format(currentDate)} ${currentDate.getFullYear()}
-`;
-
-/**=================== RENDER WEEKDAYS ===================**/
-
-const calendarWeekdays = document.querySelector('.calendar__weekdays');
-
-const WEEKDAYS_1_CHAR = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-for(let i = 0; i < 7; i++) {
-  calendarWeekdays.innerHTML += `
-    <div class="calendar__weekday">${WEEKDAYS_1_CHAR[(i + START_WEEKDAY) % 7]}</div>
-  `;
-}
-
-/**=================== RENDER DAYS ===================**/
-
-const calendarDays = document.querySelector('.calendar__days');
-
-let insertCount = 0;
-
-// Weekday Offset calculation
-let dayOffset;
-if(firstDay_CurrentMonth < START_WEEKDAY) {
-  dayOffset =  7 + (firstDay_CurrentMonth - START_WEEKDAY);
-} else {
-  dayOffset = firstDay_CurrentMonth - START_WEEKDAY;
-}
-
-// Prev Month
-for(let i = 0; i < dayOffset; i++) {
-  calendarDays.innerHTML += `
-    <div class="calendar_day calendar_day-other">${daysIn_PrevMonth[daysIn_PrevMonth.length - dayOffset + i].day}</div>
-  `;
-  insertCount++;
-}
-
-// Current Month
-daysIn_CurrentMonth.forEach(day => {
-  calendarDays.innerHTML += `
-    <div class="calendar_day ${day.day == today.getDate() ? 'calendar_day-today' : ''}">${day.day}</div>
-  `;
-  insertCount++;
-});
-
-// Next Month
-for(let i = 0; i < DAYS_TO_DISPLAY - insertCount; i++) {
-  calendarDays.innerHTML += `
-    <div class="calendar_day calendar_day-other">${daysIn_NextMonth[i].day}</div>
-  `;
-}
+new Calendar('#calendar');

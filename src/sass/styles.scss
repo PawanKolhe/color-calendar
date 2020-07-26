@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+
 * {
   box-sizing: border-box;
+  --color-primary: #3F51B5;
 }
 
 html, body {
@@ -23,23 +26,39 @@ html, body {
   border-radius: 0.5rem;
   padding: 15px;
   box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
-  color: #3F51B5;
+  color: var(--color-primary);
   background-color: white;
-  border: 1px solid #3F51B5;
+  border: 1px solid var(--color-primary);
 }
 
 .calendar__header {
   font-family: 'Work Sans', sans-serif;
   padding: 10px 10px;
   margin-bottom: 5px;
-}
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
-.calendar__month {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0 auto;
-  text-align: center;
-  color: #3F51B5;
+  .calendar__month {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--color-primary);
+  }
+
+  .calendar__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    i {
+      color: var(--color-primary);
+      font-size: 1.3rem;
+    }
+  }
 }
 
 .calendar__body {
@@ -66,7 +85,7 @@ html, body {
   grid-template-columns: repeat(7, minmax(20px, 50px));
   font-family: Comfortaa, sans-serif;
 
-  .calendar_day {
+  .calendar__day {
     position: relative;
     height: 40px;
     display: flex;
@@ -74,7 +93,7 @@ html, body {
     justify-content: center;
   }
 
-  .calendar_day-today {
+  .calendar__day-today {
     font-weight: 700;
     z-index: 101;
 
@@ -91,8 +110,8 @@ html, body {
       z-index: -1;
     }
   }
-  
-  .calendar_day-other {
+
+  .calendar__day-other {
     color: #c8ccec;
   }
 }
