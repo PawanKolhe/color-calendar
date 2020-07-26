@@ -1,8 +1,7 @@
 import 'normalize.css';
+import '@iconscout/unicons/css/unicons.css'
 import '../sass/styles.scss';
 import '../sass/calendar.scss';
-
-import '@iconscout/unicons/css/unicons.css'
 
 class Calendar {
 

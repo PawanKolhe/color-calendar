@@ -84,6 +84,7 @@
 }
 
 .calendar__arrow {
+  position: relative;
   width: calc(100% / 7);
   display: flex;
   align-items: center;
@@ -96,11 +97,30 @@
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  z-index: 101;
 
   i {
     color: var(--calendar-color-primary);
     font-size: 1.3rem;
   }
+
+  &:hover {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      // background-color: #f1f1f8;
+      background-color: var(--calendar-color-primary);
+      opacity: 0.05;
+      z-index: -1;
+    }
+  }
+
 }
 
 .calendar__body {
