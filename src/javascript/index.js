@@ -13,20 +13,23 @@ class Calendar {
     this.today = new Date();
     this.currentDate = new Date();
 
-    this.calendar = document.querySelector(id);
-
     this.daysIn_PrevMonth = [];
     this.daysIn_CurrentMonth = [];
     this.daysIn_NextMonth = [];
 
+    this.resetCalendar();
+  }
+
+  resetCalendar() {
     this.initializeLayout();
     this.updateMonthYear();
     this.generateWeekdays();
     this.generateDays();
     this.renderDays();
   }
-
+  
   initializeLayout() {
+    this.calendar = document.querySelector(this.id);
     this.calendar.innerHTML = `
       <div class="calendar">
         <div class="calendar__header">
@@ -45,16 +48,35 @@ class Calendar {
     this.calendarDays = document.querySelector(`${this.id} .calendar__days`);
     this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev`);
     this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next`);
-    this.prevButton.addEventListener('click', this.handlePrevMonthButtonClick);
-    this.nextButton.addEventListener('click', this.handleNextMonthButtonClick);
+    this.prevButton.addEventListener('click', this.handlePrevMonthButtonClick.bind(this));
+    this.nextButton.addEventListener('click', this.handleNextMonthButtonClick.bind(this));
+  }
+
+  clearCalendarDays() {
+    this.daysIn_PrevMonth = [];
+    this.daysIn_CurrentMonth = [];
+    this.daysIn_NextMonth = [];
+  }
+
+  updateCalendar() {
+    this.clearCalendarDays();
+
+    this.updateMonthYear();
+    this.generateDays();
+    this.renderDays();
   }
 
   handlePrevMonthButtonClick() {
-    console.log('Prev');
+    this.updateCurrentDate(-1);
   }
 
   handleNextMonthButtonClick() {
-    console.log('Next');
+    this.updateCurrentDate(1);
+  }
+
+  updateCurrentDate(offset) {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + offset, 1);
+    this.updateCalendar();
   }
 
   updateMonthYear() {
@@ -116,9 +138,10 @@ class Calendar {
     }
 
     // Current Month
+    let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
     this.daysIn_CurrentMonth.forEach(day => {
       this.calendarDays.innerHTML += `
-        <div class="calendar__day${day.day == this.today.getDate() ? ' calendar__day-today' : ''}">${day.day}</div>
+        <div class="calendar__day${isTodayMonth && day.day === this.today.getDate() ? ' calendar__day-today' : ''}">${day.day}</div>
       `;
       insertCount++;
     });
