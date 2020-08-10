@@ -1,83 +1,98 @@
-/* work-sans-regular - latin */
-@font-face {
-  font-family: 'Work Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local(''),
-       url('../fonts/Work Sans/work-sans-v8-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/Work Sans/work-sans-v8-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* work-sans-700 - latin */
-@font-face {
-  font-family: 'Work Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local(''),
-       url('../fonts/Work Sans/work-sans-v8-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/Work Sans/work-sans-v8-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* work-sans-600 - latin */
-@font-face {
-  font-family: 'Work Sans';
-  font-style: normal;
-  font-weight: 600;
-  src: local(''),
-       url('../fonts/Work Sans/work-sans-v8-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/Work Sans/work-sans-v8-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
+// /* work-sans-regular - latin */
+// @font-face {
+//   font-family: 'Work Sans';
+//   font-style: normal;
+//   font-weight: 400;
+//   src: local(''),
+//        url('../fonts/Work-Sans/work-sans-v8-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+//        url('../fonts/Work-Sans/work-sans-v8-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// }
+// /* work-sans-700 - latin */
+// @font-face {
+//   font-family: 'Work Sans';
+//   font-style: normal;
+//   font-weight: 700;
+//   src: local(''),
+//        url('../fonts/Work-Sans/work-sans-v8-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+//        url('../fonts/Work-Sans/work-sans-v8-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// }
+// /* work-sans-600 - latin */
+// @font-face {
+//   font-family: 'Work Sans';
+//   font-style: normal;
+//   font-weight: 600;
+//   src: local(''),
+//        url('../fonts/Work-Sans/work-sans-v8-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+//        url('../fonts/Work-Sans/work-sans-v8-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// }
 
-/* comfortaa-regular - latin */
-@font-face {
-  font-family: 'Comfortaa';
-  font-style: normal;
-  font-weight: 400;
-  src: local(''),
-       url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* comfortaa-600 - latin */
-@font-face {
-  font-family: 'Comfortaa';
-  font-style: normal;
-  font-weight: 600;
-  src: local(''),
-       url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* comfortaa-700 - latin */
-@font-face {
-  font-family: 'Comfortaa';
-  font-style: normal;
-  font-weight: 700;
-  src: local(''),
-       url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-       url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// /* comfortaa-regular - latin */
+// @font-face {
+//   font-family: 'Comfortaa';
+//   font-style: normal;
+//   font-weight: 400;
+//   src: local(''),
+//        url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+//        url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// }
+// /* comfortaa-600 - latin */
+// @font-face {
+//   font-family: 'Comfortaa';
+//   font-style: normal;
+//   font-weight: 600;
+//   src: local(''),
+//        url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+//        url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// }
+// /* comfortaa-700 - latin */
+// @font-face {
+//   font-family: 'Comfortaa';
+//   font-style: normal;
+//   font-weight: 700;
+//   src: local(''),
+//        url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+//        url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+// }
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 :root {
-  --calendar-color-primary: #3f51b5;
+  --cal-color-primary: #3f51b5;
+  --cal-font-family-1: "Work Sans", sans-serif;
+  --cal-font-family-2: Comfortaa, sans-serif;
 }
 
 .calendar {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: auto;
   height: auto;
-  font-family: Comfortaa, sans-serif;
+  font-family: var(--cal-font-family-2);
   border-radius: 0.5rem;
-  padding: 15px;
+  padding: 14px;
   box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
-  color: var(--calendar-color-primary);
+  color: var(--cal-color-primary);
   background-color: white;
-  border: 1px solid var(--calendar-color-primary);
+  border: 1px solid var(--cal-color-primary);
   box-sizing: border-box;
 }
 
 .calendar__header {
-  font-family: "Work Sans", sans-serif;
+  position: relative;
+  font-family: var(--cal-font-family-1);
   padding: 10px 0;
   margin-bottom: 5px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  // display: flex;
+  // flex-direction: row;
+  // align-items: center;
+  // justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(20px, 55px));
 }
 
 .calendar__month {
@@ -85,15 +100,16 @@
   font-weight: 600;
   margin: 0 auto;
   text-align: center;
-  color: var(--calendar-color-primary);
+  color: var(--cal-color-primary);
+  grid-column: 2 / span 5;
+  @include flex-center;
 }
 
 .calendar__arrow {
+  height: 35px;
+  width: 100%;
   position: relative;
-  width: calc(100% / 7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // width: calc(100% / 7);
   cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -103,11 +119,8 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   z-index: 101;
-
-  i {
-    color: var(--calendar-color-primary);
-    font-size: 1.3rem;
-  }
+  // background-color: rgba(150, 170, 180, 0.082);
+  @include flex-center;
 
   &:hover {
     &::before {
@@ -120,9 +133,49 @@
       height: 35px;
       border-radius: 50%;
       // background-color: #f1f1f8;
-      background-color: var(--calendar-color-primary);
+      background-color: var(--cal-color-primary);
       opacity: 0.05;
       z-index: -1;
+    }
+  }
+
+  &-inner {
+    height: 100%;
+    @include flex-center;
+
+    &::before {
+      width: 0.6em;
+      height: 0.6em;
+      position: absolute;
+      border-style: solid;
+      border-width: 0.15em 0.15em 0 0;
+      content: '';
+      display: inline-block;
+      transform-origin: center center;
+      transform: rotate(-45deg);
+      border-radius: 1px;
+      color: var(--cal-color-primary);
+      // background-color: blue;
+    }
+  }
+
+  &-prev {
+    position: relative;
+    @include flex-center;
+
+    .calendar__arrow-inner::before {
+      margin-left: 0.3em;
+      transform: rotate(-135deg);
+    }
+  }
+
+  &-next {
+    position: relative;
+    @include flex-center;
+
+    .calendar__arrow-inner::before {
+      margin-right: 0.3em;
+      transform: rotate(45deg);
     }
   }
 
@@ -134,14 +187,12 @@
 
 .calendar__weekdays {
   display: grid;
-  grid-template-columns: repeat(7, minmax(35px, 55px));
+  grid-template-columns: repeat(7, minmax(20px, 55px));
   margin-bottom: 5px;
-  font-family: "Work Sans", sans-serif;
+  font-family: var(--cal-font-family-1);
 
   .calendar__weekday {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     height: 40px;
     font-weight: 600;
   }
@@ -151,13 +202,11 @@
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   grid-template-rows: repeat(6, minmax(30px, 40px));
-  font-family: Comfortaa, sans-serif;
+  font-family: var(--cal-font-family-2);
 
   .calendar__day {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
   }
 
   .calendar__day-today {
@@ -174,7 +223,7 @@
       height: 90%;
       border-radius: 0.5rem;
       // background-color: #f1f1f8;
-      background-color: var(--calendar-color-primary);
+      background-color: var(--cal-color-primary);
       opacity: 0.07;
       z-index: -1;
     }
@@ -182,7 +231,7 @@
 
   .calendar__day-other {
     // color: #c8ccec;
-    color: var(--calendar-color-primary);
+    color: var(--cal-color-primary);
     opacity: 0.3;
   }
 }

@@ -1,10 +1,18 @@
-import 'normalize.css';
-import '@iconscout/unicons/css/unicons.css'
+// import 'normalize.css';
+// import '@iconscout/unicons/css/unicons.css';
 import '../sass/calendar.scss';
 
 export class Calendar {
 
-  constructor({ id = '#calendar', startWeekday = 0, weekdayType = 'short', monthDisplayType = 'long', color = '#3F51B5' } = {}) {
+  constructor({ 
+    id = '#calendar',
+    startWeekday = 0,
+    weekdayType = 'short',
+    monthDisplayType = 'long',
+    color = '#3F51B5',
+    fontFamily1 = '"Work Sans", sans-serif',
+    fontFamily2 = 'Comfortaa, sans-serif',
+  } = {}) {
     this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
     switch(weekdayType) {
@@ -19,10 +27,14 @@ export class Calendar {
     this.id = id;
     this.START_WEEKDAY = startWeekday;  // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
     this.color = color;
+    this.fontFamily1 = fontFamily1;
+    this.fontFamily2 = fontFamily2;
     
     // Set calendar color
     let root = document.documentElement;
-    root.style.setProperty('--calendar-color-primary', this.color);
+    root.style.setProperty('--cal-color-primary', this.color);
+    root.style.setProperty('--cal-font-family-1', this.fontFamily1);
+    root.style.setProperty('--cal-font-family-2', this.fontFamily2);
 
     this.today = new Date();
     this.currentDate = new Date();
@@ -47,9 +59,9 @@ export class Calendar {
     this.calendar.innerHTML = `
       <div class="calendar">
         <div class="calendar__header">
-          <div class="calendar__arrow calendar__arrow-prev"><i class="uil uil-angle-left-b"></i></div>
+          <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
           <div class="calendar__month"></div>
-          <div class="calendar__arrow calendar__arrow-next"><i class="uil uil-angle-right-b"></i></div>
+          <div class="calendar__arrow calendar__arrow-next"><div class="calendar__arrow-inner"></div></div>
         </div>
         <div class="calendar__body">
           <div class="calendar__weekdays"></div>

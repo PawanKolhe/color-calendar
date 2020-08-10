@@ -14,16 +14,15 @@ module.exports = {
   // Path and filename of your result bundle.
   // Webpack will bundle all JavaScript into this file
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
-    library: "LIB",
-    libraryTarget: "var"
+    library: "Calendar",
   },
 
   module: {
     rules: [
       {
-        test: "/.js$/",
+        test: "/\.js$/",
         exclude: /(node_modules)/,
         use: {
           loader: "babel-loader",
@@ -119,7 +118,7 @@ module.exports = {
   devtool: "inline-source-map",
 
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, "build"),
     watchContentBase: true,
     compress: true,
     port: 9000,
