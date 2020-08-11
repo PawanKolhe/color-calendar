@@ -110,7 +110,6 @@
   width: 100%;
   position: relative;
   // width: calc(100% / 7);
-  cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -122,25 +121,12 @@
   // background-color: rgba(150, 170, 180, 0.082);
   @include flex-center;
 
-  &:hover {
-    &::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      // background-color: #f1f1f8;
-      background-color: var(--cal-color-primary);
-      opacity: 0.05;
-      z-index: -1;
-    }
-  }
-
   &-inner {
-    height: 100%;
+    width: 35px;
+    height: 35px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
     @include flex-center;
 
     &::before {
@@ -156,6 +142,28 @@
       border-radius: 1px;
       color: var(--cal-color-primary);
       // background-color: blue;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background-color: var(--cal-color-primary);
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+      &::after {
+        transition: opacity 0.3s ease;
+        opacity: 0.05;
+      }
     }
   }
 

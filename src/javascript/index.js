@@ -72,8 +72,8 @@ export class Calendar {
     this.calendarMonthYear = document.querySelector(`${this.id} .calendar__month`);
     this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`);
     this.calendarDays = document.querySelector(`${this.id} .calendar__days`);
-    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev`);
-    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next`);
+    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`);
+    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`);
     this.prevButton.addEventListener('click', this.handlePrevMonthButtonClick.bind(this));
     this.nextButton.addEventListener('click', this.handleNextMonthButtonClick.bind(this));
   }
