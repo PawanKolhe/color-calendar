@@ -4,11 +4,10 @@
   "description": "",
   "main": "dist/bundle.umd.js",
   "scripts": {
-    "prestart": "rimraf dist",
-    "start": "rollup -c -w",
-    "start:sass": "gulp",
-    "prebuild": "rimraf dist",
+    "start:js": "rollup -c -w",
+    "start:css": "gulp watch",
     "build": "rollup -c && gulp",
+    "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pawan Kolhe <contact@pawankolhe.com>",

@@ -7,11 +7,12 @@ $theme: ".default";
 }
 
 .calendar#{$theme} {
-  --cal-color-primary: #3f51b5;
+  --cal-color-primary: #333333;
   --cal-font-family-1: "Work Sans", sans-serif;
-  --cal-font-family-2: Comfortaa, sans-serif;
+  --cal-font-family-2: "Work Sans", sans-serif;
   --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
   --cal-border: 1px solid var(--cal-color-primary);
+  --cal-border-radius: 0.5rem;
 
   position: relative;
   display: inline-flex;
@@ -19,7 +20,7 @@ $theme: ".default";
   width: auto;
   height: auto;
   font-family: var(--cal-font-family-2);
-  border-radius: 0.5rem;
+  border-radius: var(--cal-border-radius);
   box-shadow: var(--cal-drop-shadow);
   color: var(--cal-color-primary);
   background-color: white;
@@ -139,7 +140,8 @@ $theme: ".default";
   .calendar__weekday {
     @include flex-center;
     height: 40px;
-    font-weight: 600;
+    font-weight: 500;
+    opacity: 0.6;
   }
 }
 
@@ -150,11 +152,13 @@ $theme: ".default";
   font-family: var(--cal-font-family-2);
 
   .calendar__day {
+    font-weight: 600;
     position: relative;
     @include flex-center;
   }
 
   .calendar__day-other {
+    font-weight: 600;
     color: var(--cal-color-primary);
     opacity: 0.3;
   }

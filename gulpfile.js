@@ -28,3 +28,7 @@ gulp.task('postcss', function () {
 });
 
 gulp.task('default', gulp.series(['clean', 'sass', 'postcss']));
+
+gulp.task('watch', function () {
+  return gulp.watch('src/sass/*.scss', { ignoreInitial: false }, gulp.series(['clean', 'sass', 'postcss']));
+});

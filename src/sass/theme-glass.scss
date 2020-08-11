@@ -1,9 +1,190 @@
 $theme: ".glass";
 
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .calendar#{$theme} {
-  --cal-color-primary: red;
-  --cal-font-family-1: "Work Sans", sans-serif;
-  --cal-font-family-2: Comfortaa, sans-serif;
+  --cal-color-primary: #EC407A;
+  --cal-font-family-1: 'Open Sans', sans-serif;
+  --cal-font-family-2: 'Open Sans', sans-serif;
   --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
-  --cal-border: 1px solid var(--cal-color-primary);
+  --cal-border: none;
+  --cal-border-radius: 0.5rem;
+  --cal-header-color: white;
+
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  font-family: var(--cal-font-family-2);
+  border-radius: var(--cal-border-radius);
+  box-shadow: var(--cal-drop-shadow);
+  color: #323232;
+  border: var(--cal-border);
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.2);  
+  backdrop-filter: blur(5px);
+}
+
+.calendar#{$theme} .calendar__header {
+  position: relative;
+  font-family: var(--cal-font-family-1);
+  padding: 20px 14px 20px 14px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(20px, 55px));
+  color: var(--cal-header-color);
+}
+
+.calendar#{$theme} .calendar__month {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 auto;
+  text-align: center;
+  grid-column: 2 / span 5;
+  color: var(--cal-header-color);
+  @include flex-center;
+}
+
+.calendar#{$theme} .calendar__arrow {
+  height: 35px;
+  width: 100%;
+  position: relative;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  z-index: 101;
+  @include flex-center;
+
+  &-inner {
+    width: 35px;
+    height: 35px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    @include flex-center;
+
+    &::before {
+      content: '';
+      width: 0.5em;
+      height: 0.5em;
+      position: absolute;
+      border-style: solid;
+      border-width: 0.17em 0.17em 0 0;
+      display: inline-block;
+      transform-origin: center center;
+      transform: rotate(-45deg);
+      border-radius: 2px;
+      color: var(--cal-header-color);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background-color: var(--cal-header-color);
+      opacity: 0.12;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+      &::after {
+        transition: opacity 0.3s ease;
+        opacity: 0.25;
+      }
+    }
+  }
+
+  &-prev {
+    position: relative;
+    @include flex-center;
+
+    .calendar__arrow-inner::before {
+      margin-left: 0.25em;
+      transform: rotate(-135deg);
+    }
+  }
+
+  &-next {
+    position: relative;
+    @include flex-center;
+
+    .calendar__arrow-inner::before {
+      margin-right: 0.25em;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.calendar#{$theme} .calendar__body {
+  height: auto;
+  padding: 18px 14px;
+  border-radius: var(--cal-border-radius);
+  background-color: white;
+}
+
+.calendar#{$theme} .calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(20px, 55px));
+  margin-bottom: 5px;
+  font-family: var(--cal-font-family-1);
+
+  .calendar__weekday {
+    @include flex-center;
+    height: 40px;
+    font-weight: 700;
+    opacity: 0.5;
+  }
+}
+
+.calendar#{$theme} .calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(20px, 55px));
+  grid-template-rows: repeat(6, minmax(30px, 40px));
+  font-family: var(--cal-font-family-2);
+
+  .calendar__day {
+    position: relative;
+    font-weight: 700;
+    @include flex-center;
+  }
+
+  .calendar__day-other {
+    color: #323232;
+    opacity: 0.2;
+  }
+
+  .calendar__day-today {
+    font-weight: 700;
+    z-index: 101;
+    color: white;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(55% + 8px);
+      height: 90%;
+      border-radius: 0.5rem;
+      background-color: var(--cal-color-primary);
+      box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+      // opacity: 0.5;
+      z-index: -1;
+    }
+  }
 }

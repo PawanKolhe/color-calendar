@@ -5,9 +5,9 @@ export class Calendar {
     startWeekday = 0,
     weekdayType = 'short',
     monthDisplayType = 'long',
-    color = '#3F51B5',
-    fontFamily1 = '"Work Sans", sans-serif',
-    fontFamily2 = 'Comfortaa, sans-serif',
+    color = undefined,
+    fontFamily1 = undefined,
+    fontFamily2 = undefined,
     dropShadow = true,
     border = true,
     theme = 'default',
@@ -52,7 +52,7 @@ export class Calendar {
   initializeLayout() {
     this.calendar = document.querySelector(this.id);
     this.calendar.innerHTML = `
-      <div class="calendar default ${this.theme}">
+      <div class="calendar ${this.theme}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
           <div class="calendar__month"></div>
@@ -65,18 +65,7 @@ export class Calendar {
       </div>
     `;
 
-    /** Configure calendar style preferences */
-    // let root = document.documentElement;
-    let root = document.querySelector(`${this.id} .calendar`);
-    root.style.setProperty('--cal-color-primary', this.color);
-    root.style.setProperty('--cal-font-family-1', this.fontFamily1);
-    root.style.setProperty('--cal-font-family-2', this.fontFamily2);
-    if(!this.dropShadow) {
-      root.style.setProperty('--cal-drop-shadow', 'none');
-    }
-    if(!this.border) {
-      root.style.setProperty('--cal-border', 'none');
-    }
+    this.configureStylePreferences();
 
     this.calendarMonthYear = document.querySelector(`${this.id} .calendar__month`);
     this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`);
@@ -85,6 +74,27 @@ export class Calendar {
     this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`);
     this.prevButton.addEventListener('click', this.handlePrevMonthButtonClick.bind(this));
     this.nextButton.addEventListener('click', this.handleNextMonthButtonClick.bind(this));
+  }
+
+  /** Configure calendar style preferences */
+  configureStylePreferences() {
+    // let root = document.documentElement;
+    let root = document.querySelector(`${this.id} .calendar`);
+    if(this.color) {
+      root.style.setProperty('--cal-color-primary', this.color);
+    }
+    if(this.fontFamily1) {
+      root.style.setProperty('--cal-font-family-1', this.fontFamily1);
+    }
+    if(this.fontFamily2) {
+      root.style.setProperty('--cal-font-family-2', this.fontFamily2);
+    }
+    if(!this.dropShadow) {
+      root.style.setProperty('--cal-drop-shadow', 'none');
+    }
+    if(!this.border) {
+      root.style.setProperty('--cal-border', 'none');
+    }
   }
 
   /** Clear day values */
