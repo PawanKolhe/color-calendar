@@ -1,0 +1,9 @@
+$theme: ".glass";
+
+.calendar#{$theme} {
+  --cal-color-primary: red;
+  --cal-font-family-1: "Work Sans", sans-serif;
+  --cal-font-family-2: Comfortaa, sans-serif;
+  --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+  --cal-border: 1px solid var(--cal-color-primary);
+}

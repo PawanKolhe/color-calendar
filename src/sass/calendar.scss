@@ -1,58 +1,4 @@
-// /* work-sans-regular - latin */
-// @font-face {
-//   font-family: 'Work Sans';
-//   font-style: normal;
-//   font-weight: 400;
-//   src: local(''),
-//        url('../fonts/Work-Sans/work-sans-v8-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-//        url('../fonts/Work-Sans/work-sans-v8-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-// }
-// /* work-sans-700 - latin */
-// @font-face {
-//   font-family: 'Work Sans';
-//   font-style: normal;
-//   font-weight: 700;
-//   src: local(''),
-//        url('../fonts/Work-Sans/work-sans-v8-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-//        url('../fonts/Work-Sans/work-sans-v8-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-// }
-// /* work-sans-600 - latin */
-// @font-face {
-//   font-family: 'Work Sans';
-//   font-style: normal;
-//   font-weight: 600;
-//   src: local(''),
-//        url('../fonts/Work-Sans/work-sans-v8-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-//        url('../fonts/Work-Sans/work-sans-v8-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-// }
-
-// /* comfortaa-regular - latin */
-// @font-face {
-//   font-family: 'Comfortaa';
-//   font-style: normal;
-//   font-weight: 400;
-//   src: local(''),
-//        url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-//        url('../fonts/Comfortaa/comfortaa-v29-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-// }
-// /* comfortaa-600 - latin */
-// @font-face {
-//   font-family: 'Comfortaa';
-//   font-style: normal;
-//   font-weight: 600;
-//   src: local(''),
-//        url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-//        url('../fonts/Comfortaa/comfortaa-v29-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-// }
-// /* comfortaa-700 - latin */
-// @font-face {
-//   font-family: 'Comfortaa';
-//   font-style: normal;
-//   font-weight: 700;
-//   src: local(''),
-//        url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-//        url('../fonts/Comfortaa/comfortaa-v29-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-// }
+$theme: ".default";
 
 @mixin flex-center {
   display: flex;
@@ -60,13 +6,13 @@
   justify-content: center;
 }
 
-:root {
+.calendar#{$theme} {
   --cal-color-primary: #3f51b5;
   --cal-font-family-1: "Work Sans", sans-serif;
   --cal-font-family-2: Comfortaa, sans-serif;
-}
+  --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+  --cal-border: 1px solid var(--cal-color-primary);
 
-.calendar {
   position: relative;
   display: inline-flex;
   flex-direction: column;
@@ -74,28 +20,22 @@
   height: auto;
   font-family: var(--cal-font-family-2);
   border-radius: 0.5rem;
-  padding: 14px;
-  box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
+  box-shadow: var(--cal-drop-shadow);
   color: var(--cal-color-primary);
   background-color: white;
-  border: 1px solid var(--cal-color-primary);
+  border: var(--cal-border);
   box-sizing: border-box;
 }
 
-.calendar__header {
+.calendar#{$theme} .calendar__header {
   position: relative;
   font-family: var(--cal-font-family-1);
-  padding: 10px 0;
-  margin-bottom: 5px;
-  // display: flex;
-  // flex-direction: row;
-  // align-items: center;
-  // justify-content: space-between;
+  padding: 20px 14px 0px 14px;
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
 }
 
-.calendar__month {
+.calendar#{$theme} .calendar__month {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0 auto;
@@ -105,11 +45,10 @@
   @include flex-center;
 }
 
-.calendar__arrow {
+.calendar#{$theme} .calendar__arrow {
   height: 35px;
   width: 100%;
   position: relative;
-  // width: calc(100% / 7);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -118,7 +57,6 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   z-index: 101;
-  // background-color: rgba(150, 170, 180, 0.082);
   @include flex-center;
 
   &-inner {
@@ -130,22 +68,21 @@
     @include flex-center;
 
     &::before {
+      content: '';
       width: 0.6em;
       height: 0.6em;
       position: absolute;
       border-style: solid;
       border-width: 0.15em 0.15em 0 0;
-      content: '';
       display: inline-block;
       transform-origin: center center;
       transform: rotate(-45deg);
       border-radius: 1px;
       color: var(--cal-color-primary);
-      // background-color: blue;
     }
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;
@@ -186,14 +123,14 @@
       transform: rotate(45deg);
     }
   }
-
 }
 
-.calendar__body {
+.calendar#{$theme} .calendar__body {
   height: auto;
+  padding: 14px;
 }
 
-.calendar__weekdays {
+.calendar#{$theme} .calendar__weekdays {
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   margin-bottom: 5px;
@@ -206,7 +143,7 @@
   }
 }
 
-.calendar__days {
+.calendar#{$theme} .calendar__days {
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   grid-template-rows: repeat(6, minmax(30px, 40px));
@@ -215,6 +152,11 @@
   .calendar__day {
     position: relative;
     @include flex-center;
+  }
+
+  .calendar__day-other {
+    color: var(--cal-color-primary);
+    opacity: 0.3;
   }
 
   .calendar__day-today {
@@ -230,16 +172,9 @@
       width: 85%;
       height: 90%;
       border-radius: 0.5rem;
-      // background-color: #f1f1f8;
       background-color: var(--cal-color-primary);
       opacity: 0.07;
       z-index: -1;
     }
-  }
-
-  .calendar__day-other {
-    // color: #c8ccec;
-    color: var(--cal-color-primary);
-    opacity: 0.3;
   }
 }

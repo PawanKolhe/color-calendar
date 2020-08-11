@@ -1,7 +1,3 @@
-// import 'normalize.css';
-// import '@iconscout/unicons/css/unicons.css';
-import '../sass/calendar.scss';
-
 export class Calendar {
 
   constructor({ 
@@ -12,37 +8,36 @@ export class Calendar {
     color = '#3F51B5',
     fontFamily1 = '"Work Sans", sans-serif',
     fontFamily2 = 'Comfortaa, sans-serif',
+    dropShadow = true,
+    border = true,
+    theme = 'default',
   } = {}) {
     this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
     switch(weekdayType) {
       case 'long':
-        this.WEEKDAYS = ['SUN', 'MON', 'THU', 'WED', 'TUE', 'FRI', 'SAT'];
+        this.WEEKDAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        break;
+      case 'long-lower':
+        this.WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        break;
       default:
         this.WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     }
-    this.WEEKDAYS = weekdayType === 'short' ? 
-      ['S', 'M', 'T', 'W', 'T', 'F', 'S'] : 
-      ['SUN', 'MON', 'THU', 'WED', 'TUE', 'FRI', 'SAT'];
     this.id = id;
     this.START_WEEKDAY = startWeekday;  // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
+
+    this.theme = theme;
     this.color = color;
     this.fontFamily1 = fontFamily1;
     this.fontFamily2 = fontFamily2;
-    
-    // Set calendar color
-    let root = document.documentElement;
-    root.style.setProperty('--cal-color-primary', this.color);
-    root.style.setProperty('--cal-font-family-1', this.fontFamily1);
-    root.style.setProperty('--cal-font-family-2', this.fontFamily2);
+    this.dropShadow = dropShadow;
+    this.border = border;
 
     this.today = new Date();
     this.currentDate = new Date();
 
-    this.daysIn_PrevMonth = [];
-    this.daysIn_CurrentMonth = [];
-    this.daysIn_NextMonth = [];
-
+    this.clearCalendarDays();
     this.resetCalendar();
   }
 
@@ -57,7 +52,7 @@ export class Calendar {
   initializeLayout() {
     this.calendar = document.querySelector(this.id);
     this.calendar.innerHTML = `
-      <div class="calendar">
+      <div class="calendar default ${this.theme}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
           <div class="calendar__month"></div>
@@ -69,6 +64,20 @@ export class Calendar {
         </div>
       </div>
     `;
+
+    /** Configure calendar style preferences */
+    // let root = document.documentElement;
+    let root = document.querySelector(`${this.id} .calendar`);
+    root.style.setProperty('--cal-color-primary', this.color);
+    root.style.setProperty('--cal-font-family-1', this.fontFamily1);
+    root.style.setProperty('--cal-font-family-2', this.fontFamily2);
+    if(!this.dropShadow) {
+      root.style.setProperty('--cal-drop-shadow', 'none');
+    }
+    if(!this.border) {
+      root.style.setProperty('--cal-border', 'none');
+    }
+
     this.calendarMonthYear = document.querySelector(`${this.id} .calendar__month`);
     this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`);
     this.calendarDays = document.querySelector(`${this.id} .calendar__days`);
@@ -78,6 +87,7 @@ export class Calendar {
     this.nextButton.addEventListener('click', this.handleNextMonthButtonClick.bind(this));
   }
 
+  /** Clear day values */
   clearCalendarDays() {
     this.daysIn_PrevMonth = [];
     this.daysIn_CurrentMonth = [];
@@ -104,11 +114,18 @@ export class Calendar {
     this.updateCurrentDate(0);
   }
 
+  /**
+   *  0 - Reset to today month
+   * -1 - Go to previous month
+   *  1 - Go to next month
+   * @param {number} offset - Months to go backward or forward
+   */
   updateCurrentDate(offset) {
     this.currentDate = new Date(this.currentDate.getFullYear(), offset === 0 ? this.today.getMonth() : this.currentDate.getMonth() + offset, 1);
     this.updateCalendar();
   }
 
+  /** Update Month and Year HTML */
   updateMonthYear() {
     this.calendarMonthYear.innerHTML = `
       ${new Intl.DateTimeFormat('default', {month: this.monthDisplayType}).format(this.currentDate)} ${this.currentDate.getFullYear()}
@@ -124,6 +141,7 @@ export class Calendar {
     }
   }
 
+  /** Compute the day values in current month, and previous month number of days */
   generateDays() {
     // Previous Month
     // this.firstDay_PrevMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1).getDay();
@@ -147,6 +165,7 @@ export class Calendar {
     // }
   }
 
+  /** Render days */
   renderDays() {
     this.calendarDays.innerHTML = '';
     let insertCount = 0;
