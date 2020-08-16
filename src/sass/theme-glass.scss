@@ -26,8 +26,9 @@ $theme: ".glass";
   color: #323232;
   border: var(--cal-border);
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.2);  
+  background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px);
+  user-select: none;
 }
 
 .calendar#{$theme} .calendar__header {
@@ -158,22 +159,83 @@ $theme: ".glass";
 
   .calendar__day {
     position: relative;
-    font-weight: 700;
+    font-weight: 600;
+    z-index: 101;
     @include flex-center;
+
+    &:hover .calendar__day-box {
+      opacity: 0.1;
+    }
+  }
+
+  .calendar__day-text {
+    cursor: pointer;
+  }
+
+  .calendar__day-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(55% + 8px);
+    height: 90%;
+    border-radius: 0.5rem;
+    background-color: var(--cal-color-primary);
+    box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+    opacity: 0;
+    z-index: -1;
+    cursor: pointer;
+    transition: opacity 0.3s ease-out;
   }
 
   .calendar__day-other {
     color: #323232;
     opacity: 0.2;
   }
+  
+  .calendar__day-event {
+    font-weight: 700;
+
+    /* Event Bullet */
+    .calendar__day-bullet {
+      position: absolute;
+      top: 85%;
+      border-radius: 50%;
+      width: 4px;
+      height: 4px;
+      background-color: var(--cal-color-primary);
+      left: 50%;
+      transform: translateX(-50%);
+      overflow: hidden;
+      cursor: pointer;
+    }
+  }
+
+  .calendar__day-selected:not(.calendar__day-today) {
+    color: var(--cal-color-primary);
+    font-weight: 700;
+
+    .calendar__day-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(55% + 8px);
+      height: 90%;
+      border-radius: 0.5rem;
+      background-color: var(--cal-color-primary);
+      opacity: 0.1 !important;
+      z-index: -1;
+      cursor: pointer;
+    }
+  }
 
   .calendar__day-today {
     font-weight: 700;
-    z-index: 101;
     color: white;
 
-    &::before {
-      content: "";
+    .calendar__day-box-today {
+      // content: "";
       position: absolute;
       top: 50%;
       left: 50%;
@@ -183,8 +245,9 @@ $theme: ".glass";
       border-radius: 0.5rem;
       background-color: var(--cal-color-primary);
       box-shadow: 0 3px 15px -5px var(--cal-color-primary);
-      // opacity: 0.5;
       z-index: -1;
+      cursor: pointer;
+      display: block !important;
     }
   }
 }
