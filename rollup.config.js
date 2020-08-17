@@ -3,9 +3,8 @@ const path = require('path');
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-// import postcss from "rollup-plugin-postcss";
-// import scss from 'rollup-plugin-scss';
-// import scssSmartAsset from 'rollup-plugin-scss-smart-asset';
+import { terser } from "rollup-plugin-terser";
+import banner from 'rollup-plugin-banner';
 
 const config = [
   {
@@ -34,30 +33,8 @@ const config = [
         exclude: "node_modules/**",
         babelHelpers: "bundled",
       }),
-      // postcss({
-      //   // inject: { insertAt: 'top' },
-      //   extract: path.resolve('dist/bundle.css'),
-      //   plugins: [
-      //     env(),
-      //     autoprefixer(),
-      //   ],
-      // }),
-      // scssSmartAsset({
-      //   insert: true,
-      //   postcssConfig: {
-      //     inject: { insertAt: 'top' },
-      //     plugins: [
-      //       env(),
-      //       autoprefixer(),
-      //     ],
-      //   },
-      // postcssUrlConfig: {
-      //   url: "inline",
-      //   basePath: path.resolve('src/fonts'),
-      //   assetsPath: './fonts',
-      //   useHash: false
-      // }
-      // }),
+      terser(),
+      banner('color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>'),
     ],
   },
 ];
