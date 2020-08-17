@@ -157,7 +157,7 @@ $theme: ".glass";
     .calendar__day-box {
       border-radius: 0.5rem;
       background-color: var(--cal-color-primary);
-      opacity: 0.1 !important;
+      opacity: 0.1;
     }
   }
 

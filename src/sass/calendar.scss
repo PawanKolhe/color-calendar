@@ -112,6 +112,9 @@
     z-index: -1;
     cursor: pointer;
     transition: opacity 0.3s ease-out;
+    will-change: opacity;
+    // backface-visibility: hidden;
+    // -webkit-backface-visibility: hidden;
   }
 
   .calendar__day-event {
