@@ -1,8 +1,8 @@
 {
-  "name": "calendar",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/bundle.umd.js",
+  "name": "color-calendar",
+  "version": "0.0.1",
+  "description": "A customizable calendar widget with event handling",
+  "main": "dist/bundle.esm.js",
   "scripts": {
     "start:js": "rollup -c -w",
     "start:css": "gulp watch",
@@ -43,9 +43,20 @@
     "sass-loader": "^9.0.2"
   },
   "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PawanKolhe/calendar-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PawanKolhe/calendar-js/issues"
+  },
+  "homepage": "https://github.com/PawanKolhe/calendar-js",
   "keywords": [
     "calendar",
-    "cal"
+    "color calendar",
+    "cal",
+    "event calendar",
+    "calendar ui"
   ],
   "browserslist": [
     "defaults"

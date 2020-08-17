@@ -1,17 +1,19 @@
 export class Calendar {
   constructor({
     id = "#calendar",
-    startWeekday = 0,
     weekdayType = "short",
     monthDisplayType = "long",
+    eventsData = [],
+    dayClicked = undefined,
+    startWeekday = 0,
+    theme = "basic",
     color = undefined,
     fontFamily1 = undefined,
     fontFamily2 = undefined,
+    headerColor = undefined,
+    headerBackgroundColor = undefined,
     dropShadow = true,
     border = true,
-    theme = "basic",
-    eventsData = [],
-    dayClicked = undefined,
   } = {}) {
     this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
@@ -39,6 +41,8 @@ export class Calendar {
     this.fontFamily2 = fontFamily2;
     this.dropShadow = dropShadow;
     this.border = border;
+    this.headerColor = headerColor;
+    this.headerBackgroundColor = headerBackgroundColor;
 
     this.today = new Date();
     this.currentDate = new Date();
@@ -123,6 +127,12 @@ export class Calendar {
     }
     if (!this.border) {
       root.style.setProperty("--cal-border", "none");
+    }
+    if(this.headerColor) {
+      root.style.setProperty("--cal-header-color", this.headerColor);
+    }
+    if(this.headerBackgroundColor) {
+      root.style.setProperty("--cal-header-background-color", this.headerBackgroundColor);
     }
   }
 

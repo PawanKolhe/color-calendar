@@ -21,7 +21,7 @@ const config = [
       },
       {
         name: "Calendar",
-        file: "dist/bundle.umd.js",
+        file: "dist/bundle.js",
         format: "umd",
       },
     ],
