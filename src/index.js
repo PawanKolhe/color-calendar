@@ -126,7 +126,7 @@ export class Calendar {
     }
   }
 
-  /** Clear day values */
+  /** Clear calendar day values */
   clearCalendarDays() {
     this.daysIn_PrevMonth = [];
     this.daysIn_CurrentMonth = [];
@@ -141,7 +141,9 @@ export class Calendar {
       this.selectDayInitial();
     }
     this.renderDays();
-    this.setOldSelectedNode();
+    if (isMonthChanged) {
+      this.setOldSelectedNode();
+    }
   }
 
   setOldSelectedNode() {
@@ -160,7 +162,8 @@ export class Calendar {
 
   selectDayInitial() {
     let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
-    if(isTodayMonth) {
+    let isTodayDay = this.today.getDate() === this.currentDate.getDate();
+    if(isTodayMonth && isTodayDay) {
       this.daysIn_CurrentMonth[this.today.getDate() - 1].selected = true;
     } else {
       this.daysIn_CurrentMonth[0].selected = true;
@@ -185,11 +188,13 @@ export class Calendar {
     return eventCount;
   }
 
+  /** Invoked on calendar day click */
   handleCalendarDayClick(e) {
+    // Filter out unwanted click events
     if (
       !(
-        e.target.classList.contains("calendar__day-text") ||
         e.target.classList.contains("calendar__day-box") ||
+        e.target.classList.contains("calendar__day-text") ||
         e.target.classList.contains("calendar__day-box-today") ||
         e.target.classList.contains("calendar__day-bullet")
       ) ||
@@ -240,6 +245,8 @@ export class Calendar {
           }
         }
       );
+
+      // Invoke user provided callback
       if(this.dayClicked) {
         this.dayClicked(filteredEventsThisDate);
       }
@@ -263,6 +270,8 @@ export class Calendar {
    * -1 - Go to previous month
    *  1 - Go to next month
    * @param {number} monthOffset - Months to go backward or forward
+   * @param {number} [newDay] - Value of new day
+   * @param {boolean} [resetToToday] - Whether to reset date to today
    */
   updateCurrentDate(monthOffset, newDay, resetToToday) {
     this.currentDate = new Date(
@@ -349,7 +358,7 @@ export class Calendar {
       }
     });
 
-    // Create object of all days that have events
+    // Create object of all days that have events - for creating event bullets
     this.eventDayMap = {};
     this.filteredEventsThisMonth.forEach((event) => {
       const start = new Date(event.start).getDate();
@@ -386,7 +395,7 @@ export class Calendar {
         this.eventDayMap[day.day]
           ? ' calendar__day-event'
           : ' calendar__day-no-event'
-      }${day.selected ? ' calendar__day-selected' : ''}">
+        }${day.selected ? ' calendar__day-selected' : ''}">
           <span class="calendar__day-text">${day.day}</span>
           <div class="calendar__day-box"></div>
           <div class="calendar__day-bullet"></div>
@@ -404,14 +413,19 @@ export class Calendar {
     }
   }
 
+  /**
+   * @param {HTMLElement} element - Element to rerender
+   * @param {number} dayNum - Value of day
+   * @param {boolean} [storeOldSelected] - Whether to store created element for later reference
+   */
   rerenderSelectedDay(element, dayNum, storeOldSelected) {
-    // Get reference to previous day
+    // Get reference to previous day (day before target day)
     let previousElement = element.previousElementSibling;
 
-    // Remove day from DOM
+    // Remove target day from DOM
     element.remove(element);
 
-    // Add new day to DOM
+    // Create new target day element
     let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
     let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
     let div = document.createElement("div");
@@ -433,11 +447,13 @@ export class Calendar {
       ${isTodayDate ? '<div class="calendar__day-box-today"></div>' : ""}
     `;
 
+    // Insert newly created target day to DOM
     previousElement.parentElement.insertBefore(
       div,
       previousElement.nextSibling
     );
 
+    // Store this element for later reference
     if (storeOldSelected) {
       this.oldSelectedNode = [div, dayNum];
     }
