@@ -5,6 +5,8 @@ export class Calendar {
     monthDisplayType = "long",
     eventsData = [],
     dayClicked = undefined,
+    monthChanged = undefined,
+    dateChanged = undefined,
     startWeekday = 0,
     theme = "basic",
     color = undefined,
@@ -34,6 +36,8 @@ export class Calendar {
     this.oldSelectedNode = null;
     this.filteredEventsThisMonth = null;
     this.dayClicked = dayClicked;
+    this.monthChanged = monthChanged;
+    this.dateChanged = dateChanged;
 
     this.theme = theme;
     this.color = color;
@@ -256,7 +260,7 @@ export class Calendar {
         }
       );
 
-      // Invoke user provided callback
+      // Invoke user provided dayClick callback
       if(this.dayClicked) {
         this.dayClicked(filteredEventsThisDate);
       }
@@ -293,7 +297,25 @@ export class Calendar {
     );
     if(monthOffset !== 0) {
       this.updateCalendar(true);
+      // Invoke user provided monthChanged callback
+      if(this.monthChanged) {
+        this.monthChanged(this.ISODateUTCToLocal(this.currentDate));
+      }
+    } else {
+      // Invoke user provided dateChanged callback
+      if(this.dateChanged) {
+        this.dateChanged(this.ISODateUTCToLocal(this.currentDate));
+      }
     }
+  }
+
+  /**
+   * @param {Date} date - Date to use
+   */
+  ISODateUTCToLocal(date) {
+    const tzoffset = (date).getTimezoneOffset() * 60000;
+    let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+    return localISOTime;
   }
 
   /** Update Month and Year HTML */
