@@ -24,10 +24,10 @@ $theme: ".glass";
   border-radius: var(--cal-border-radius);
   box-shadow: var(--cal-drop-shadow);
   color: #323232;
-  border: var(--cal-border);
-  box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(5px);
+  border: var(--cal-border);
+  box-sizing: border-box;
   user-select: none;
 }
 
@@ -235,7 +235,6 @@ $theme: ".glass";
     color: white;
 
     .calendar__day-box-today {
-      // content: "";
       position: absolute;
       top: 50%;
       left: 50%;

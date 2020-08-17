@@ -9,7 +9,7 @@ export class Calendar {
     fontFamily2 = undefined,
     dropShadow = true,
     border = true,
-    theme = "default",
+    theme = "basic",
     eventsData = [],
     dayClicked = undefined,
   } = {}) {
@@ -55,6 +55,7 @@ export class Calendar {
     this.generateDays();
     this.selectDayInitial();
     this.renderDays();
+    this.setOldSelectedNode();
   }
 
   initializeLayout() {
@@ -140,6 +141,21 @@ export class Calendar {
       this.selectDayInitial();
     }
     this.renderDays();
+    this.setOldSelectedNode();
+  }
+
+  setOldSelectedNode() {
+    if(!this.oldSelectedNode) {
+      let selectedNode;
+      for(let i = 1; i < this.calendarDays.childNodes.length; i+=2) {
+        let ele = this.calendarDays.childNodes[i];
+        if(ele.classList && ele.classList.contains('calendar__day-active') && ele.innerText === this.currentDate.getDate().toString()){
+          selectedNode = ele;
+          break;
+        }
+      }
+      this.oldSelectedNode = [selectedNode, parseInt(selectedNode.innerText)];
+    }
   }
 
   selectDayInitial() {
@@ -366,7 +382,7 @@ export class Calendar {
     this.daysIn_CurrentMonth.forEach((day) => {
       let isTodayDate = isTodayMonth && day.day === this.today.getDate();
       this.calendarDays.innerHTML += `
-        <div class="calendar__day${isTodayDate ? ' calendar__day-today' : ''}${
+        <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${
         this.eventDayMap[day.day]
           ? ' calendar__day-event'
           : ' calendar__day-no-event'
@@ -399,7 +415,7 @@ export class Calendar {
     let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
     let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
     let div = document.createElement("div");
-    div.className += `calendar__day${
+    div.className += `calendar__day calendar__day-active${
       isTodayDate ? " calendar__day-today" : ""
     }${
       this.eventDayMap[dayNum]

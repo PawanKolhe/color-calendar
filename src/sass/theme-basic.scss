@@ -1,4 +1,4 @@
-$theme: ".default";
+$theme: ".basic";
 
 @mixin flex-center {
   display: flex;
@@ -13,6 +13,7 @@ $theme: ".default";
   --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
   --cal-border: 1px solid var(--cal-color-primary);
   --cal-border-radius: 0.5rem;
+  --cal-header-color: black;
 
   position: relative;
   display: inline-flex;
@@ -26,6 +27,7 @@ $theme: ".default";
   background-color: white;
   border: var(--cal-border);
   box-sizing: border-box;
+  user-select: none;
 }
 
 .calendar#{$theme} .calendar__header {
@@ -34,6 +36,7 @@ $theme: ".default";
   padding: 20px 14px 0px 14px;
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
+  color: var(--cal-header-color);
 }
 
 .calendar#{$theme} .calendar__month {
@@ -43,6 +46,7 @@ $theme: ".default";
   text-align: center;
   color: var(--cal-color-primary);
   grid-column: 2 / span 5;
+  color: var(--cal-header-color);
   @include flex-center;
 }
 
@@ -79,7 +83,7 @@ $theme: ".default";
       transform-origin: center center;
       transform: rotate(-45deg);
       border-radius: 1px;
-      color: var(--cal-color-primary);
+      color: var(--cal-header-color);
     }
 
     &::after {
@@ -91,7 +95,7 @@ $theme: ".default";
       width: 35px;
       height: 35px;
       border-radius: 50%;
-      background-color: var(--cal-color-primary);
+      background-color: var(--cal-header-color);
       opacity: 0;
       z-index: -1;
       transition: opacity 0.3s ease;
@@ -142,6 +146,7 @@ $theme: ".default";
     height: 40px;
     font-weight: 500;
     opacity: 0.6;
+    color: var(--cal-header-color);
   }
 }
 
@@ -152,46 +157,95 @@ $theme: ".default";
   font-family: var(--cal-font-family-2);
 
   .calendar__day {
-    font-weight: 600;
     position: relative;
+    font-weight: 600;
+    z-index: 101;
     @include flex-center;
+
+    &:hover .calendar__day-box {
+      opacity: 0.1;
+    }
+  }
+
+  .calendar__day-text {
+    cursor: pointer;
+  }
+
+  .calendar__day-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(55% + 8px);
+    height: 90%;
+    border-radius: 0.5rem;
+    background-color: var(--cal-color-primary);
+    box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+    opacity: 0;
+    z-index: -1;
+    cursor: pointer;
+    transition: opacity 0.3s ease-out;
   }
 
   .calendar__day-other {
-    font-weight: 600;
     color: var(--cal-color-primary);
     opacity: 0.3;
   }
 
-  .calendar__day-today {
+  .calendar__day-event {
     font-weight: 700;
-    z-index: 101;
 
-    &::before {
-      content: "";
+    /* Event Bullet */
+    .calendar__day-bullet {
+      position: absolute;
+      top: 85%;
+      border-radius: 50%;
+      width: 4px;
+      height: 4px;
+      background-color: var(--cal-color-primary);
+      left: 50%;
+      transform: translateX(-50%);
+      overflow: hidden;
+      cursor: pointer;
+    }
+  }
+
+  .calendar__day-selected:not(.calendar__day-today) {
+    color: var(--cal-color-primary);
+    font-weight: 700;
+
+    .calendar__day-box {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 85%;
+      width: calc(55% + 8px);
       height: 90%;
       border-radius: 0.5rem;
       background-color: var(--cal-color-primary);
-      opacity: 0.07;
+      opacity: 0.1 !important;
       z-index: -1;
+      cursor: pointer;
     }
   }
 
-  .calendar__day-event::after {
-    content: '';
-    position: absolute;
-    top: 97%;
-    border-radius: 50%;
-    width: 4px;
-    height: 4px;
-    background-color: blue;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow: hidden;
+  .calendar__day-today {
+    font-weight: 700;
+    color: white;
+
+    .calendar__day-box-today {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: calc(55% + 8px);
+      height: 90%;
+      border-radius: 0.5rem;
+      background-color: var(--cal-color-primary);
+      box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+      z-index: -1;
+      cursor: pointer;
+      display: block !important;
+    }
   }
 }
