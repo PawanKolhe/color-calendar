@@ -185,10 +185,39 @@ $calName: ".color-calendar";
   transition: all 0.3s ease;
 
   .calendar__picker-month {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(40px, 65px));
+    grid-template-rows: repeat(3, 50px);
+    gap: 40px 25px;
+    margin: 20px;
+
+    &-option {
+      position: relative;
+      text-align: center;
+      padding: 15px 0;
+      font-weight: 700;
+      color: #323232;
+      border-radius: var(--cal-border-radius);
+      align-self: center;
+      cursor: pointer;
+
+      &:after {
+        content: '';
+        width: 100%;
+        height: 50px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: var(--cal-color-primary);
+        border-radius: var(--cal-border-radius);
+        opacity: 0.1;
+        z-index: -1;
+      }
+    }
   }
 
   .calendar__picker-year {
-    display: none;
+    display: flex;
   }
 }

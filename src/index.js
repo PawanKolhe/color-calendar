@@ -82,7 +82,18 @@ export default class Calendar {
           <div class="calendar__days"></div>
           <div class="calendar__picker">
             <div class="calendar__picker-month">
-              Month
+              <div class="calendar__picker-month-option" data-value="0">Jan</div>
+              <div class="calendar__picker-month-option" data-value="1">Feb</div>
+              <div class="calendar__picker-month-option" data-value="2">Mar</div>
+              <div class="calendar__picker-month-option" data-value="3">Apr</div>
+              <div class="calendar__picker-month-option" data-value="4">May</div>
+              <div class="calendar__picker-month-option" data-value="5">Jun</div>
+              <div class="calendar__picker-month-option" data-value="6">Jul</div>
+              <div class="calendar__picker-month-option" data-value="7">Aug</div>
+              <div class="calendar__picker-month-option" data-value="8">Sep</div>
+              <div class="calendar__picker-month-option" data-value="9">Oct</div>
+              <div class="calendar__picker-month-option" data-value="10">Nov</div>
+              <div class="calendar__picker-month-option" data-value="11">Dec</div>
             </div>
             <div class="calendar__picker-year">
               Year
@@ -221,23 +232,29 @@ export default class Calendar {
       return;
     }
 
+    const oldPickerType = this.pickerType;
+
     // Set picker type
     if(e.target.classList.contains("calendar__month")) {
       this.pickerType = 'month';
       this.monthDisplay.style.opacity = '1';
       this.yearDisplay.style.opacity = '0.7';
-      this.pickerMonthContainer.style.display = 'flex';
+      this.pickerMonthContainer.style.display = 'grid';
       this.pickerYearContainer.style.display = 'none';
     } else if(e.target.classList.contains("calendar__year")) {
       this.pickerType = 'year';
       this.monthDisplay.style.opacity = '0.7';
       this.yearDisplay.style.opacity = '1';
       this.pickerMonthContainer.style.display = 'none';
-      this.pickerYearContainer.style.display = 'flex';
+      this.pickerYearContainer.style.display = 'grid';
     }
 
-    // Open picker
-    this.togglePicker(true);
+    if(oldPickerType === this.pickerType) {
+      this.togglePicker();
+    } else {
+      // Open picker
+      this.togglePicker(true);
+    }
   }
 
   togglePicker(shouldOpen) {
@@ -333,10 +350,12 @@ export default class Calendar {
 
   handlePrevMonthButtonClick() {
     this.updateCurrentDate(-1);
+    this.togglePicker(false);
   }
 
   handleNextMonthButtonClick() {
     this.updateCurrentDate(1);
+    this.togglePicker(false);
   }
 
   resetCurrentDate() {
@@ -396,14 +415,15 @@ export default class Calendar {
   }
 
   generateWeekdays() {
-    this.calendarWeekdays.innerHTML = "";
+    let newHTML = '';
     for (let i = 0; i < 7; i++) {
-      this.calendarWeekdays.innerHTML += `
+      newHTML += `
         <div class="calendar__weekday">${
           this.WEEKDAYS[(i + this.START_WEEKDAY) % 7]
         }</div>
       `;
     }
+    this.calendarWeekdays.innerHTML = newHTML;
   }
 
   /** Compute the day values in current month, and previous month number of days */
@@ -444,7 +464,6 @@ export default class Calendar {
 
   /** Render days */
   renderDays() {
-    this.calendarDays.innerHTML = "";
     let insertCount = 0;
 
     // Filter events data to this month only
@@ -475,9 +494,11 @@ export default class Calendar {
       dayOffset = this.firstDay_CurrentMonth - this.START_WEEKDAY;
     }
 
+    let newHTML = '';
+
     // Prev Month (Light)
     for (let i = 0; i < dayOffset; i++) {
-      this.calendarDays.innerHTML += `
+      newHTML += `
         <div class="calendar__day calendar__day-other">${
           this.numOfDays_PrevMonth + 1 - dayOffset + i
         }</div>
@@ -489,7 +510,7 @@ export default class Calendar {
     let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
     this.daysIn_CurrentMonth.forEach((day) => {
       let isTodayDate = isTodayMonth && day.day === this.today.getDate();
-      this.calendarDays.innerHTML += `
+      newHTML += `
         <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${
         this.eventDayMap[day.day]
           ? ' calendar__day-event'
@@ -506,10 +527,12 @@ export default class Calendar {
 
     // Next Month (Light)
     for (let i = 0; i < this.DAYS_TO_DISPLAY - insertCount; i++) {
-      this.calendarDays.innerHTML += `
+      newHTML += `
         <div class="calendar__day calendar__day-other">${i + 1}</div>
       `;
     }
+
+    this.calendarDays.innerHTML = newHTML;
   }
 
   /**
