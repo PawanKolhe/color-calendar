@@ -17,7 +17,7 @@ export default class Calendar {
     dropShadow = true,
     border = true,
   } = {}) {
-    this.calName = 'color-calendar';
+    this._calName = 'color-calendar';
     this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
     switch (weekdayType) {
@@ -70,15 +70,18 @@ export default class Calendar {
   initializeLayout() {
     this.calendar = document.querySelector(this.id);
     this.calendar.innerHTML = `
-      <div class="${this.calName} ${this.theme}">
+      <div class="${this._calName} ${this.theme}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
-          <div class="calendar__month"></div>
+          <div class="calendar__monthyear"></div>
           <div class="calendar__arrow calendar__arrow-next"><div class="calendar__arrow-inner"></div></div>
         </div>
         <div class="calendar__body">
           <div class="calendar__weekdays"></div>
           <div class="calendar__days"></div>
+        </div>
+        <div class="calendar__picker">
+          <div>It works!</div>
         </div>
       </div>
     `;
@@ -86,7 +89,7 @@ export default class Calendar {
     this.configureStylePreferences();
 
     this.calendarMonthYear = document.querySelector(
-      `${this.id} .calendar__month`
+      `${this.id} .calendar__monthyear`
     );
     this.calendarWeekdays = document.querySelector(
       `${this.id} .calendar__weekdays`
@@ -117,7 +120,7 @@ export default class Calendar {
   /** Configure calendar style preferences */
   configureStylePreferences() {
     // let root = document.documentElement;
-    let root = document.querySelector(`${this.id} .${this.calName}`);
+    let root = document.querySelector(`${this.id} .${this._calName}`);
     if (this.color) {
       root.style.setProperty("--cal-color-primary", this.color);
     }
@@ -323,9 +326,10 @@ export default class Calendar {
   updateMonthYear() {
     this.oldSelectedNode = null;
     this.calendarMonthYear.innerHTML = `
-      ${new Intl.DateTimeFormat("default", {
+      <span class="calendar__month">${new Intl.DateTimeFormat("default", {
         month: this.monthDisplayType,
-      }).format(this.currentDate)} ${this.currentDate.getFullYear()}
+      }).format(this.currentDate)}</span>&nbsp;
+      <span class="calendar__year">${this.currentDate.getFullYear()}</span>
     `;
   }
 

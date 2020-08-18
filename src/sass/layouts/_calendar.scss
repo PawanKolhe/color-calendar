@@ -14,6 +14,7 @@ $calName: ".color-calendar";
   height: auto;
   box-sizing: border-box;
   user-select: none;
+  overflow: hidden;
 }
 
 #{$calName} .calendar__header {
@@ -22,12 +23,19 @@ $calName: ".color-calendar";
   grid-template-columns: repeat(7, minmax(20px, 55px));
 }
 
-#{$calName} .calendar__month {
+#{$calName} .calendar__monthyear {
   font-size: 1.5rem;
   margin: 0 auto;
   text-align: center;
   grid-column: 2 / span 5;
   @include flex-center;
+
+  .calendar__month {
+    cursor: pointer;
+  }
+  .calendar__year {
+    cursor: pointer;
+  }
 }
 
 #{$calName} .calendar__arrow {
@@ -160,4 +168,15 @@ $calName: ".color-calendar";
       display: block;
     }
   }
+}
+
+#{$calName} .calendar__picker {
+  display: none;
+  position: absolute;
+  z-index: 201;
+  width: 100%;
+  height: 100%;
+  top: 75px;
+  left: 0;
+  background-color: white;
 }

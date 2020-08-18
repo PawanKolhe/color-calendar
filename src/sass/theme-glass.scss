@@ -33,7 +33,7 @@ $theme: ".glass";
   color: var(--cal-header-color);
 }
 
-#{$calName}#{$theme} .calendar__month {
+#{$calName}#{$theme} .calendar__monthyear {
   font-weight: 700;
   color: var(--cal-header-color);
 }

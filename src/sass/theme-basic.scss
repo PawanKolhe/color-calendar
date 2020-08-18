@@ -1,7 +1,6 @@
 @import 'layouts/calendar';
 
 $theme: ".basic";
-// $calName: ".color-calendar";
 
 @mixin flex-center {
   display: flex;
@@ -42,7 +41,7 @@ $theme: ".basic";
   color: var(--cal-header-color);
 }
 
-#{$calName}#{$theme} .calendar__month {
+#{$calName}#{$theme} .calendar__monthyear {
   // font-size: 1.5rem;
   font-weight: 600;
   // margin: 0 auto;
