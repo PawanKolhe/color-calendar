@@ -83,6 +83,7 @@ $calName: ".color-calendar";
 
 #{$calName} .calendar__body {
   height: auto;
+  overflow: hidden;
 }
 
 #{$calName} .calendar__weekdays {
@@ -171,12 +172,23 @@ $calName: ".color-calendar";
 }
 
 #{$calName} .calendar__picker {
-  display: none;
   position: absolute;
   z-index: 201;
   width: 100%;
-  height: 100%;
   top: 75px;
   left: 0;
+  bottom: 0;
   background-color: white;
+  @include flex-center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+
+  .calendar__picker-month {
+    display: none;
+  }
+
+  .calendar__picker-year {
+    display: none;
+  }
 }

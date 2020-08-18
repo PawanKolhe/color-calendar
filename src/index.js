@@ -19,6 +19,7 @@ export default class Calendar {
   } = {}) {
     this._calName = 'color-calendar';
     this.monthDisplayType = monthDisplayType;
+    this.pickerType = null;
     this.DAYS_TO_DISPLAY = 42;
     switch (weekdayType) {
       case "long":
@@ -79,40 +80,41 @@ export default class Calendar {
         <div class="calendar__body">
           <div class="calendar__weekdays"></div>
           <div class="calendar__days"></div>
-        </div>
-        <div class="calendar__picker">
-          <div>It works!</div>
+          <div class="calendar__picker">
+            <div class="calendar__picker-month">
+              Month
+            </div>
+            <div class="calendar__picker-year">
+              Year
+            </div>
+          </div>
         </div>
       </div>
     `;
 
     this.configureStylePreferences();
 
-    this.calendarMonthYear = document.querySelector(
-      `${this.id} .calendar__monthyear`
-    );
-    this.calendarWeekdays = document.querySelector(
-      `${this.id} .calendar__weekdays`
-    );
+    this.calendarMonthYear = document.querySelector(`${this.id} .calendar__monthyear`);
+    this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`);
     this.calendarDays = document.querySelector(`${this.id} .calendar__days`);
+    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`);
+    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`);
+    this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`);
+    this.pickerMonthContainer = document.querySelector(`${this.id} .calendar__picker-month`);
+    this.pickerYearContainer = document.querySelector(`${this.id} .calendar__picker-year`);
+    this.togglePicker(false);
+    this.monthyearDisplay = document.querySelector(`${this.id} .calendar__monthyear`);
 
-    this.prevButton = document.querySelector(
-      `${this.id} .calendar__arrow-prev .calendar__arrow-inner`
-    );
-    this.nextButton = document.querySelector(
-      `${this.id} .calendar__arrow-next .calendar__arrow-inner`
-    );
-    this.prevButton.addEventListener(
-      "click",
+    this.prevButton.addEventListener("click",
       this.handlePrevMonthButtonClick.bind(this)
     );
-    this.nextButton.addEventListener(
-      "click",
+    this.nextButton.addEventListener("click",
       this.handleNextMonthButtonClick.bind(this)
     );
-
-    this.calendarDays.addEventListener(
-      "click",
+    this.monthyearDisplay.addEventListener("click",
+      this.handleMonthYearDisplayClick.bind(this)
+    );
+    this.calendarDays.addEventListener("click",
       this.handleCalendarDayClick.bind(this)
     );
   }
@@ -204,6 +206,64 @@ export default class Calendar {
     const eventCount = this.eventsData.push(...newEvents);
     this.updateCalendar();
     return eventCount;
+  }
+
+  /** Invoked on month or year click */
+  handleMonthYearDisplayClick(e) {
+    console.log(e);
+    // Filter out unwanted click events
+    if (
+      !(
+        e.target.classList.contains("calendar__month") ||
+        e.target.classList.contains("calendar__year")
+      )
+    ) {
+      return;
+    }
+
+    // Set picker type
+    if(e.target.classList.contains("calendar__month")) {
+      this.pickerType = 'month';
+      this.monthDisplay.style.opacity = '1';
+      this.yearDisplay.style.opacity = '0.7';
+      this.pickerMonthContainer.style.display = 'flex';
+      this.pickerYearContainer.style.display = 'none';
+    } else if(e.target.classList.contains("calendar__year")) {
+      this.pickerType = 'year';
+      this.monthDisplay.style.opacity = '0.7';
+      this.yearDisplay.style.opacity = '1';
+      this.pickerMonthContainer.style.display = 'none';
+      this.pickerYearContainer.style.display = 'flex';
+    }
+
+    // Open picker
+    this.togglePicker(true);
+  }
+
+  togglePicker(shouldOpen) {
+    if(shouldOpen === true) {
+      this.pickerContainer.style.visibility = 'visible';
+      this.pickerContainer.style.opacity = '1';
+    } else if(shouldOpen === false) {
+      this.pickerContainer.style.visibility = 'hidden';
+      this.pickerContainer.style.opacity = '0';
+      if(this.monthDisplay && this.yearDisplay) {
+        this.monthDisplay.style.opacity = '1';
+        this.yearDisplay.style.opacity = '1';
+      }
+    } else {
+      if(this.pickerContainer.style.visibility === 'hidden') {
+        this.pickerContainer.style.visibility = 'visible';
+        this.pickerContainer.style.opacity = '1';
+      } else {
+        this.pickerContainer.style.visibility = 'hidden';
+        this.pickerContainer.style.opacity = '0';
+        if(this.monthDisplay && this.yearDisplay) {
+          this.monthDisplay.style.opacity = '1';
+          this.yearDisplay.style.opacity = '1';
+        }
+      }
+    }
   }
 
   /** Invoked on calendar day click */
@@ -331,6 +391,8 @@ export default class Calendar {
       }).format(this.currentDate)}</span>&nbsp;
       <span class="calendar__year">${this.currentDate.getFullYear()}</span>
     `;
+    this.monthDisplay = document.querySelector(`${this.id} .calendar__month`);
+    this.yearDisplay = document.querySelector(`${this.id} .calendar__year`);
   }
 
   generateWeekdays() {

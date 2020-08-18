@@ -174,3 +174,8 @@ $theme: ".glass";
     }
   }
 }
+
+#{$calName} .calendar__picker {
+  background-color: white;
+  border-radius: var(--cal-border-radius);
+}
