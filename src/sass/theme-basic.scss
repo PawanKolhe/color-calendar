@@ -1,4 +1,7 @@
+@import 'layouts/calendar';
+
 $theme: ".basic";
+// $calName: ".color-calendar";
 
 @mixin flex-center {
   display: flex;
@@ -6,7 +9,7 @@ $theme: ".basic";
   justify-content: center;
 }
 
-.calendar#{$theme} {
+#{$calName}#{$theme} {
   --cal-color-primary: #333333;
   --cal-font-family-1: "Work Sans", sans-serif;
   --cal-font-family-2: "Work Sans", sans-serif;
@@ -30,7 +33,7 @@ $theme: ".basic";
   // user-select: none;
 }
 
-.calendar#{$theme} .calendar__header {
+#{$calName}#{$theme} .calendar__header {
   // position: relative;
   font-family: var(--cal-font-family-1);
   padding: 20px 14px 0px 14px;
@@ -39,7 +42,7 @@ $theme: ".basic";
   color: var(--cal-header-color);
 }
 
-.calendar#{$theme} .calendar__month {
+#{$calName}#{$theme} .calendar__month {
   // font-size: 1.5rem;
   font-weight: 600;
   // margin: 0 auto;
@@ -49,7 +52,7 @@ $theme: ".basic";
   // @include flex-center;
 }
 
-.calendar#{$theme} .calendar__arrow {
+#{$calName}#{$theme} .calendar__arrow {
   // height: 35px;
   // width: 100%;
   // position: relative;
@@ -130,12 +133,12 @@ $theme: ".basic";
   }
 }
 
-.calendar#{$theme} .calendar__body {
+#{$calName}#{$theme} .calendar__body {
   // height: auto;
   padding: 14px;
 }
 
-.calendar#{$theme} .calendar__weekdays {
+#{$calName}#{$theme} .calendar__weekdays {
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   margin-bottom: 5px;
@@ -150,7 +153,7 @@ $theme: ".basic";
   }
 }
 
-.calendar#{$theme} .calendar__days {
+#{$calName}#{$theme} .calendar__days {
   // display: grid;
   // grid-template-columns: repeat(7, minmax(20px, 55px));
   // grid-template-rows: repeat(6, minmax(30px, 40px));

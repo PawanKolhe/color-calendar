@@ -1,4 +1,4 @@
-export class Calendar {
+export default class Calendar {
   constructor({
     id = "#calendar",
     weekdayType = "short",
@@ -17,6 +17,7 @@ export class Calendar {
     dropShadow = true,
     border = true,
   } = {}) {
+    this.calName = 'color-calendar';
     this.monthDisplayType = monthDisplayType;
     this.DAYS_TO_DISPLAY = 42;
     switch (weekdayType) {
@@ -69,7 +70,7 @@ export class Calendar {
   initializeLayout() {
     this.calendar = document.querySelector(this.id);
     this.calendar.innerHTML = `
-      <div class="calendar ${this.theme}">
+      <div class="${this.calName} ${this.theme}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
           <div class="calendar__month"></div>
@@ -116,7 +117,7 @@ export class Calendar {
   /** Configure calendar style preferences */
   configureStylePreferences() {
     // let root = document.documentElement;
-    let root = document.querySelector(`${this.id} .calendar`);
+    let root = document.querySelector(`${this.id} .${this.calName}`);
     if (this.color) {
       root.style.setProperty("--cal-color-primary", this.color);
     }

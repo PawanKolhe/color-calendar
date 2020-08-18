@@ -1,3 +1,5 @@
+@import 'layouts/calendar';
+
 $theme: ".glass";
 
 @mixin flex-center {
@@ -6,7 +8,7 @@ $theme: ".glass";
   justify-content: center;
 }
 
-.calendar#{$theme} {
+#{$calName}#{$theme} {
   --cal-color-primary: #EC407A;
   --cal-font-family-1: 'Open Sans', sans-serif;
   --cal-font-family-2: 'Open Sans', sans-serif;
@@ -25,18 +27,18 @@ $theme: ".glass";
   border: var(--cal-border);
 }
 
-.calendar#{$theme} .calendar__header {
+#{$calName}#{$theme} .calendar__header {
   font-family: var(--cal-font-family-1);
   padding: 20px 14px 20px 14px;
   color: var(--cal-header-color);
 }
 
-.calendar#{$theme} .calendar__month {
+#{$calName}#{$theme} .calendar__month {
   font-weight: 700;
   color: var(--cal-header-color);
 }
 
-.calendar#{$theme} .calendar__arrow {
+#{$calName}#{$theme} .calendar__arrow {
   &-inner {
     border-radius: 50%;
 
@@ -98,13 +100,13 @@ $theme: ".glass";
   }
 }
 
-.calendar#{$theme} .calendar__body {
+#{$calName}#{$theme} .calendar__body {
   padding: 18px 14px;
   border-radius: var(--cal-border-radius);
   background-color: white;
 }
 
-.calendar#{$theme} .calendar__weekdays {
+#{$calName}#{$theme} .calendar__weekdays {
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   margin-bottom: 5px;
@@ -115,7 +117,7 @@ $theme: ".glass";
   }
 }
 
-.calendar#{$theme} .calendar__days {
+#{$calName}#{$theme} .calendar__days {
   font-family: var(--cal-font-family-2);
 
   .calendar__day {
