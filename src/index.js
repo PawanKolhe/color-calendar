@@ -128,6 +128,9 @@ export default class Calendar {
     this.calendarDays.addEventListener("click",
       this.handleCalendarDayClick.bind(this)
     );
+    this.pickerMonthContainer.addEventListener("click",
+      this.handleMonthPickerClick.bind(this)
+    );
   }
 
   /** Configure calendar style preferences */
@@ -221,7 +224,6 @@ export default class Calendar {
 
   /** Invoked on month or year click */
   handleMonthYearDisplayClick(e) {
-    console.log(e);
     // Filter out unwanted click events
     if (
       !(
@@ -283,6 +285,29 @@ export default class Calendar {
     }
   }
 
+  handleMonthPickerClick(e) {
+    // Filter out unwanted click events
+    if (
+      !(
+        e.target.classList.contains("calendar__picker-month-option")
+      )
+    ) {
+      return;
+    }
+
+    const oldMonthValue = this.currentDate.getMonth();
+    const newMonthValue = parseInt(e.target.dataset.value);
+
+    this.pickerMonthContainer.children[oldMonthValue].classList.remove('calendar__picker-month-selected');
+
+    this.updateCurrentDate(0, null, newMonthValue);
+    // this.updateCalendar(true)
+
+    this.pickerMonthContainer.children[newMonthValue].classList.add('calendar__picker-month-selected');
+
+    this.togglePicker(false);
+  }
+
   /** Invoked on calendar day click */
   handleCalendarDayClick(e) {
     // Filter out unwanted click events
@@ -301,7 +326,7 @@ export default class Calendar {
     // Error check for old selected node
     if (
       this.oldSelectedNode &&
-      !this.oldSelectedNode[0].previousElementSibling
+      !this.oldSelectedNode[0]
     ) {
       return;
     }
@@ -313,15 +338,7 @@ export default class Calendar {
     dayNum = parseInt(day, 10);
 
     //Remove old day selection
-    if (this.oldSelectedNode) {
-      Object.assign(this.daysIn_CurrentMonth[this.oldSelectedNode[1] - 1], {
-        selected: false,
-      });
-      this.rerenderSelectedDay(
-        this.oldSelectedNode[0],
-        this.oldSelectedNode[1]
-      );
-    }
+    this.removeOldDaySelection();
 
     // Select clicked day
     if (day) {
@@ -348,6 +365,18 @@ export default class Calendar {
     }
   }
 
+  removeOldDaySelection() {
+    if (this.oldSelectedNode) {
+      Object.assign(this.daysIn_CurrentMonth[this.oldSelectedNode[1] - 1], {
+        selected: false,
+      });
+      this.rerenderSelectedDay(
+        this.oldSelectedNode[0],
+        this.oldSelectedNode[1]
+      );
+    }
+  }
+
   handlePrevMonthButtonClick() {
     this.updateCurrentDate(-1);
     this.togglePicker(false);
@@ -368,17 +397,18 @@ export default class Calendar {
    *  1 - Go to next month
    * @param {number} monthOffset - Months to go backward or forward
    * @param {number} [newDay] - Value of new day
-   * @param {boolean} [resetToToday] - Whether to reset date to today
+   * @param {number} [newMonth] - Value of new month
    */
-  updateCurrentDate(monthOffset, newDay, resetToToday) {
+  updateCurrentDate(monthOffset, newDay, newMonth) {
     this.currentDate = new Date(
       this.currentDate.getFullYear(),
-      resetToToday
-        ? this.today.getMonth()
+      (newMonth !== undefined && newMonth !== null)
+        ? newMonth
         : this.currentDate.getMonth() + monthOffset,
       ((monthOffset !== 0) || !newDay) ? 1 : newDay
     );
-    if(monthOffset !== 0) {
+    
+    if(monthOffset !== 0 || (newMonth !== undefined && newMonth !== null)) {
       this.updateCalendar(true);
       // Invoke user provided monthChanged callback
       if(this.monthChanged) {
@@ -544,9 +574,6 @@ export default class Calendar {
     // Get reference to previous day (day before target day)
     let previousElement = element.previousElementSibling;
 
-    // Remove target day from DOM
-    element.remove(element);
-
     // Create new target day element
     let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
     let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
@@ -570,14 +597,25 @@ export default class Calendar {
     `;
 
     // Insert newly created target day to DOM
-    previousElement.parentElement.insertBefore(
-      div,
-      previousElement.nextSibling
-    );
+    if(!previousElement) {
+      // Edge case when it is the first element in the calendar
+      this.calendarDays.insertBefore(
+        div,
+        element
+      );
+    } else {
+      previousElement.parentElement.insertBefore(
+        div,
+        previousElement.nextSibling
+      );
+    }
 
     // Store this element for later reference
     if (storeOldSelected) {
       this.oldSelectedNode = [div, dayNum];
     }
+
+    // Remove target day from DOM
+    element.remove(element);
   }
 }

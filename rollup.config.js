@@ -33,7 +33,7 @@ const config = [
         exclude: "node_modules/**",
         babelHelpers: "bundled",
       }),
-      terser(),
+      // terser(),
       banner('color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>'),
     ],
   },
