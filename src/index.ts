@@ -1,80 +1,124 @@
+import {
+  CalendarOptions,
+  EventData,
+  Day,
+  Weekdays,
+  StartWeekday,
+} from "./index.d";
+
 export default class Calendar {
-  constructor({
-    id = "#calendar",
-    weekdayType = "short",
-    monthDisplayType = "long",
-    eventsData = [],
-    dayClicked = undefined,
-    monthChanged = undefined,
-    dateChanged = undefined,
-    startWeekday = 0,
-    theme = "basic",
-    color = undefined,
-    fontFamily1 = undefined,
-    fontFamily2 = undefined,
-    headerColor = undefined,
-    headerBackgroundColor = undefined,
-    dropShadow = true,
-    border = true,
-  } = {}) {
-    this._calName = 'color-calendar';
-    this.monthDisplayType = monthDisplayType;
-    this.pickerType = null;
-    this.DAYS_TO_DISPLAY = 42;
-    switch (weekdayType) {
+  // Constants
+  readonly CAL_NAME = 'color-calendar';
+  readonly DAYS_TO_DISPLAY = 42;
+
+  // Options
+  id: string;
+  weekdayType: string;
+  monthDisplayType: string;
+  eventsData: EventData[];
+  startWeekday: StartWeekday; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
+  theme: string;
+  color?: string;
+  fontFamily1?: string;
+  fontFamily2?: string;
+  dropShadow: boolean;
+  border: boolean;
+  headerColor?: string;
+  headerBackgroundColor?: string;
+  dayClicked?: any;
+  monthChanged?: any;
+  dateChanged?: any;
+
+  // State
+  weekdays: Weekdays;
+  today: Date;
+  currentDate: Date;
+  pickerType: string;
+  eventDayMap: any;
+  oldSelectedNode: [HTMLElement, number] | null;
+  filteredEventsThisMonth: EventData[];
+  daysIn_PrevMonth: Day[];
+  daysIn_CurrentMonth: Day[];
+  daysIn_NextMonth: Day[];
+  firstDay_PrevMonth: StartWeekday;
+  firstDay_CurrentMonth: StartWeekday;
+  firstDay_NextMonth: StartWeekday;
+  numOfDays_PrevMonth: number;
+  numOfDays_CurrentMonth: number;
+  numOfDays_NextMonth: number;
+
+  // Elements
+  calendar: HTMLElement;
+  calendarMonthYear: HTMLElement;
+  calendarWeekdays: HTMLElement;
+  calendarDays: HTMLElement;
+  prevButton: HTMLElement;
+  nextButton: HTMLElement;
+  pickerContainer: HTMLElement;
+  pickerMonthContainer?: HTMLElement;
+  pickerYearContainer?: HTMLElement;
+  monthyearDisplay?: HTMLElement;
+  monthDisplay?: HTMLElement;
+  yearDisplay?: HTMLElement;
+
+  constructor(options: CalendarOptions = {}) {
+    // Options
+    this.id = options.id ?? "#calendar";
+    this.monthDisplayType = options.monthDisplayType ?? "long";
+    this.eventsData = options.eventsData ?? [];
+    this.startWeekday = options.startWeekday ?? 0;
+    this.theme = options.theme ?? "basic";
+    this.color = options.color;
+    this.fontFamily1 = options.fontFamily1;
+    this.fontFamily2 = options.fontFamily2;
+    this.dropShadow = options.dropShadow ?? true;
+    this.border = options.border ?? true;
+    this.headerColor = options.headerColor;
+    this.headerBackgroundColor = options.headerBackgroundColor;
+    this.dayClicked = options.dayClicked;
+    this.monthChanged = options.monthChanged;
+    this.dateChanged = options.dateChanged;
+
+    // State
+    this.weekdayType = options.weekdayType ?? "short";
+    switch (this.weekdayType) {
       case "long":
-        this.WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        this.weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
         break;
       case "long-lower":
-        this.WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        this.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         break;
       default:
-        this.WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
+        this.weekdays = ["S", "M", "T", "W", "T", "F", "S"];
     }
-    this.id = id;
-    this.START_WEEKDAY = startWeekday; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
-    this.eventsData = eventsData;
-    this.eventDayMap = {};
-    this.oldSelectedNode = null;
-    this.filteredEventsThisMonth = null;
-    this.dayClicked = dayClicked;
-    this.monthChanged = monthChanged;
-    this.dateChanged = dateChanged;
-
-    this.theme = theme;
-    this.color = color;
-    this.fontFamily1 = fontFamily1;
-    this.fontFamily2 = fontFamily2;
-    this.dropShadow = dropShadow;
-    this.border = border;
-    this.headerColor = headerColor;
-    this.headerBackgroundColor = headerBackgroundColor;
-
     this.today = new Date();
     this.currentDate = new Date();
-    this.selectedDate = new Date();
+    this.pickerType = 'month';
+    this.eventDayMap = {};
+    this.oldSelectedNode = null;
+    this.filteredEventsThisMonth = [];
+    this.daysIn_PrevMonth = [];
+    this.daysIn_CurrentMonth = [];
+    this.daysIn_NextMonth = [];
+    this.firstDay_PrevMonth = 0;
+    this.firstDay_CurrentMonth = 0;
+    this.firstDay_NextMonth = 0;
+    this.numOfDays_PrevMonth = 0;
+    this.numOfDays_CurrentMonth = 0;
+    this.numOfDays_NextMonth = 0;
 
-    this.clearCalendarDays();
-    this.resetCalendar();
-  }
-
-  resetCalendar() {
-    this.initializeLayout();
-    this.updateMonthYear();
-    this.generateWeekdays();
-    this.generateDays();
-    this.selectDayInitial();
-    this.renderDays();
-    this.setOldSelectedNode();
-  }
-
-  initializeLayout() {
-    this.calendar = document.querySelector(this.id);
+    this.calendar = document.querySelector(this.id) as HTMLElement;
+    if(!this.calendar) {
+      throw new Error(`Element with selector '${this.id}' not found`);
+    }
     this.calendar.innerHTML = `
-      <div class="${this._calName} ${this.theme}">
+      <div class="${this.CAL_NAME} ${this.theme}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
-          <div class="calendar__monthyear"></div>
+          <div class="calendar__monthyear">
+            <span class="calendar__month"></span>&nbsp;
+            <span class="calendar__year"></span>
+          </div>
           <div class="calendar__arrow calendar__arrow-next"><div class="calendar__arrow-inner"></div></div>
         </div>
         <div class="calendar__body">
@@ -103,40 +147,60 @@ export default class Calendar {
       </div>
     `;
 
-    this.configureStylePreferences();
+    this.calendarMonthYear = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
+    this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`) as HTMLElement;
+    this.calendarDays = document.querySelector(`${this.id} .calendar__days`) as HTMLElement;
+    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`) as HTMLElement;
+    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`) as HTMLElement;
+    this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`) as HTMLElement;
+    this.pickerMonthContainer = document.querySelector(`${this.id} .calendar__picker-month`) as HTMLElement;
+    this.pickerYearContainer = document.querySelector(`${this.id} .calendar__picker-year`) as HTMLElement;
+    this.monthyearDisplay = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
+    this.monthDisplay = document.querySelector(`${this.id} .calendar__month`) as HTMLElement;
+    this.yearDisplay = document.querySelector(`${this.id} .calendar__year`) as HTMLElement;
 
-    this.calendarMonthYear = document.querySelector(`${this.id} .calendar__monthyear`);
-    this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`);
-    this.calendarDays = document.querySelector(`${this.id} .calendar__days`);
-    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`);
-    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`);
-    this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`);
-    this.pickerMonthContainer = document.querySelector(`${this.id} .calendar__picker-month`);
-    this.pickerYearContainer = document.querySelector(`${this.id} .calendar__picker-year`);
+    this.resetCalendar();
+  }
+
+  resetCalendar() {
+    this.initializeLayout();
+    this.updateMonthYear();
+    this.updateMonthPicker(this.currentDate.getMonth());
+    this.generateWeekdays();
+    this.generateDays();
+    this.selectDayInitial();
+    this.renderDays();
+    this.setOldSelectedNode();
+  }
+
+  initializeLayout() {
+    // Set initial picker styles
     this.togglePicker(false);
-    this.monthyearDisplay = document.querySelector(`${this.id} .calendar__monthyear`);
 
-    this.prevButton.addEventListener("click",
+    // Event Listeners
+    this.prevButton?.addEventListener("click",
       this.handlePrevMonthButtonClick.bind(this)
     );
-    this.nextButton.addEventListener("click",
+    this.nextButton?.addEventListener("click",
       this.handleNextMonthButtonClick.bind(this)
     );
-    this.monthyearDisplay.addEventListener("click",
+    this.monthyearDisplay?.addEventListener("click",
       this.handleMonthYearDisplayClick.bind(this)
     );
-    this.calendarDays.addEventListener("click",
+    this.calendarDays?.addEventListener("click",
       this.handleCalendarDayClick.bind(this)
     );
-    this.pickerMonthContainer.addEventListener("click",
+    this.pickerMonthContainer?.addEventListener("click",
       this.handleMonthPickerClick.bind(this)
     );
+
+    this.configureStylePreferences();
   }
 
   /** Configure calendar style preferences */
   configureStylePreferences() {
     // let root = document.documentElement;
-    let root = document.querySelector(`${this.id} .${this._calName}`);
+    let root = document.querySelector(`${this.id} .${this.CAL_NAME}`) as HTMLElement;
     if (this.color) {
       root.style.setProperty("--cal-color-primary", this.color);
     }
@@ -167,7 +231,7 @@ export default class Calendar {
     this.daysIn_NextMonth = [];
   }
 
-  updateCalendar(isMonthChanged) {
+  updateCalendar(isMonthChanged?: boolean) {
     if (isMonthChanged) {
       this.updateMonthYear();
       this.clearCalendarDays();
@@ -182,15 +246,17 @@ export default class Calendar {
 
   setOldSelectedNode() {
     if(!this.oldSelectedNode) {
-      let selectedNode;
-      for(let i = 1; i < this.calendarDays.childNodes.length; i+=2) {
-        let ele = this.calendarDays.childNodes[i];
+      let selectedNode: HTMLElement | undefined = undefined;
+      for(let i = 1; i < this.calendarDays!.childNodes.length; i+=2) {
+        let ele = this.calendarDays!.childNodes[i] as HTMLElement;
         if(ele.classList && ele.classList.contains('calendar__day-active') && ele.innerText === this.currentDate.getDate().toString()){
           selectedNode = ele;
           break;
         }
       }
-      this.oldSelectedNode = [selectedNode, parseInt(selectedNode.innerText)];
+      if(selectedNode) {
+        this.oldSelectedNode = [selectedNode, parseInt(selectedNode.innerText)];
+      }
     }
   }
 
@@ -209,21 +275,21 @@ export default class Calendar {
   }
 
   /** Set new events data array */
-  setEventsData(data) {
+  setEventsData(data: EventData[]) {
     this.eventsData = JSON.parse(JSON.stringify(data));
     this.updateCalendar();
     return this.eventsData;
   }
 
   /** Add events to existing events data array */
-  addEventsData(newEvents) {
+  addEventsData(newEvents: EventData[] = []) {
     const eventCount = this.eventsData.push(...newEvents);
     this.updateCalendar();
     return eventCount;
   }
 
   /** Invoked on month or year click */
-  handleMonthYearDisplayClick(e) {
+  handleMonthYearDisplayClick(e: any) {
     // Filter out unwanted click events
     if (
       !(
@@ -239,16 +305,16 @@ export default class Calendar {
     // Set picker type
     if(e.target.classList.contains("calendar__month")) {
       this.pickerType = 'month';
-      this.monthDisplay.style.opacity = '1';
-      this.yearDisplay.style.opacity = '0.7';
-      this.pickerMonthContainer.style.display = 'grid';
-      this.pickerYearContainer.style.display = 'none';
+      this.monthDisplay!.style.opacity = '1';
+      this.yearDisplay!.style.opacity = '0.7';
+      this.pickerMonthContainer!.style.display = 'grid';
+      this.pickerYearContainer!.style.display = 'none';
     } else if(e.target.classList.contains("calendar__year")) {
       this.pickerType = 'year';
-      this.monthDisplay.style.opacity = '0.7';
-      this.yearDisplay.style.opacity = '1';
-      this.pickerMonthContainer.style.display = 'none';
-      this.pickerYearContainer.style.display = 'grid';
+      this.monthDisplay!.style.opacity = '0.7';
+      this.yearDisplay!.style.opacity = '1';
+      this.pickerMonthContainer!.style.display = 'none';
+      this.pickerYearContainer!.style.display = 'grid';
     }
 
     if(oldPickerType === this.pickerType) {
@@ -259,7 +325,7 @@ export default class Calendar {
     }
   }
 
-  togglePicker(shouldOpen) {
+  togglePicker(shouldOpen?: boolean) {
     if(shouldOpen === true) {
       this.pickerContainer.style.visibility = 'visible';
       this.pickerContainer.style.opacity = '1';
@@ -285,7 +351,7 @@ export default class Calendar {
     }
   }
 
-  handleMonthPickerClick(e) {
+  handleMonthPickerClick(e: any) {
     // Filter out unwanted click events
     if (
       !(
@@ -295,21 +361,22 @@ export default class Calendar {
       return;
     }
 
-    const oldMonthValue = this.currentDate.getMonth();
     const newMonthValue = parseInt(e.target.dataset.value);
-
-    this.pickerMonthContainer.children[oldMonthValue].classList.remove('calendar__picker-month-selected');
-
-    this.updateCurrentDate(0, null, newMonthValue);
-    // this.updateCalendar(true)
-
-    this.pickerMonthContainer.children[newMonthValue].classList.add('calendar__picker-month-selected');
-
+    
+    this.updateMonthPicker(newMonthValue);
+    this.updateCurrentDate(0, undefined, newMonthValue);
     this.togglePicker(false);
   }
 
+  updateMonthPicker(newMonthValue: number) {
+    const oldMonthValue = this.currentDate.getMonth();
+
+    this.pickerMonthContainer!.children[oldMonthValue].classList.remove('calendar__picker-month-selected');
+    this.pickerMonthContainer!.children[newMonthValue].classList.add('calendar__picker-month-selected');
+  }
+
   /** Invoked on calendar day click */
-  handleCalendarDayClick(e) {
+  handleCalendarDayClick(e: any) {
     // Filter out unwanted click events
     if (
       !(
@@ -378,11 +445,13 @@ export default class Calendar {
   }
 
   handlePrevMonthButtonClick() {
+    this.updateMonthPicker(this.currentDate.getMonth() - 1);
     this.updateCurrentDate(-1);
     this.togglePicker(false);
   }
 
   handleNextMonthButtonClick() {
+    this.updateMonthPicker(this.currentDate.getMonth() + 1);
     this.updateCurrentDate(1);
     this.togglePicker(false);
   }
@@ -399,7 +468,7 @@ export default class Calendar {
    * @param {number} [newDay] - Value of new day
    * @param {number} [newMonth] - Value of new month
    */
-  updateCurrentDate(monthOffset, newDay, newMonth) {
+  updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number) {
     this.currentDate = new Date(
       this.currentDate.getFullYear(),
       (newMonth !== undefined && newMonth !== null)
@@ -412,12 +481,12 @@ export default class Calendar {
       this.updateCalendar(true);
       // Invoke user provided monthChanged callback
       if(this.monthChanged) {
-        this.monthChanged(this.ISODateUTCToLocal(this.currentDate));
+        this.monthChanged(this.DateUTCToISOLocal(this.currentDate));
       }
     } else {
       // Invoke user provided dateChanged callback
       if(this.dateChanged) {
-        this.dateChanged(this.ISODateUTCToLocal(this.currentDate));
+        this.dateChanged(this.DateUTCToISOLocal(this.currentDate));
       }
     }
   }
@@ -425,7 +494,7 @@ export default class Calendar {
   /**
    * @param {Date} date - Date to use
    */
-  ISODateUTCToLocal(date) {
+  DateUTCToISOLocal(date: Date) {
     const tzoffset = (date).getTimezoneOffset() * 60000;
     let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
     return localISOTime;
@@ -434,14 +503,10 @@ export default class Calendar {
   /** Update Month and Year HTML */
   updateMonthYear() {
     this.oldSelectedNode = null;
-    this.calendarMonthYear.innerHTML = `
-      <span class="calendar__month">${new Intl.DateTimeFormat("default", {
-        month: this.monthDisplayType,
-      }).format(this.currentDate)}</span>&nbsp;
-      <span class="calendar__year">${this.currentDate.getFullYear()}</span>
-    `;
-    this.monthDisplay = document.querySelector(`${this.id} .calendar__month`);
-    this.yearDisplay = document.querySelector(`${this.id} .calendar__year`);
+    this.monthDisplay!.innerHTML = new Intl.DateTimeFormat("default", {
+      month: this.monthDisplayType,
+    }).format(this.currentDate)
+    this.yearDisplay!.innerHTML = this.currentDate.getFullYear().toString();
   }
 
   generateWeekdays() {
@@ -449,7 +514,7 @@ export default class Calendar {
     for (let i = 0; i < 7; i++) {
       newHTML += `
         <div class="calendar__weekday">${
-          this.WEEKDAYS[(i + this.START_WEEKDAY) % 7]
+          this.weekdays[(i + this.startWeekday) % 7]
         }</div>
       `;
     }
@@ -459,7 +524,7 @@ export default class Calendar {
   /** Compute the day values in current month, and previous month number of days */
   generateDays() {
     // Previous Month
-    // this.firstDay_PrevMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1).getDay();
+    // this.firstDay_PrevMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1, 1).getDay() as StartWeekday;
     this.numOfDays_PrevMonth = new Date(
       this.currentDate.getFullYear(),
       this.currentDate.getMonth(),
@@ -474,7 +539,7 @@ export default class Calendar {
       this.currentDate.getFullYear(),
       this.currentDate.getMonth(),
       1
-    ).getDay();
+    ).getDay() as StartWeekday;
     this.numOfDays_CurrentMonth = new Date(
       this.currentDate.getFullYear(),
       this.currentDate.getMonth() + 1,
@@ -485,7 +550,7 @@ export default class Calendar {
     }
 
     // Next Month
-    // this.firstDay_NextMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1).getDay();
+    // this.firstDay_NextMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 1).getDay() as StartWeekday;
     // this.numOfDays_NextMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 0).getDate();
     // for (let i = 0; i < this.numOfDays_NextMonth; i++) {
     //   this.daysIn_NextMonth.push({ day: i + 1, selected: false });
@@ -518,10 +583,10 @@ export default class Calendar {
 
     // Weekday Offset calculation
     let dayOffset;
-    if (this.firstDay_CurrentMonth < this.START_WEEKDAY) {
-      dayOffset = 7 + this.firstDay_CurrentMonth - this.START_WEEKDAY;
+    if (this.firstDay_CurrentMonth < this.startWeekday) {
+      dayOffset = 7 + this.firstDay_CurrentMonth - this.startWeekday;
     } else {
-      dayOffset = this.firstDay_CurrentMonth - this.START_WEEKDAY;
+      dayOffset = this.firstDay_CurrentMonth - this.startWeekday;
     }
 
     let newHTML = '';
@@ -570,7 +635,7 @@ export default class Calendar {
    * @param {number} dayNum - Value of day
    * @param {boolean} [storeOldSelected] - Whether to store created element for later reference
    */
-  rerenderSelectedDay(element, dayNum, storeOldSelected) {
+  rerenderSelectedDay(element: HTMLElement, dayNum: number, storeOldSelected?: boolean) {
     // Get reference to previous day (day before target day)
     let previousElement = element.previousElementSibling;
 
@@ -598,16 +663,20 @@ export default class Calendar {
 
     // Insert newly created target day to DOM
     if(!previousElement) {
-      // Edge case when it is the first element in the calendar
+      // Handle edge case when it is the first element in the calendar
       this.calendarDays.insertBefore(
         div,
         element
       );
     } else {
-      previousElement.parentElement.insertBefore(
-        div,
-        previousElement.nextSibling
-      );
+      if(previousElement.parentElement) {
+        previousElement.parentElement.insertBefore(
+          div,
+          previousElement.nextSibling
+        );
+      } else {
+        console.log('Previous element does not have parent');
+      }
     }
 
     // Store this element for later reference
@@ -616,6 +685,6 @@ export default class Calendar {
     }
 
     // Remove target day from DOM
-    element.remove(element);
+    element.remove();
   }
 }

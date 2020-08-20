@@ -5,10 +5,11 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import banner from 'rollup-plugin-banner';
+import typescript from '@rollup/plugin-typescript';
 
 const config = [
   {
-    input: "src/index.js",
+    input: "src/index.ts",
     output: [
       {
         file: "dist/bundle.cjs.js",
@@ -25,6 +26,7 @@ const config = [
       },
     ],
     plugins: [
+      typescript(),
       commonjs({
         include: "node_modules/**",
       }),
