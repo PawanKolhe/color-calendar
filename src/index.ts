@@ -47,6 +47,7 @@ export default class Calendar {
   numOfDays_CurrentMonth: number;
   numOfDays_NextMonth: number;
   yearPickerOffset: number;
+  yearPickerOffsetTemporary: number;
 
   // Elements
   calendar: HTMLElement;
@@ -56,11 +57,13 @@ export default class Calendar {
   prevButton: HTMLElement;
   nextButton: HTMLElement;
   pickerContainer: HTMLElement;
-  pickerMonthContainer?: HTMLElement;
-  pickerYearContainer?: HTMLElement;
-  monthyearDisplay?: HTMLElement;
-  monthDisplay?: HTMLElement;
-  yearDisplay?: HTMLElement;
+  pickerMonthContainer: HTMLElement;
+  pickerYearContainer: HTMLElement;
+  yearPickerChevronLeft: HTMLElement;
+  yearPickerChevronRight: HTMLElement;
+  monthyearDisplay: HTMLElement;
+  monthDisplay: HTMLElement;
+  yearDisplay: HTMLElement;
 
   constructor(options: CalendarOptions = {}) {
     // Options
@@ -108,6 +111,7 @@ export default class Calendar {
     this.numOfDays_CurrentMonth = 0;
     this.numOfDays_NextMonth = 0;
     this.yearPickerOffset = 0;
+    this.yearPickerOffsetTemporary = 0;
 
     this.calendar = document.querySelector(this.id) as HTMLElement;
     if(!this.calendar) {
@@ -154,6 +158,12 @@ export default class Calendar {
               <div class="calendar__picker-year-option" data-value="9"></div>
               <div class="calendar__picker-year-option" data-value="10"></div>
               <div class="calendar__picker-year-option" data-value="11"></div>
+              <div class="calendar__picker-year-arrow calendar__picker-year-arrow-left">
+                <div class="chevron-thin chevron-thin-left"></div>
+              </div>
+              <div class="calendar__picker-year-arrow calendar__picker-year-arrow-right">
+                <div class="chevron-thin chevron-thin-right"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -168,6 +178,8 @@ export default class Calendar {
     this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`) as HTMLElement;
     this.pickerMonthContainer = document.querySelector(`${this.id} .calendar__picker-month`) as HTMLElement;
     this.pickerYearContainer = document.querySelector(`${this.id} .calendar__picker-year`) as HTMLElement;
+    this.yearPickerChevronLeft = document.querySelector(`${this.id} .calendar__picker-year-arrow-left`) as HTMLElement;
+    this.yearPickerChevronRight = document.querySelector(`${this.id} .calendar__picker-year-arrow-right`) as HTMLElement;
     this.monthyearDisplay = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
     this.monthDisplay = document.querySelector(`${this.id} .calendar__month`) as HTMLElement;
     this.yearDisplay = document.querySelector(`${this.id} .calendar__year`) as HTMLElement;
@@ -193,23 +205,29 @@ export default class Calendar {
     this.togglePicker(false);
 
     // Event Listeners
-    this.prevButton?.addEventListener("click",
+    this.prevButton.addEventListener("click",
       this.handlePrevMonthButtonClick.bind(this)
     );
-    this.nextButton?.addEventListener("click",
+    this.nextButton.addEventListener("click",
       this.handleNextMonthButtonClick.bind(this)
     );
-    this.monthyearDisplay?.addEventListener("click",
+    this.monthyearDisplay.addEventListener("click",
       this.handleMonthYearDisplayClick.bind(this)
     );
-    this.calendarDays?.addEventListener("click",
+    this.calendarDays.addEventListener("click",
       this.handleCalendarDayClick.bind(this)
     );
-    this.pickerMonthContainer?.addEventListener("click",
+    this.pickerMonthContainer.addEventListener("click",
       this.handleMonthPickerClick.bind(this)
     );
-    this.pickerYearContainer?.addEventListener("click",
+    this.pickerYearContainer.addEventListener("click",
       this.handleYearPickerClick.bind(this)
+    );
+    this.yearPickerChevronLeft.addEventListener("click",
+      this.handleYearChevronLeftClick.bind(this)
+    );
+    this.yearPickerChevronRight.addEventListener("click",
+      this.handleYearChevronRightClick.bind(this)
     );
 
     this.configureStylePreferences();
@@ -350,6 +368,8 @@ export default class Calendar {
       if(this.pickerType === 'year') {
         this.generatePickerYears();
       }
+      this.removeYearPickerSelection();
+      this.updateYearPickerSelection(this.currentDate.getFullYear());
     } else if(shouldOpen === false) {
       this.pickerContainer.style.visibility = 'hidden';
       this.pickerContainer.style.opacity = '0';
@@ -357,6 +377,7 @@ export default class Calendar {
         this.monthDisplay.style.opacity = '1';
         this.yearDisplay.style.opacity = '1';
       }
+      this.yearPickerOffsetTemporary = 0;
     } else {
       if(this.pickerContainer.style.visibility === 'hidden') {
         this.pickerContainer.style.visibility = 'visible';
@@ -364,6 +385,8 @@ export default class Calendar {
         if(this.pickerType === 'year') {
           this.generatePickerYears();
         }
+        this.removeYearPickerSelection();
+        this.updateYearPickerSelection(this.currentDate.getFullYear());
       } else {
         this.pickerContainer.style.visibility = 'hidden';
         this.pickerContainer.style.opacity = '0';
@@ -371,6 +394,7 @@ export default class Calendar {
           this.monthDisplay.style.opacity = '1';
           this.yearDisplay.style.opacity = '1';
         }
+        this.yearPickerOffsetTemporary = 0;
       }
     }
   }
@@ -405,6 +429,8 @@ export default class Calendar {
       return;
     }
 
+    this.yearPickerOffset += this.yearPickerOffsetTemporary;
+
     const newYearValue = parseInt(e.target.innerText);
     const newYearIndex = parseInt(e.target.dataset.value);
     this.updateYearPickerSelection(newYearValue, newYearIndex);
@@ -425,7 +451,7 @@ export default class Calendar {
     //   }
     // }
 
-    if(!newYearIndex) {
+    if(newYearIndex === undefined) {
       for(let i = 0; i < 12; i++) {
         let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
         let year = parseInt(yearPickerChildren.innerHTML)
@@ -436,6 +462,13 @@ export default class Calendar {
           // console.log('newYearIndex', newYearIndex);
           break;
         }
+      }
+
+      if(newYearIndex === undefined) {
+        console.log('bound reached');
+        // this.yearPickerOffset -= 12;
+        // this.updateYearPickerSelection();
+        return;
       }
     }
 
@@ -458,13 +491,29 @@ export default class Calendar {
   }
 
   generatePickerYears() {
-    const currentYear = this.today.getFullYear() + this.yearPickerOffset;
+    const currentYear = this.today.getFullYear() + this.yearPickerOffset + this.yearPickerOffsetTemporary;
     let count = 0;
     for(let i = currentYear - 4; i <= currentYear + 7; i++) {
       let element = this.pickerYearContainer!.children[count] as HTMLElement;
       element.innerText = i.toString();
       count++;
     }
+  }
+
+  handleYearChevronLeftClick() {
+    console.log('left');
+    this.yearPickerOffsetTemporary -= 12;
+    this.generatePickerYears();
+    this.removeYearPickerSelection();
+    this.updateYearPickerSelection(this.currentDate.getFullYear());
+  }
+
+  handleYearChevronRightClick() {
+    console.log('right');
+    this.yearPickerOffsetTemporary += 12;
+    this.generatePickerYears();
+    this.removeYearPickerSelection();
+    this.updateYearPickerSelection(this.currentDate.getFullYear());
   }
 
   /** Invoked on calendar day click */
@@ -538,6 +587,10 @@ export default class Calendar {
 
   handlePrevMonthButtonClick() {
     const newMonthValue = this.currentDate.getMonth() - 1;
+    if(this.currentDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 && newMonthValue < 0) {
+      this.yearPickerOffset -=12;
+      this.generatePickerYears();
+    }
     if(newMonthValue < 0) {
       this.updateYearPickerSelection(this.currentDate.getFullYear() - 1);
     }
@@ -548,6 +601,10 @@ export default class Calendar {
 
   handleNextMonthButtonClick() {
     const newMonthValue = this.currentDate.getMonth() + 1;
+    if(this.currentDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 && newMonthValue > 11) {
+      this.yearPickerOffset +=12;
+      this.generatePickerYears();
+    }
     if(newMonthValue > 11) {
       this.updateYearPickerSelection(this.currentDate.getFullYear() + 1);
     }

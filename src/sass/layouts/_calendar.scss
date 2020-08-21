@@ -189,7 +189,7 @@ $calName: ".color-calendar";
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(4, minmax(0, 1fr));
-    gap: 1rem 8%;
+    gap: 1rem 6%;
     margin: 8%;
     transition: none;
 
@@ -240,7 +240,7 @@ $calName: ".color-calendar";
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(4, minmax(0, 1fr));
-    gap: 1rem 8%;
+    gap: 1rem 6%;
     margin: 8%;
     transition: none;
 
@@ -284,5 +284,54 @@ $calName: ".color-calendar";
         opacity: 0.9;
       }
     }
+
+    &-arrow {
+      position: absolute;
+      opacity: 0.4;
+      border-radius: var(--cal-border-radius);
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &-left {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        @include flex-center;
+        padding-left: 10px;
+        padding-right: 4px;
+      }
+
+      &-right {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        @include flex-center;
+        padding-left: 4px;
+        padding-right: 10px;
+      }
+
+      &:hover {
+        opacity: 1;
+        background-color: #f8f8f8;
+      }
+    }
+  }
+}
+
+.chevron-thin {
+  &-left {
+    display: inline-block;
+    border-right: 2px solid var(--cal-color-primary);
+    border-bottom: 2px solid var(--cal-color-primary);
+    width: 10px; height: 10px;
+    transform: rotate(-225deg);
+  }
+
+  &-right {
+    display: inline-block;
+    border-right: 2px solid var(--cal-color-primary);
+    border-bottom: 2px solid var(--cal-color-primary);
+    width: 10px; height: 10px;
+    transform: rotate(-45deg);
   }
 }
