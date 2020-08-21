@@ -2,6 +2,8 @@ import {
   CalendarOptions,
   EventData,
   Day,
+  MonthDisplayType,
+  WeekdayType,
   Weekdays,
   StartWeekday,
 } from "./index.d";
@@ -13,8 +15,8 @@ export default class Calendar {
 
   // Options
   id: string;
-  weekdayType: string;
-  monthDisplayType: string;
+  weekdayType: WeekdayType;
+  monthDisplayType: MonthDisplayType;
   eventsData: EventData[];
   startWeekday: StartWeekday; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
   theme: string;
@@ -25,7 +27,7 @@ export default class Calendar {
   border: boolean;
   headerColor?: string;
   headerBackgroundColor?: string;
-  dayClicked?: any;
+  // dayClicked?: any;
   monthChanged?: any;
   dateChanged?: any;
 
@@ -68,7 +70,7 @@ export default class Calendar {
   constructor(options: CalendarOptions = {}) {
     // Options
     this.id = options.id ?? "#calendar";
-    this.monthDisplayType = options.monthDisplayType ?? "long";
+    this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.eventsData = options.eventsData ?? [];
     this.startWeekday = options.startWeekday ?? 0;
     this.theme = options.theme ?? "basic";
@@ -79,14 +81,14 @@ export default class Calendar {
     this.border = options.border ?? true;
     this.headerColor = options.headerColor;
     this.headerBackgroundColor = options.headerBackgroundColor;
-    this.dayClicked = options.dayClicked;
+    // this.dayClicked = options.dayClicked;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
 
     // State
-    this.weekdayType = options.weekdayType ?? "short";
+    this.weekdayType = (options.weekdayType ?? "short") as WeekdayType;
     switch (this.weekdayType) {
-      case "long":
+      case "long-upper":
         this.weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
         break;
       case "long-lower":
@@ -198,6 +200,12 @@ export default class Calendar {
     this.selectDayInitial();
     this.renderDays();
     this.setOldSelectedNode();
+    if(this.dateChanged) {
+      this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
+    }
+    if(this.monthChanged) {
+      this.monthChanged(this.currentDate, this.getMonthEvents());
+    }
   }
 
   initializeLayout() {
@@ -529,23 +537,30 @@ export default class Calendar {
       Object.assign(this.daysIn_CurrentMonth[dayNum - 1], { selected: true });
       this.rerenderSelectedDay(e.target.parentElement, dayNum, true);
       
-      let filteredEventsThisDate = this.filteredEventsThisMonth.filter(
-        (event) => {
-          const start = new Date(event.start).getDate();
-          const end = new Date(event.end).getDate();
-          if (this.currentDate.getDate() >= start && this.currentDate.getDate() <= end) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      );
-
-      // Invoke user provided dayClick callback
-      if(this.dayClicked) {
-        this.dayClicked(filteredEventsThisDate);
-      }
+      // // Invoke user provided dateChanged callback
+      // if(this.dateChanged) {
+      //   this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
+      // }
     }
+  }
+
+  getDateEvents(date: Date) {
+    let filteredEventsThisDate = this.filteredEventsThisMonth.filter(
+      (event) => {
+        const start = new Date(event.start).getDate();
+        const end = new Date(event.end).getDate();
+        if (date.getDate() >= start && date.getDate() <= end) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    );
+    return filteredEventsThisDate;
+  }
+
+  getMonthEvents() {
+    return this.filteredEventsThisMonth;
   }
 
   removeOldDaySelection() {
@@ -609,24 +624,25 @@ export default class Calendar {
       this.updateCalendar(true);
       // Invoke user provided monthChanged callback
       if(this.monthChanged) {
-        this.monthChanged(this.DateUTCToISOLocal(this.currentDate));
+        this.monthChanged(this.currentDate, this.getMonthEvents());
       }
-    } else {
-      // Invoke user provided dateChanged callback
-      if(this.dateChanged) {
-        this.dateChanged(this.DateUTCToISOLocal(this.currentDate));
-      }
+    }
+    // Invoke user provided dateChanged callback
+    if(this.dateChanged) {
+      this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
     }
   }
 
-  /**
-   * @param {Date} date - Date to use
-   */
-  DateUTCToISOLocal(date: Date) {
-    const tzoffset = (date).getTimezoneOffset() * 60000;
-    let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-    return localISOTime;
-  }
+  // /**
+  //  * @param {Date} date - Date to use
+  //  */
+  // DateUTCToISOLocal(date: Date) {
+  //   console.log(date);
+  //   const tzoffset = (date).getTimezoneOffset() * 60000;
+  //   console.log(tzoffset);
+  //   let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+  //   return localISOTime;
+  // }
 
   /** Update Month and Year HTML */
   updateMonthYear() {

@@ -12,9 +12,9 @@ export interface CalendarOptions {
   headerBackgroundColor?: string;
   dropShadow?: boolean;
   border?: boolean;
-  dayClicked?: (filteredEventsThisDate: EventData) => void;
-  monthChanged?: (currentDate: string) => void;
-  dateChanged?: (currentDate: string) => void;
+  dayClicked?: (currentDate?: Date, filteredEventsThisDate?: EventData) => void;
+  monthChanged?: (currentDate?: Date) => void;
+  dateChanged?: (currentDate?: Date) => void;
 }
 
 export interface EventData {
@@ -27,6 +27,10 @@ export interface Day {
   day: number,
   selected?: boolean,
 }
+
+export type MonthDisplayType = "short" | "long";
+
+export  type WeekdayType = "short" | "long-upper" | "long-lower";
 
 export type Weekdays = [string, string, string, string, string, string, string];
 
