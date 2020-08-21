@@ -187,10 +187,10 @@ $calName: ".color-calendar";
   .calendar__picker-month {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, auto);
-    grid-template-rows: repeat(3, auto);
-    gap: 1.5rem 8%;
-    margin: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 1rem 8%;
+    margin: 8%;
     transition: none;
 
     &-option {
@@ -236,6 +236,53 @@ $calName: ".color-calendar";
   }
 
   .calendar__picker-year {
-    display: flex;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 1rem 8%;
+    margin: 8%;
+    transition: none;
+
+    &-option {
+      position: relative;
+      text-align: center;
+      padding: 15px 0;
+      font-weight: 700;
+      color: #323232;
+      border-radius: var(--cal-border-radius);
+      align-self: center;
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        width: 100%;
+        height: 50px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: var(--cal-color-primary);
+        border-radius: var(--cal-border-radius);
+        opacity: 0.1;
+        z-index: -1;
+      }
+
+      &:hover:after {
+        opacity: 0.08;
+      }
+    }
+
+    &-selected {
+      color: white;
+
+      &::after {
+        opacity: 1;
+      }
+
+      &:hover:after {
+        opacity: 0.9;
+      }
+    }
   }
 }

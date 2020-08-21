@@ -4,8 +4,14 @@
     "module": "ES2020",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowUmdGlobalAccess": true,
+    "removeComments": true
   },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": ["node_modules", "dist"],
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended"
 }

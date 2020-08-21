@@ -1,7 +1,3 @@
-import Calendar from "./index";
-
-// export as namespace Calendar;
-
 export interface CalendarOptions {
   id?: string;
   weekdayType?: string;

@@ -2,13 +2,16 @@
   "name": "color-calendar",
   "version": "0.0.1",
   "description": "A customizable calendar widget with event handling",
-  "main": "dist/bundle.esm.js",
-  "browser": "dist/bundle.umd.js",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "browser": "dist/bundle.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "start:js": "rollup -c -w",
     "start:css": "gulp watch",
     "prebuild": "rimraf dist",
     "build": "rollup -c && gulp",
+    "build:types": "tsc --declaration src/index.ts --declarationDir dist --emitDeclarationOnly",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

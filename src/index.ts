@@ -46,6 +46,7 @@ export default class Calendar {
   numOfDays_PrevMonth: number;
   numOfDays_CurrentMonth: number;
   numOfDays_NextMonth: number;
+  yearPickerOffset: number;
 
   // Elements
   calendar: HTMLElement;
@@ -106,6 +107,7 @@ export default class Calendar {
     this.numOfDays_PrevMonth = 0;
     this.numOfDays_CurrentMonth = 0;
     this.numOfDays_NextMonth = 0;
+    this.yearPickerOffset = 0;
 
     this.calendar = document.querySelector(this.id) as HTMLElement;
     if(!this.calendar) {
@@ -140,7 +142,18 @@ export default class Calendar {
               <div class="calendar__picker-month-option" data-value="11">Dec</div>
             </div>
             <div class="calendar__picker-year">
-              Year
+              <div class="calendar__picker-year-option" data-value="0"></div>
+              <div class="calendar__picker-year-option" data-value="1"></div>
+              <div class="calendar__picker-year-option" data-value="2"></div>
+              <div class="calendar__picker-year-option" data-value="3"></div>
+              <div class="calendar__picker-year-option" data-value="4"></div>
+              <div class="calendar__picker-year-option" data-value="5"></div>
+              <div class="calendar__picker-year-option" data-value="6"></div>
+              <div class="calendar__picker-year-option" data-value="7"></div>
+              <div class="calendar__picker-year-option" data-value="8"></div>
+              <div class="calendar__picker-year-option" data-value="9"></div>
+              <div class="calendar__picker-year-option" data-value="10"></div>
+              <div class="calendar__picker-year-option" data-value="11"></div>
             </div>
           </div>
         </div>
@@ -165,7 +178,9 @@ export default class Calendar {
   resetCalendar() {
     this.initializeLayout();
     this.updateMonthYear();
-    this.updateMonthPicker(this.currentDate.getMonth());
+    this.updateMonthPickerSelection(this.currentDate.getMonth());
+    this.generatePickerYears();
+    this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
     this.generateWeekdays();
     this.generateDays();
     this.selectDayInitial();
@@ -192,6 +207,9 @@ export default class Calendar {
     );
     this.pickerMonthContainer?.addEventListener("click",
       this.handleMonthPickerClick.bind(this)
+    );
+    this.pickerYearContainer?.addEventListener("click",
+      this.handleYearPickerClick.bind(this)
     );
 
     this.configureStylePreferences();
@@ -291,25 +309,24 @@ export default class Calendar {
   /** Invoked on month or year click */
   handleMonthYearDisplayClick(e: any) {
     // Filter out unwanted click events
-    if (
-      !(
+    if (!(
         e.target.classList.contains("calendar__month") ||
         e.target.classList.contains("calendar__year")
-      )
-    ) {
+      )) {
       return;
     }
 
     const oldPickerType = this.pickerType;
+    const classList = e.target.classList;
 
     // Set picker type
-    if(e.target.classList.contains("calendar__month")) {
+    if(classList.contains("calendar__month")) {
       this.pickerType = 'month';
       this.monthDisplay!.style.opacity = '1';
       this.yearDisplay!.style.opacity = '0.7';
       this.pickerMonthContainer!.style.display = 'grid';
       this.pickerYearContainer!.style.display = 'none';
-    } else if(e.target.classList.contains("calendar__year")) {
+    } else if(classList.contains("calendar__year")) {
       this.pickerType = 'year';
       this.monthDisplay!.style.opacity = '0.7';
       this.yearDisplay!.style.opacity = '1';
@@ -318,6 +335,7 @@ export default class Calendar {
     }
 
     if(oldPickerType === this.pickerType) {
+      // Toggle picker
       this.togglePicker();
     } else {
       // Open picker
@@ -329,6 +347,9 @@ export default class Calendar {
     if(shouldOpen === true) {
       this.pickerContainer.style.visibility = 'visible';
       this.pickerContainer.style.opacity = '1';
+      if(this.pickerType === 'year') {
+        this.generatePickerYears();
+      }
     } else if(shouldOpen === false) {
       this.pickerContainer.style.visibility = 'hidden';
       this.pickerContainer.style.opacity = '0';
@@ -340,6 +361,9 @@ export default class Calendar {
       if(this.pickerContainer.style.visibility === 'hidden') {
         this.pickerContainer.style.visibility = 'visible';
         this.pickerContainer.style.opacity = '1';
+        if(this.pickerType === 'year') {
+          this.generatePickerYears();
+        }
       } else {
         this.pickerContainer.style.visibility = 'hidden';
         this.pickerContainer.style.opacity = '0';
@@ -353,26 +377,94 @@ export default class Calendar {
 
   handleMonthPickerClick(e: any) {
     // Filter out unwanted click events
-    if (
-      !(
-        e.target.classList.contains("calendar__picker-month-option")
-      )
-    ) {
+    if (!(e.target.classList.contains("calendar__picker-month-option"))) {
       return;
     }
 
     const newMonthValue = parseInt(e.target.dataset.value);
     
-    this.updateMonthPicker(newMonthValue);
+    this.updateMonthPickerSelection(newMonthValue);
     this.updateCurrentDate(0, undefined, newMonthValue);
     this.togglePicker(false);
   }
 
-  updateMonthPicker(newMonthValue: number) {
+  updateMonthPickerSelection(newMonthValue: number) {
     const oldMonthValue = this.currentDate.getMonth();
-
+    if(newMonthValue < 0) {
+      newMonthValue = 11;
+    } else {
+      newMonthValue = newMonthValue % 12;
+    }
     this.pickerMonthContainer!.children[oldMonthValue].classList.remove('calendar__picker-month-selected');
     this.pickerMonthContainer!.children[newMonthValue].classList.add('calendar__picker-month-selected');
+  }
+
+  handleYearPickerClick(e: any) {
+    // Filter out unwanted click events
+    if (!(e.target.classList.contains("calendar__picker-year-option"))) {
+      return;
+    }
+
+    const newYearValue = parseInt(e.target.innerText);
+    const newYearIndex = parseInt(e.target.dataset.value);
+    this.updateYearPickerSelection(newYearValue, newYearIndex);
+    this.updateCurrentDate(0, undefined, undefined, newYearValue);
+    this.togglePicker(false);
+  }
+
+  updateYearPickerSelection(newYearValue: number, newYearIndex?: number) {
+    // // Find old year index
+    // const oldYearValue = this.currentDate.getFullYear();
+    // let oldYearIndex = 0;
+    // for(let i = 0; i < this.pickerYearContainer!.children.length; i++) {
+    //   let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
+    //   let year = parseInt(yearPickerChildren.innerText)
+    //   if(year === oldYearValue && yearPickerChildren.dataset.value) {
+    //     oldYearIndex = parseInt(yearPickerChildren.dataset.value);
+    //     break;
+    //   }
+    // }
+
+    if(!newYearIndex) {
+      for(let i = 0; i < 12; i++) {
+        let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
+        let year = parseInt(yearPickerChildren.innerHTML)
+        // console.log('year', year, newYearValue, yearPickerChildren.dataset.value);
+        // console.dir(yearPickerChildren);
+        if(year === newYearValue && yearPickerChildren.dataset.value) {
+          newYearIndex = parseInt(yearPickerChildren.dataset.value);
+          // console.log('newYearIndex', newYearIndex);
+          break;
+        }
+      }
+    }
+
+    this.removeYearPickerSelection();
+    // this.pickerYearContainer!.children[oldYearIndex].classList.remove('calendar__picker-year-selected');
+    if(newYearIndex !== undefined) {
+      this.pickerYearContainer!.children[newYearIndex].classList.add('calendar__picker-year-selected');
+    } else {
+      throw new Error("newYearIndex is undefined");
+    }
+  }
+
+  removeYearPickerSelection() {
+    // Remove old year selection by scanning for the selected year
+    for(let i = 0; i < 12; i++) {
+      if(this.pickerYearContainer!.children[i].classList.contains('calendar__picker-year-selected')) {
+        this.pickerYearContainer!.children[i].classList.remove('calendar__picker-year-selected');
+      }
+    }
+  }
+
+  generatePickerYears() {
+    const currentYear = this.today.getFullYear() + this.yearPickerOffset;
+    let count = 0;
+    for(let i = currentYear - 4; i <= currentYear + 7; i++) {
+      let element = this.pickerYearContainer!.children[count] as HTMLElement;
+      element.innerText = i.toString();
+      count++;
+    }
   }
 
   /** Invoked on calendar day click */
@@ -445,19 +537,23 @@ export default class Calendar {
   }
 
   handlePrevMonthButtonClick() {
-    this.updateMonthPicker(this.currentDate.getMonth() - 1);
+    const newMonthValue = this.currentDate.getMonth() - 1;
+    if(newMonthValue < 0) {
+      this.updateYearPickerSelection(this.currentDate.getFullYear() - 1);
+    }
+    this.updateMonthPickerSelection(newMonthValue);
     this.updateCurrentDate(-1);
     this.togglePicker(false);
   }
 
   handleNextMonthButtonClick() {
-    this.updateMonthPicker(this.currentDate.getMonth() + 1);
+    const newMonthValue = this.currentDate.getMonth() + 1;
+    if(newMonthValue > 11) {
+      this.updateYearPickerSelection(this.currentDate.getFullYear() + 1);
+    }
+    this.updateMonthPickerSelection(newMonthValue);
     this.updateCurrentDate(1);
     this.togglePicker(false);
-  }
-
-  resetCurrentDate() {
-    this.updateCurrentDate(0);
   }
 
   /**
@@ -468,16 +564,16 @@ export default class Calendar {
    * @param {number} [newDay] - Value of new day
    * @param {number} [newMonth] - Value of new month
    */
-  updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number) {
+  updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) {
     this.currentDate = new Date(
-      this.currentDate.getFullYear(),
+      newYear ? newYear : this.currentDate.getFullYear(),
       (newMonth !== undefined && newMonth !== null)
         ? newMonth
         : this.currentDate.getMonth() + monthOffset,
       ((monthOffset !== 0) || !newDay) ? 1 : newDay
     );
     
-    if(monthOffset !== 0 || (newMonth !== undefined && newMonth !== null)) {
+    if(monthOffset !== 0 || (newMonth !== undefined && newMonth !== null) || newYear) {
       this.updateCalendar(true);
       // Invoke user provided monthChanged callback
       if(this.monthChanged) {
@@ -562,9 +658,11 @@ export default class Calendar {
     let insertCount = 0;
 
     // Filter events data to this month only
+    const currentYear = this.currentDate.getFullYear();
     const currentMonth = this.currentDate.getMonth();
     this.filteredEventsThisMonth = this.eventsData.filter((event) => {
-      if (new Date(event.start).getMonth() === currentMonth) {
+      const eventDate = new Date(event.start);
+      if (eventDate.getFullYear() === currentYear && eventDate.getMonth() === currentMonth) {
         return true;
       } else {
         return false;
@@ -602,7 +700,8 @@ export default class Calendar {
     }
 
     // Current Month
-    let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
+    let isTodayYear = this.today.getFullYear() === this.currentDate.getFullYear();
+    let isTodayMonth = (this.today.getMonth() === this.currentDate.getMonth()) && isTodayYear;
     this.daysIn_CurrentMonth.forEach((day) => {
       let isTodayDate = isTodayMonth && day.day === this.today.getDate();
       newHTML += `
@@ -640,7 +739,8 @@ export default class Calendar {
     let previousElement = element.previousElementSibling;
 
     // Create new target day element
-    let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
+    let isTodayYear = this.today.getFullYear() === this.currentDate.getFullYear();
+    let isTodayMonth = (this.today.getMonth() === this.currentDate.getMonth()) && isTodayYear;
     let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
     let div = document.createElement("div");
     div.className += `calendar__day calendar__day-active${
