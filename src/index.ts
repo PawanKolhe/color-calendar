@@ -439,46 +439,23 @@ export default class Calendar {
   }
 
   updateYearPickerSelection(newYearValue: number, newYearIndex?: number) {
-    // // Find old year index
-    // const oldYearValue = this.currentDate.getFullYear();
-    // let oldYearIndex = 0;
-    // for(let i = 0; i < this.pickerYearContainer!.children.length; i++) {
-    //   let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
-    //   let year = parseInt(yearPickerChildren.innerText)
-    //   if(year === oldYearValue && yearPickerChildren.dataset.value) {
-    //     oldYearIndex = parseInt(yearPickerChildren.dataset.value);
-    //     break;
-    //   }
-    // }
-
     if(newYearIndex === undefined) {
       for(let i = 0; i < 12; i++) {
         let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
         let year = parseInt(yearPickerChildren.innerHTML)
-        // console.log('year', year, newYearValue, yearPickerChildren.dataset.value);
-        // console.dir(yearPickerChildren);
         if(year === newYearValue && yearPickerChildren.dataset.value) {
           newYearIndex = parseInt(yearPickerChildren.dataset.value);
-          // console.log('newYearIndex', newYearIndex);
           break;
         }
       }
 
       if(newYearIndex === undefined) {
-        console.log('bound reached');
-        // this.yearPickerOffset -= 12;
-        // this.updateYearPickerSelection();
         return;
       }
     }
 
     this.removeYearPickerSelection();
-    // this.pickerYearContainer!.children[oldYearIndex].classList.remove('calendar__picker-year-selected');
-    if(newYearIndex !== undefined) {
-      this.pickerYearContainer!.children[newYearIndex].classList.add('calendar__picker-year-selected');
-    } else {
-      throw new Error("newYearIndex is undefined");
-    }
+    this.pickerYearContainer!.children[newYearIndex].classList.add('calendar__picker-year-selected');
   }
 
   removeYearPickerSelection() {
@@ -501,7 +478,6 @@ export default class Calendar {
   }
 
   handleYearChevronLeftClick() {
-    console.log('left');
     this.yearPickerOffsetTemporary -= 12;
     this.generatePickerYears();
     this.removeYearPickerSelection();
@@ -509,7 +485,6 @@ export default class Calendar {
   }
 
   handleYearChevronRightClick() {
-    console.log('right');
     this.yearPickerOffsetTemporary += 12;
     this.generatePickerYears();
     this.removeYearPickerSelection();
