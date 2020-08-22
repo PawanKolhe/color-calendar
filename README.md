@@ -14,7 +14,7 @@
         <img src="https://data.jsdelivr.com/v1/package/npm/color-calendar/badge" alt="jsdelivr" />
     </a>
     <a href="http://hits.dwyl.com/PawanKolhe/color-calendar">
-        <img src="http://hits.dwyl.com/PawanKolhe/color-calendar.svg" alt="hit count" />
+        <img src="http://hits.dwyl.com/PawanKolhe/color-calendar.svg" alt="HitCount" />
     </a>
     <img src="https://img.shields.io/npm/l/color-calendar?style=flat-square" alt="license" />
 </p>
