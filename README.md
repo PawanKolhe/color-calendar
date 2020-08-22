@@ -1,9 +1,24 @@
+![npm](https://img.shields.io/npm/v/color-calendar?style=flat-square)
+![npm](https://img.shields.io/npm/dw/color-calendar?style=flat-square)
+![npm bundle size](https://img.shields.io/bundlephobia/min/color-calendar?style=flat-square)
 [![](https://data.jsdelivr.com/v1/package/npm/color-calendar/badge)](https://www.jsdelivr.com/package/npm/color-calendar)
+![HitCount](http://hits.dwyl.com/PawanKolhe/color-calendar.svg)
+![NPM](https://img.shields.io/npm/l/color-calendar?style=flat-square)
 
 # Color Calendar
 A customizable events calendar component library. Checkout [demo](https://codesandbox.io/s/color-calendar-bnwdu). 
 
 ![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
+
+* [Features](#🚀-features)
+* [Getting Started](#📦-getting-started)
+    * [CDN](#cdn)
+    * [NPM](#npm)
+* [Usage](#🔨-usage)
+* [Options](#⚙️-options)
+* [Events](#🖱-events)
+* [Themes](#🎨-themes)
+* [License](#📜-license)
 
 ## 🚀 Features
 - Zero dependencies
@@ -256,5 +271,5 @@ Currently 2 themes available. More on the way.
 `--cal-header-color`: white;  
 `--cal-header-background-color`: rgba(0, 0, 0, 0.3);  
 
-## Meta
-[LICENSE (MIT)](https://github.com/PawanKolhe/color-calendar/blob/master/LICENSE)
+## 📜 License
+This software is open source, licensed under the [MIT License](https://github.com/PawanKolhe/color-calendar/blob/master/LICENSE).
