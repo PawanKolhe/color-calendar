@@ -1,7 +1,7 @@
 {
   "name": "color-calendar",
   "version": "1.0.0",
-  "description": "A customizable calendar widget with event handling",
+  "description": "A customizable events calendar widget library",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "browser": "dist/bundle.js",
