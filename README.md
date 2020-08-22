@@ -1,9 +1,9 @@
 [![](https://data.jsdelivr.com/v1/package/npm/color-calendar/badge)](https://www.jsdelivr.com/package/npm/color-calendar)
 
 # Color Calendar
-A customizable calendar component library 
+A customizable events calendar component library 
 
-![Color Calendar](https://github.com/PawanKolhe/color-calendar/blob/master/screenshots/banner.PNG)
+![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
 
 ## 🚀 Features
 - Zero dependencies
@@ -215,10 +215,11 @@ Coming soon... -->
 
 <a id="themes"></a>
 ## 🎨 Themes
-Currently 2 themes are available:
+Currently 2 themes available. More on the way.
 
 ### `basic`
-![Basic Theme](https://github.com/PawanKolhe/color-calendar/blob/master/screenshots/theme-basic.PNG)
+<img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/theme-basic.PNG" alt="Basic Theme" width="400" />  
+
 #### CSS Custom Properties
 `--cal-color-primary`: #0440a0;  
 `--cal-font-family-header`: "Work Sans", sans-serif;  
@@ -231,7 +232,8 @@ Currently 2 themes are available:
 `--cal-weekdays-color`: black;  
 
 ### `glass`
-![Glass Theme](https://github.com/PawanKolhe/color-calendar/blob/master/screenshots/theme-glass.PNG)
+<img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/theme-glass.PNG" alt="Glass Theme" width="400" />  
+
 #### CSS Custom Properties
 `--cal-color-primary`: #EC407A;  
 `--cal-font-family-header`: 'Open Sans', sans-serif;  
