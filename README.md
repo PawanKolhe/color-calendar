@@ -101,13 +101,13 @@ new Calendar()
 Or you can pass in **options**.
 ```javascript
 new Calendar({
-    id: '#myCalendar'
+    id: '#color-calendar'
 })
 ```
 
 ### HTML
 ```html
-<div id="myCalendar"></div>
+<div id="color-calendar"></div>
 ```
 
 <a id="options"></a>
