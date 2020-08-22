@@ -1,6 +1,6 @@
 {
   "name": "color-calendar",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A customizable calendar widget with event handling",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
@@ -23,6 +23,7 @@
     "@rollup/plugin-babel": "^5.1.0",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-strip": "^2.0.0",
     "@rollup/plugin-typescript": "^5.0.2",
     "autoprefixer": "^9.8.5",
     "babel-loader": "^8.1.0",

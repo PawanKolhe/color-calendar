@@ -15,12 +15,14 @@ $calName: ".color-calendar";
   box-sizing: border-box;
   user-select: none;
   overflow: hidden;
+  font-family: var(--cal-font-family-body);
 }
 
 #{$calName} .calendar__header {
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
+  font-family: var(--cal-font-family-header);
 }
 
 #{$calName} .calendar__monthyear {
@@ -90,6 +92,7 @@ $calName: ".color-calendar";
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   margin-bottom: 5px;
+  font-family: var(--cal-font-family-weekdays);
 
   .calendar__weekday {
     @include flex-center;
@@ -101,6 +104,7 @@ $calName: ".color-calendar";
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   grid-template-rows: repeat(6, minmax(30px, 40px));
+  font-family: var(--cal-font-family-body);
 
   .calendar__day {
     position: relative;
@@ -183,6 +187,7 @@ $calName: ".color-calendar";
   visibility: hidden;
   opacity: 0;
   transition: all 0.3s ease;
+  font-family: var(--cal-font-family-body);
 
   .calendar__picker-month {
     width: 100%;

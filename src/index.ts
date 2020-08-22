@@ -6,7 +6,7 @@ import {
   WeekdayType,
   Weekdays,
   StartWeekday,
-} from "./index.d";
+} from "./types.d";
 
 export default class Calendar {
   // Constants
@@ -18,16 +18,18 @@ export default class Calendar {
   weekdayType: WeekdayType;
   monthDisplayType: MonthDisplayType;
   eventsData: EventData[];
-  startWeekday: StartWeekday; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
+  startWeekday: StartWeekday;
   theme: string;
-  color?: string;
-  fontFamily1?: string;
-  fontFamily2?: string;
+  primaryColor?: string;
+  fontFamilyHeader?: string;
+  fontFamilyWeekdays?: string;
+  fontFamilyBody?: string;
   dropShadow: boolean;
-  border: boolean;
+  border?: string;
+  borderRadius?: string;
   headerColor?: string;
   headerBackgroundColor?: string;
-  // dayClicked?: any;
+  weekdaysColor?: string;
   monthChanged?: any;
   dateChanged?: any;
 
@@ -72,30 +74,35 @@ export default class Calendar {
     this.id = options.id ?? "#calendar";
     this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.eventsData = options.eventsData ?? [];
-    this.startWeekday = options.startWeekday ?? 0;
+    this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
     this.theme = options.theme ?? "basic";
-    this.color = options.color;
-    this.fontFamily1 = options.fontFamily1;
-    this.fontFamily2 = options.fontFamily2;
+    this.primaryColor = options.primaryColor;
+    this.fontFamilyHeader = options.fontFamilyHeader;
+    this.fontFamilyWeekdays = options.fontFamilyWeekdays;
+    this.fontFamilyBody = options.fontFamilyBody;
     this.dropShadow = options.dropShadow ?? true;
-    this.border = options.border ?? true;
+    this.border = options.border;
+    this.borderRadius = options.borderRadius;
     this.headerColor = options.headerColor;
     this.headerBackgroundColor = options.headerBackgroundColor;
-    // this.dayClicked = options.dayClicked;
+    this.weekdaysColor = options.weekdaysColor;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
 
     // State
-    this.weekdayType = (options.weekdayType ?? "short") as WeekdayType;
+    this.weekdayType = (options.weekdayType ?? "long") as WeekdayType;
     switch (this.weekdayType) {
-      case "long-upper":
-        this.weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+      case "short":
+        this.weekdays = ["S", "M", "T", "W", "T", "F", "S"];
         break;
       case "long-lower":
         this.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         break;
+      case "long-upper":
+        this.weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+        break;
       default:
-        this.weekdays = ["S", "M", "T", "W", "T", "F", "S"];
+        this.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     }
     this.today = new Date();
     this.currentDate = new Date();
@@ -245,26 +252,35 @@ export default class Calendar {
   configureStylePreferences() {
     // let root = document.documentElement;
     let root = document.querySelector(`${this.id} .${this.CAL_NAME}`) as HTMLElement;
-    if (this.color) {
-      root.style.setProperty("--cal-color-primary", this.color);
+    if (this.primaryColor) {
+      root.style.setProperty("--cal-color-primary", this.primaryColor);
     }
-    if (this.fontFamily1) {
-      root.style.setProperty("--cal-font-family-1", this.fontFamily1);
+    if (this.fontFamilyHeader) {
+      root.style.setProperty("--cal-font-family-header", this.fontFamilyHeader);
     }
-    if (this.fontFamily2) {
-      root.style.setProperty("--cal-font-family-2", this.fontFamily2);
+    if (this.fontFamilyWeekdays) {
+      root.style.setProperty("--cal-font-family-weekdays", this.fontFamilyWeekdays);
+    }
+    if (this.fontFamilyBody) {
+      root.style.setProperty("--cal-font-family-body", this.fontFamilyBody);
     }
     if (!this.dropShadow) {
       root.style.setProperty("--cal-drop-shadow", "none");
     }
-    if (!this.border) {
-      root.style.setProperty("--cal-border", "none");
+    if (this.border) {
+      root.style.setProperty("--cal-border", this.border);
+    }
+    if (this.borderRadius) {
+      root.style.setProperty("--cal-border-radius", this.borderRadius);
     }
     if(this.headerColor) {
       root.style.setProperty("--cal-header-color", this.headerColor);
     }
     if(this.headerBackgroundColor) {
       root.style.setProperty("--cal-header-background-color", this.headerBackgroundColor);
+    }
+    if(this.weekdaysColor) {
+      root.style.setProperty("--cal-weekdays-color", this.weekdaysColor);
     }
   }
 
@@ -536,11 +552,6 @@ export default class Calendar {
       this.updateCurrentDate(0, dayNum);
       Object.assign(this.daysIn_CurrentMonth[dayNum - 1], { selected: true });
       this.rerenderSelectedDay(e.target.parentElement, dayNum, true);
-      
-      // // Invoke user provided dateChanged callback
-      // if(this.dateChanged) {
-      //   this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
-      // }
     }
   }
 

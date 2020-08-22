@@ -10,15 +10,15 @@ $theme: ".glass";
 
 #{$calName}#{$theme} {
   --cal-color-primary: #EC407A;
-  --cal-font-family-1: 'Open Sans', sans-serif;
-  --cal-font-family-2: 'Open Sans', sans-serif;
+  --cal-font-family-header: 'Open Sans', sans-serif;
+  --cal-font-family-weekdays: 'Open Sans', sans-serif;
+  --cal-font-family-body: 'Open Sans', sans-serif;
   --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
   --cal-border: none;
   --cal-border-radius: 0.5rem;
   --cal-header-color: white;
   --cal-header-background-color: rgba(0, 0, 0, 0.3);
 
-  font-family: var(--cal-font-family-2);
   border-radius: var(--cal-border-radius);
   box-shadow: var(--cal-drop-shadow);
   color: #323232;
@@ -28,7 +28,6 @@ $theme: ".glass";
 }
 
 #{$calName}#{$theme} .calendar__header {
-  font-family: var(--cal-font-family-1);
   padding: 20px 14px 20px 14px;
   color: var(--cal-header-color);
 }
@@ -118,8 +117,6 @@ $theme: ".glass";
 }
 
 #{$calName}#{$theme} .calendar__days {
-  font-family: var(--cal-font-family-2);
-
   .calendar__day {
     font-weight: 600;
 

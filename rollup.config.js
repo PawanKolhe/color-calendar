@@ -6,6 +6,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import banner from 'rollup-plugin-banner';
 import typescript from '@rollup/plugin-typescript';
+import strip from '@rollup/plugin-strip';
 
 const config = [
   {
@@ -26,6 +27,7 @@ const config = [
       },
     ],
     plugins: [
+      strip(),
       typescript(),
       commonjs({
         include: "node_modules/**",
@@ -35,7 +37,7 @@ const config = [
         exclude: "node_modules/**",
         babelHelpers: "bundled",
       }),
-      // terser(),
+      terser(),
       banner('color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>'),
     ],
   },
