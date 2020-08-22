@@ -1,5 +1,7 @@
 <p align="center"><img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/logo.png" alt="logo" width="20%" /></p>
-<h1 align="center">Color Calendar</h1>
+<p align="center">
+    <h1 align="center">Color Calendar</h1>
+</p>
 <p align="center">
     <a href="https://www.npmjs.com/package/color-calendar">
         <img src="https://img.shields.io/npm/v/color-calendar?style=flat-square" alt="npm version" />
@@ -28,8 +30,6 @@
 
 ![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
 
----
-
 * [Features](#🚀-features)
 * [Getting Started](#📦-getting-started)
     * [CDN](#cdn)
@@ -39,8 +39,6 @@
 * [Events](#🖱-events)
 * [Themes](#🎨-themes)
 * [License](#📜-license)
-
----
 
 ## 🚀 Features
 - Zero dependencies
