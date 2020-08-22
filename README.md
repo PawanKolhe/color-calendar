@@ -1,7 +1,7 @@
 [![](https://data.jsdelivr.com/v1/package/npm/color-calendar/badge)](https://www.jsdelivr.com/package/npm/color-calendar)
 
 # Color Calendar
-A customizable events calendar component library 
+A customizable events calendar component library. Checkout [demo](https://codesandbox.io/s/color-calendar-bnwdu). 
 
 ![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
 
