@@ -1,4 +1,4 @@
-<p align="center"><img src="/docs/img/logo.png" alt="logo" width="20%" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/logo.png" alt="logo" width="20%" /></p>
 <h1 align="center">Color Calendar</h1>
 <p align="center">
     <img src="https://img.shields.io/npm/v/color-calendar?style=flat-square" alt="npm version" />
