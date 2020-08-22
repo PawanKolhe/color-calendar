@@ -30,16 +30,17 @@
 
 ![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
 
-* [Features](#🚀-features)
-* [Getting Started](#📦-getting-started)
+* [Features](#features)
+* [Getting Started](#getting-started)
     * [CDN](#cdn)
     * [NPM](#npm)
-* [Usage](#🔨-usage)
-* [Options](#⚙️-options)
-* [Events](#🖱-events)
-* [Themes](#🎨-themes)
-* [License](#📜-license)
+* [Usage](#usage)
+* [Options](#options)
+* [Events](#events)
+* [Themes](#themes)
+* [License](#license)
 
+<a id="features"></a>
 ## 🚀 Features
 - Zero dependencies
 - Add events to calendar
@@ -49,6 +50,7 @@
 - Customize using CSS variables or passing options parameters while creating calendar.
 - More coming soon...
 
+<a id="getting-started"></a>
 ## 📦 Getting Started
 
 ### CDN
@@ -90,6 +92,7 @@ import './node_modules/color-calendar/dist/css/theme-<THEME-NAME>.css';
 
 Then add fonts.
 
+<a id="usage"></a>
 ## 🔨 Usage
 ### JavaScript
 ```javascript
@@ -227,6 +230,7 @@ Default: `0.5rem`
 
 Set CSS border radius of calendar.
 
+<a id="events"></a>
 ## 🖱 Events
 
 ### `dateChanged`
@@ -297,5 +301,6 @@ Currently 2 themes available. More on the way.
 `--cal-header-color`: white;  
 `--cal-header-background-color`: rgba(0, 0, 0, 0.3);  
 
+<a id="license"></a>
 ## 📜 License
 This software is open source, licensed under the [MIT License](https://github.com/PawanKolhe/color-calendar/blob/master/LICENSE).
