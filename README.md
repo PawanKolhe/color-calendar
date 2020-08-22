@@ -1,14 +1,30 @@
-# Color Calendar
+<p align="center"><img src="/docs/img/logo.png" alt="logo" width="20%" /></p>
+<h1 align="center">Color Calendar</h1>
+<p align="center">
+    <img src="https://img.shields.io/npm/v/color-calendar?style=flat-square" alt="npm version" />
+    <img src="https://img.shields.io/npm/dw/color-calendar?style=flat-square" alt="npm downloads" />
+    <img src="https://img.shields.io/bundlephobia/min/color-calendar?style=flat-square" alt="size" />
+    <a href="https://www.jsdelivr.com/package/npm/color-calendar">
+        <img src="https://data.jsdelivr.com/v1/package/npm/color-calendar/badge" alt="jsdelivr" />
+    </a>
+    <img src="http://hits.dwyl.com/PawanKolhe/color-calendar.svg" alt="hit count" />
+    <img src="https://img.shields.io/npm/l/color-calendar?style=flat-square" alt="license" />
+</p>
+<p align="center">
+    A customizable events calendar component library. Checkout <a href="https://codesandbox.io/s/color-calendar-bnwdu">demo</a>.
+</p>
+
+<!-- # Color Calendar
 ![npm](https://img.shields.io/npm/v/color-calendar?style=flat-square)
 ![npm](https://img.shields.io/npm/dw/color-calendar?style=flat-square)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/color-calendar?style=flat-square)
 [![](https://data.jsdelivr.com/v1/package/npm/color-calendar/badge)](https://www.jsdelivr.com/package/npm/color-calendar)
 ![HitCount](http://hits.dwyl.com/PawanKolhe/color-calendar.svg)
-![NPM](https://img.shields.io/npm/l/color-calendar?style=flat-square)
-
-A customizable events calendar component library. Checkout [demo](https://codesandbox.io/s/color-calendar-bnwdu). 
+![NPM](https://img.shields.io/npm/l/color-calendar?style=flat-square) -->
 
 ![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
+
+---
 
 * [Features](#🚀-features)
 * [Getting Started](#📦-getting-started)
@@ -19,6 +35,8 @@ A customizable events calendar component library. Checkout [demo](https://codesa
 * [Events](#🖱-events)
 * [Themes](#🎨-themes)
 * [License](#📜-license)
+
+---
 
 ## 🚀 Features
 - Zero dependencies
@@ -36,6 +54,7 @@ A customizable events calendar component library. Checkout [demo](https://codesa
 ```html
 <script src="https://cdn.jsdelivr.net/npm/color-calendar/dist/bundle.js">
 ```
+Also available on [unpkg](https://unpkg.com/browse/color-calendar/dist/).
 
 #### CSS
 Pick a css file according to the theme you want.
@@ -55,7 +74,7 @@ Check what fonts the [theme](#themes) needs or pass your own fonts in [options](
 ### NPM
 #### Installation
 ```bash
-npm install color-calendar
+npm i color-calendar
 ```
 #### Import
 ```javascript
