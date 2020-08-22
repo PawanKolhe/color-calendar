@@ -35,7 +35,7 @@ Get fonts from [Google Fonts](https://fonts.google.com/)
 ```html
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 ```
-Check what fonts the [theme](#themes) needs or pass your own fonts in options.
+Check what fonts the [theme](#themes) needs or pass your own fonts in [options](#options-fonts).
 
 ### NPM
 #### Installation
@@ -50,20 +50,30 @@ import Calendar from 'color-calendar';
 Then add CSS and fonts.
 
 ## 🔨 Usage
+### JavaScript
 ```javascript
-new Calendar(options)
+new Calendar()
 ```
-**options** (optional)  
-Type: `Object`
+Or you can pass in **options**.
+```javascript
+new Calendar({
+    id: '#myCalendar'
+})
+```
 
+### HTML
+```html
+<div id="myCalendar"></div>
+```
 
+<a id="options"></a>
 ## ⚙️ Options
 
 ### `id`
 Type: `String`  
-Default: `#calendar`  
+Default: `#color-calendar`  
 
-Selector where the calendar instance will bind to.
+Selector referencing HTMLElement where the calendar instance will bind to.
 
 ### `eventsData`
 Type: `Array[...Objects]`  
@@ -137,6 +147,7 @@ Options: `0` | `1` | `2` | `3` | `4` | `5` | `6`
 
 Starting weekday. Mapping: 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
 
+<a id="options-fonts"></a>
 ### `fontFamilyHeader`
 Type: `String`  
 Default: *based on theme*  
