@@ -1,8 +1,12 @@
 <p align="center"><img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/logo.png" alt="logo" width="20%" /></p>
 <h1 align="center">Color Calendar</h1>
 <p align="center">
-    <img src="https://img.shields.io/npm/v/color-calendar?style=flat-square" alt="npm version" />
-    <img src="https://img.shields.io/npm/dw/color-calendar?style=flat-square" alt="npm downloads" />
+    <a href="https://www.npmjs.com/package/color-calendar">
+        <img src="https://img.shields.io/npm/v/color-calendar?style=flat-square" alt="npm version" />
+    </a>
+    <a href="https://www.npmjs.com/package/color-calendar">
+        <img src="https://img.shields.io/npm/dw/color-calendar?style=flat-square" alt="npm downloads" />
+    </a>
     <img src="https://img.shields.io/bundlephobia/min/color-calendar?style=flat-square" alt="size" />
     <a href="https://www.jsdelivr.com/package/npm/color-calendar">
         <img src="https://data.jsdelivr.com/v1/package/npm/color-calendar/badge" alt="jsdelivr" />
