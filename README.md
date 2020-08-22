@@ -134,7 +134,7 @@ Default: `null`
 ]
 ```
 
-Array of objects containing events information. Properties `start` and `end` care *required* for each event in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time format.
+Array of objects containing events information. Properties `start` and `end` are *required* for each event in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time format.
 
 ### `theme`
 Type: `String`  
