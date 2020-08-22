@@ -62,7 +62,12 @@ npm install color-calendar
 import Calendar from 'color-calendar';
 ```
 
-Then add CSS and fonts.
+#### CSS
+```javascript
+import './node_modules/color-calendar/dist/css/theme-<THEME-NAME>.css';
+```
+
+Then add fonts.
 
 ## 🔨 Usage
 ### JavaScript
