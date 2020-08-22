@@ -1,3 +1,4 @@
+# Color Calendar
 ![npm](https://img.shields.io/npm/v/color-calendar?style=flat-square)
 ![npm](https://img.shields.io/npm/dw/color-calendar?style=flat-square)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/color-calendar?style=flat-square)
@@ -5,7 +6,6 @@
 ![HitCount](http://hits.dwyl.com/PawanKolhe/color-calendar.svg)
 ![NPM](https://img.shields.io/npm/l/color-calendar?style=flat-square)
 
-# Color Calendar
 A customizable events calendar component library. Checkout [demo](https://codesandbox.io/s/color-calendar-bnwdu). 
 
 ![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
