@@ -118,20 +118,22 @@ $theme: ".basic";
 #{$calName}#{$theme} .calendar__days {
   .calendar__day {
     font-weight: 600;
+  }
 
-    &:hover .calendar__day-box {
+  .calendar__day-text {
+    &:hover ~ .calendar__day-box {
       opacity: 0.08;
     }
   }
-
-  // .calendar__day-text {
-  //   cursor: pointer;
-  // }
 
   .calendar__day-box {
     border-radius: 0.5rem;
     background-color: var(--cal-color-primary);
     box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+
+    &:hover {
+      opacity: 0.08;
+    }
   }
 
   .calendar__day-other {
@@ -145,6 +147,10 @@ $theme: ".basic";
     /* Event Bullet */
     .calendar__day-bullet {
       background-color: var(--cal-color-primary);
+
+      &:hover ~ .calendar__day-box {
+        opacity: 0.08;
+      }
     }
   }
 
