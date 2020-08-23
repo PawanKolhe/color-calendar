@@ -76,6 +76,7 @@ Get fonts from [Google Fonts](https://fonts.google.com/)
 Check what fonts the [theme](#themes) needs or pass your own fonts in [options](#options-fonts).
 
 ### NPM
+> _You might need to use a module bundler such as webpack, rollup, parcel, etc._
 #### Installation
 ```bash
 npm i color-calendar
@@ -87,7 +88,7 @@ import Calendar from 'color-calendar';
 
 #### CSS
 ```javascript
-import './node_modules/color-calendar/dist/css/theme-<THEME-NAME>.css';
+import 'color-calendar/dist/css/theme-<THEME-NAME>.css';
 ```
 
 Then add fonts.
