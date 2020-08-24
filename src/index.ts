@@ -70,7 +70,7 @@ export default class Calendar {
   yearDisplay: HTMLElement;
 
   constructor(options: CalendarOptions = {}) {
-    // Options
+    // Initialize Options
     this.id = options.id ?? "#calendar";
     this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.eventsData = options.eventsData ?? [];
@@ -89,7 +89,7 @@ export default class Calendar {
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
 
-    // State
+    // Initialize State
     this.weekdayType = (options.weekdayType ?? "long") as WeekdayType;
     switch (this.weekdayType) {
       case "short":
@@ -123,9 +123,13 @@ export default class Calendar {
     this.yearPickerOffsetTemporary = 0;
 
     this.calendar = document.querySelector(this.id) as HTMLElement;
+    
+    // Check if HTML element with given selector exists in DOM
     if(!this.calendar) {
-      throw new Error(`Element with selector '${this.id}' not found`);
+      throw new Error(`[COLOR-CALENDAR] Element with selector '${this.id}' not found`);
     }
+
+    // Initialize initial HTML layout
     this.calendar.innerHTML = `
       <div class="${this.CAL_NAME} ${this.theme}">
         <div class="calendar__header">
@@ -179,6 +183,7 @@ export default class Calendar {
       </div>
     `;
 
+    // Store HTML element references
     this.calendarMonthYear = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
     this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`) as HTMLElement;
     this.calendarDays = document.querySelector(`${this.id} .calendar__days`) as HTMLElement;
@@ -193,18 +198,28 @@ export default class Calendar {
     this.monthDisplay = document.querySelector(`${this.id} .calendar__month`) as HTMLElement;
     this.yearDisplay = document.querySelector(`${this.id} .calendar__year`) as HTMLElement;
 
-    this.resetCalendar();
+    // Set initial picker styles
+    this.togglePicker(false);
+
+    // Set CSS Variables based on options given
+    this.configureStylePreferences();
+
+    // Apply click listeners to HTML elements
+    this.addEventListeners();
+
+    this.reset(new Date());
   }
 
-  resetCalendar() {
-    this.initializeLayout();
+  reset(date: Date) {
+    this.currentDate = date ? date : new Date();
+    this.clearCalendarDays();
     this.updateMonthYear();
     this.updateMonthPickerSelection(this.currentDate.getMonth());
     this.generatePickerYears();
     this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
     this.generateWeekdays();
     this.generateDays();
-    this.selectDayInitial();
+    this.selectDayInitial(date ? true : false);
     this.renderDays();
     this.setOldSelectedNode();
     if(this.dateChanged) {
@@ -215,10 +230,22 @@ export default class Calendar {
     }
   }
 
-  initializeLayout() {
-    // Set initial picker styles
-    this.togglePicker(false);
+  setDate(date: Date) {
+    if(!date) {
+      return;
+    }
+    if(date instanceof Date) {
+      this.reset(date);
+    } else {
+      this.reset(new Date(date));
+    }
+  }
 
+  getSelectedDate() {
+    return this.currentDate;
+  }
+
+  addEventListeners() {
     // Event Listeners
     this.prevButton.addEventListener("click",
       this.handlePrevMonthButtonClick.bind(this)
@@ -244,8 +271,6 @@ export default class Calendar {
     this.yearPickerChevronRight.addEventListener("click",
       this.handleYearChevronRightClick.bind(this)
     );
-
-    this.configureStylePreferences();
   }
 
   /** Configure calendar style preferences */
@@ -320,13 +345,17 @@ export default class Calendar {
     }
   }
 
-  selectDayInitial() {
-    let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
-    let isTodayDay = this.today.getDate() === this.currentDate.getDate();
-    if(isTodayMonth && isTodayDay) {
-      this.daysIn_CurrentMonth[this.today.getDate() - 1].selected = true;
+  selectDayInitial(setDate?: boolean) {
+    if(setDate) {
+      this.daysIn_CurrentMonth[this.currentDate.getDate() - 1].selected = true;
     } else {
-      this.daysIn_CurrentMonth[0].selected = true;
+      let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
+      let isTodayDay = this.today.getDate() === this.currentDate.getDate();
+      if(isTodayMonth && isTodayDay) {
+        this.daysIn_CurrentMonth[this.today.getDate() - 1].selected = true;
+      } else {
+        this.daysIn_CurrentMonth[0].selected = true;
+      }
     }
   }
 
@@ -335,17 +364,17 @@ export default class Calendar {
   }
 
   /** Set new events data array */
-  setEventsData(data: EventData[]) {
-    this.eventsData = JSON.parse(JSON.stringify(data));
-    this.updateCalendar();
-    return this.eventsData;
+  setEventsData(events: EventData[]) {
+    this.eventsData = JSON.parse(JSON.stringify(events));
+    this.setDate(this.currentDate);
+    return this.eventsData.length;
   }
 
   /** Add events to existing events data array */
   addEventsData(newEvents: EventData[] = []) {
-    const eventCount = this.eventsData.push(...newEvents);
-    this.updateCalendar();
-    return eventCount;
+    const eventAddedCount = this.eventsData.push(...newEvents);
+    this.setDate(this.currentDate);
+    return eventAddedCount;
   }
 
   /** Invoked on month or year click */
@@ -437,14 +466,23 @@ export default class Calendar {
   }
 
   updateMonthPickerSelection(newMonthValue: number) {
-    const oldMonthValue = this.currentDate.getMonth();
     if(newMonthValue < 0) {
       newMonthValue = 11;
     } else {
       newMonthValue = newMonthValue % 12;
     }
-    this.pickerMonthContainer!.children[oldMonthValue].classList.remove('calendar__picker-month-selected');
+
+    this.removeMonthPickerSelection();
     this.pickerMonthContainer!.children[newMonthValue].classList.add('calendar__picker-month-selected');
+  }
+
+  removeMonthPickerSelection() {
+    // Remove old year selection by scanning for the selected month
+    for(let i = 0; i < 12; i++) {
+      if(this.pickerMonthContainer!.children[i].classList.contains('calendar__picker-month-selected')) {
+        this.pickerMonthContainer!.children[i].classList.remove('calendar__picker-month-selected');
+      }
+    }
   }
 
   handleYearPickerClick(e: any) {
@@ -643,17 +681,6 @@ export default class Calendar {
       this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
     }
   }
-
-  // /**
-  //  * @param {Date} date - Date to use
-  //  */
-  // DateUTCToISOLocal(date: Date) {
-  //   console.log(date);
-  //   const tzoffset = (date).getTimezoneOffset() * 60000;
-  //   console.log(tzoffset);
-  //   let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
-  //   return localISOTime;
-  // }
 
   /** Update Month and Year HTML */
   updateMonthYear() {

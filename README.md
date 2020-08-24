@@ -37,6 +37,8 @@
 * [Usage](#usage)
 * [Options](#options)
 * [Events](#events)
+* [Methods](#methods)
+* [Types](#types)
 * [Themes](#themes)
 * [License](#license)
 
@@ -121,21 +123,23 @@ Default: `#color-calendar`
 Selector referencing HTMLElement where the calendar instance will bind to.
 
 ### `eventsData`
-Type: `Array[...Objects]`  
+Type: [`EventData`](#event-data)[]  
 Default: `null`  
 
 ```javascript
 [
     {
-      start: '2020-08-17T06:00:00',
-      end: '2020-08-18T20:30:00',
+        start: '2020-08-17T06:00:00',
+        end: '2020-08-18T20:30:00',
+        name: 'Blockchain 101'
       ...
     },
     ...
 ]
 ```
 
-Array of objects containing events information. Properties `start` and `end` are *required* for each event in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time format.
+Array of objects containing events information. 
+> Note: Properties `start` and `end` are *required* for each event in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time format. You can _optionally_ choose to add other properties.
 
 ### `theme`
 Type: `String`  
@@ -267,8 +271,68 @@ Props:
 
 Emitted when the current month is changed.
 
-<!-- ## 🔧 Methods
-Coming soon... -->
+<a id="methods"></a>
+## 🔧 Methods
+### `reset()`
+Return:
+- Type: `void`  
+
+Reset calendar to today's date.
+```javascript
+let myCal = new Calendar();
+myCal.reset();
+```
+
+### `setDate()`
+Props:
+| Props | Type | Required | Description        |
+|-------|------|----------|--------------------|
+| date  | Date | required | New date to be set |
+Return:
+- Type: `void`  
+
+Set new selected date.
+
+### `getSelectedDate()`
+Return:
+- Type: `Date`  
+- Description: `Currently selected date`
+
+Get currently selected date.
+
+### `setEventsData()`
+Props:
+| Props  | Type       | Required | Description      |
+|--------|------------|----------|------------------|
+| events | [EventData](#eventdata)[] | required | Events to be set |
+Return:
+- Type: `Number`
+- Description: `Number of events set`
+
+Set a new events array.
+
+### `addEventsData()`
+Props:
+| Props  | Type       | Required | Description        |
+|--------|------------|----------|--------------------|
+| events | [EventData](#eventdata)[] | required | Events to be added |
+Return:
+- Type: `Number`
+- Description: `Number of events added`
+
+Add events of the events array.
+
+<a id="types"></a>
+## 💎 Types
+<a id="event-data"></a>
+### `EventData`
+```javascript
+interface EventData {
+    start: string,
+    end: string,
+    [key: string]: any,
+}
+```
 
 <a id="themes"></a>
 ## 🎨 Themes
