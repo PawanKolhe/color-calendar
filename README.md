@@ -274,6 +274,7 @@ Emitted when the current month is changed.
 <a id="methods"></a>
 ## 🔧 Methods
 ### `reset()`
+
 Return:
 - Type: `void`  
 
@@ -288,6 +289,7 @@ Props:
 | Props | Type | Required | Description        |
 |-------|------|----------|--------------------|
 | date  | Date | required | New date to be set |
+
 Return:
 - Type: `void`  
 
@@ -305,6 +307,7 @@ Props:
 | Props  | Type       | Required | Description      |
 |--------|------------|----------|------------------|
 | events | [EventData](#eventdata)[] | required | Events to be set |
+
 Return:
 - Type: `Number`
 - Description: `Number of events set`
@@ -316,6 +319,7 @@ Props:
 | Props  | Type       | Required | Description        |
 |--------|------------|----------|--------------------|
 | events | [EventData](#eventdata)[] | required | Events to be added |
+
 Return:
 - Type: `Number`
 - Description: `Number of events added`
