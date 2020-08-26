@@ -107,7 +107,7 @@ Or you can pass in **options**.
 ```javascript
 new Calendar({
     id: '#color-calendar',
-    compactMode: true
+    calendarSize: 'small'
 })
 ```
 
@@ -125,11 +125,12 @@ Default: `#color-calendar`
 
 Selector referencing HTMLElement where the calendar instance will bind to.
 
-### `compactMode`
-Type: `Boolean`  
-Default: `false`  
+### `calendarSize`
+Type: `String`  
+Default: `large`  
+Options: `small` | `large`  
 
-Make calendar UI smaller.
+Size of calendar UI.
 
 ### `eventsData`
 Type: [`EventData`](#type-event-data)[]  
@@ -187,7 +188,7 @@ Color of weekdays text.  *Only works on some themes.*
 ### `weekdayType`
 Type: `String`  
 Default: `long-lower`  
-Options: [WeekdayType](#type-weekday-type) (`'short'` | `'long-lower'` | `'long-upper'`)  
+Options: [WeekdayType](#type-weekday-type) (`short` | `long-lower` | `long-upper`)  
 
 Select how weekdays will be displayed. E.g. M, Mon, or MON.
 

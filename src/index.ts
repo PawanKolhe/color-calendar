@@ -1,4 +1,5 @@
 import {
+  CalendarSize,
   CalendarOptions,
   EventData,
   Day,
@@ -15,7 +16,7 @@ export default class Calendar {
 
   // Options
   id: string;
-  compactMode: boolean;
+  calendarSize: CalendarSize;
   eventsData: EventData[];
   theme: string;
   primaryColor?: string;
@@ -79,7 +80,7 @@ export default class Calendar {
   constructor(options: CalendarOptions = {}) {
     // Initialize Options
     this.id = options.id ?? "#calendar";
-    this.compactMode = options.compactMode ?? false;
+    this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
     this.eventsData = options.eventsData ?? [];
     this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
@@ -128,7 +129,7 @@ export default class Calendar {
 
     // Initialize initial HTML layout
     this.calendar.innerHTML = `
-      <div class="${this.CAL_NAME} ${this.theme} ${this.compactMode ? 'color-calendar--compact' : ''}">
+      <div class="${this.CAL_NAME} ${this.theme} color-calendar--${this.calendarSize}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
           <div class="calendar__monthyear">

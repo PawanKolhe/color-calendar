@@ -183,7 +183,7 @@ $theme: ".basic";
 }
 
 // COMPACT MODE
-#{$calName}#{$theme}.color-calendar--compact {
+#{$calName}#{$theme}.color-calendar--small {
   font-size: 0.8rem;
 
   .calendar__header {

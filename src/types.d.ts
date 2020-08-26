@@ -1,6 +1,6 @@
 export interface CalendarOptions {
   id?: string;
-  compactMode?: boolean;
+  calendarSize?: CalendarSize;
   eventsData?: EventData[];
   theme?: string;
   primaryColor?: string;
@@ -31,6 +31,8 @@ export interface Day {
   day: number,
   selected?: boolean,
 }
+
+export type CalendarSize = "small" | "large";
 
 export type MonthDisplayType = "short" | "long";
 
