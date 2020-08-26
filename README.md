@@ -347,7 +347,7 @@ Set month display type.
 <a id="type-event-data"></a>
 ### `EventData`
 ```javascript
-interface EventData {
+{
     start: string,
     end: string,
     [key: string]: any,
