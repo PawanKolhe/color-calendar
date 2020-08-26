@@ -332,7 +332,7 @@ Props:
 |--------|------------|----------|--------------------|
 | weekdayType | [WeekdayType](#type-weekday-type) | required | New weekday type |
 
-Add events of the events array.
+Set weekdays display type. 
 
 ### `setMonthDisplayType()`
 Props:
@@ -340,7 +340,7 @@ Props:
 |--------|------------|----------|--------------------|
 | monthDisplayType | [MonthDisplayType](#type-month-display-type) | required | New month display type |
 
-Add events of the events array.
+Set month display type.
 
 <a id="types"></a>
 ## 💎 Types
@@ -358,9 +358,28 @@ interface EventData {
 ### `WeekdayType`
 `"short"` | `"long-lower"` | `"long-upper"`
 
+```javascript
+// short
+M T W ...
+
+// long-lower
+Mon Tue Wed ...
+
+// long-upper
+MON TUE WED ...
+```
+
 <a id="type-month-display-type"></a>
 ### `MonthDisplayType`
 `"short"` | `"long"`
+
+```javascript
+// short
+Jan Feb Mar ...
+
+// long
+January February March ...
+```
 
 <a id="themes"></a>
 ## 🎨 Themes
