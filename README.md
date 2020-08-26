@@ -235,6 +235,12 @@ Default: `0.5rem`
 
 Set CSS border radius of calendar.
 
+### `disableMonthYearPickers`
+Type: `Boolean`  
+Default: `false`  
+
+If month and year picker should be disabled.
+
 <a id="events"></a>
 ## 🖱 Events
 

@@ -15,23 +15,24 @@ export default class Calendar {
 
   // Options
   id: string;
-  weekdayType: WeekdayType;
-  monthDisplayType: MonthDisplayType;
   eventsData: EventData[];
-  startWeekday: StartWeekday;
   theme: string;
   primaryColor?: string;
+  headerColor?: string;
+  headerBackgroundColor?: string;
+  weekdaysColor?: string;
+  weekdayType: WeekdayType;
+  monthDisplayType: MonthDisplayType;
+  startWeekday: StartWeekday;
   fontFamilyHeader?: string;
   fontFamilyWeekdays?: string;
   fontFamilyBody?: string;
   dropShadow: boolean;
   border?: string;
   borderRadius?: string;
-  headerColor?: string;
-  headerBackgroundColor?: string;
-  weekdaysColor?: string;
-  monthChanged?: any;
-  dateChanged?: any;
+  disableMonthYearPickers: boolean;
+  monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
+  dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
   // State
   weekdays: Weekdays;
@@ -86,6 +87,7 @@ export default class Calendar {
     this.headerColor = options.headerColor;
     this.headerBackgroundColor = options.headerBackgroundColor;
     this.weekdaysColor = options.weekdaysColor;
+    this.disableMonthYearPickers =  options.disableMonthYearPickers ?? false;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
 
@@ -384,6 +386,10 @@ export default class Calendar {
         e.target.classList.contains("calendar__month") ||
         e.target.classList.contains("calendar__year")
       )) {
+      return;
+    }
+    // Check if MonthYear click is disabled
+    if(this.disableMonthYearPickers) {
       return;
     }
 

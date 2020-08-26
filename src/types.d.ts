@@ -15,6 +15,7 @@ export interface CalendarOptions {
   dropShadow?: boolean;
   border?: string;
   borderRadius?: string;
+  disableMonthYearPickers?: boolean;
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 }
