@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/npm/l/color-calendar?style=flat-square" alt="license" />
 </p>
 <p align="center">
-    A customizable events calendar component library. Checkout <a href="https://codesandbox.io/s/color-calendar-bnwdu">demo</a>.
+    A customizable events calendar component library. Checkout <a href="https://v84yk.csb.app/">Demo 1</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 2.</a>
 </p>
 
 <!-- # Color Calendar
@@ -245,7 +245,7 @@ Props:
     - Type: `Date`
     - Currently selected date
 - `filteredDateEvents`
-    - Type: `EventData[]`
+    - Type: [`EventData`](#eventdata)[]
     - All events on that particular date
 ```typescript
 const options = {
@@ -266,7 +266,7 @@ Props:
     - Type: `Date`
     - Currently selected date
 - `filteredMonthEvents`
-    - Type: `EventData[]`
+    - Type: [`EventData`](#eventdata)[]
     - All events on that particular month
 
 Emitted when the current month is changed.
