@@ -15,6 +15,7 @@ export default class Calendar {
 
   // Options
   id: string;
+  compactMode: boolean;
   eventsData: EventData[];
   theme: string;
   primaryColor?: string;
@@ -78,8 +79,9 @@ export default class Calendar {
   constructor(options: CalendarOptions = {}) {
     // Initialize Options
     this.id = options.id ?? "#calendar";
-    this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
+    this.compactMode = options.compactMode ?? false;
     this.eventsData = options.eventsData ?? [];
+    this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
     this.theme = options.theme ?? "basic";
     this.primaryColor = options.primaryColor;
@@ -126,7 +128,7 @@ export default class Calendar {
 
     // Initialize initial HTML layout
     this.calendar.innerHTML = `
-      <div class="${this.CAL_NAME} ${this.theme}">
+      <div class="${this.CAL_NAME} ${this.theme} ${this.compactMode ? 'color-calendar--compact' : ''}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
           <div class="calendar__monthyear">

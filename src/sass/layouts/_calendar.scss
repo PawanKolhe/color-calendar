@@ -16,6 +16,7 @@ $calName: ".color-calendar";
   user-select: none;
   overflow: hidden;
   font-family: var(--cal-font-family-body);
+  font-size: 1rem;
 }
 
 #{$calName} .calendar__header {
@@ -172,6 +173,10 @@ $calName: ".color-calendar";
       cursor: pointer;
       display: block;
     }
+
+    // &.calendar__day-selected .calendar__day-box-today {
+    //   box-shadow: 0 3px 15px -5px var(--cal-color-primary), inset 0px 3px 8px -4px white !important
+    // }
   }
 }
 
@@ -209,7 +214,7 @@ $calName: ".color-calendar";
       cursor: pointer;
 
       &::after {
-        content: '';
+        content: "";
         width: 100%;
         height: 50px;
         position: absolute;
@@ -260,7 +265,7 @@ $calName: ".color-calendar";
       cursor: pointer;
 
       &::after {
-        content: '';
+        content: "";
         width: 100%;
         height: 50px;
         position: absolute;
@@ -328,7 +333,8 @@ $calName: ".color-calendar";
     display: inline-block;
     border-right: 2px solid var(--cal-color-primary);
     border-bottom: 2px solid var(--cal-color-primary);
-    width: 10px; height: 10px;
+    width: 10px;
+    height: 10px;
     transform: rotate(-225deg);
   }
 
@@ -336,7 +342,8 @@ $calName: ".color-calendar";
     display: inline-block;
     border-right: 2px solid var(--cal-color-primary);
     border-bottom: 2px solid var(--cal-color-primary);
-    width: 10px; height: 10px;
+    width: 10px;
+    height: 10px;
     transform: rotate(-45deg);
   }
 }

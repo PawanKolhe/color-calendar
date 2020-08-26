@@ -1,5 +1,6 @@
 export interface CalendarOptions {
   id?: string;
+  compactMode?: boolean;
   eventsData?: EventData[];
   theme?: string;
   primaryColor?: string;

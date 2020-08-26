@@ -182,3 +182,57 @@ $theme: ".glass";
   background-color: white;
   border-radius: var(--cal-border-radius);
 }
+
+// COMPACT MODE
+#{$calName}#{$theme}.color-calendar--compact {
+  font-size: 0.8rem;
+
+  .calendar__header {
+    padding: 10px 10px;
+    grid-template-columns: repeat(7, minmax(20px, 40px));
+
+    .calendar__monthyear {
+      font-size: 1.2rem;
+    }
+
+    .calendar__arrow-inner, .calendar__arrow-inner::after {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .calendar__body {
+    padding: 10px 10px;
+
+    .calendar__weekdays {
+      grid-template-columns: repeat(7, minmax(20px, 40px));
+      margin-bottom: 0;
+    }
+
+    .calendar__days {
+      grid-template-columns: repeat(7, minmax(20px, 40px));
+      grid-template-rows: repeat(6, minmax(30px, 35px));
+    }
+
+    .calendar__picker {
+      top: 55px;
+
+      .calendar__picker-month {
+        &-option {
+          padding: 10px 0;
+        }
+        &-option::after {
+          height: 40px;
+        }
+      }
+      .calendar__picker-year {
+        &-option {
+          padding: 10px 0;
+        }
+        &-option::after {
+          height: 40px;
+        }
+      }
+    }
+  }
+}
