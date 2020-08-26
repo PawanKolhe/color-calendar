@@ -27,8 +27,8 @@ const config = [
       },
     ],
     plugins: [
-      strip(),
       typescript(),
+      strip(),
       commonjs({
         include: "node_modules/**",
       }),

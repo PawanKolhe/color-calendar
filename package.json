@@ -10,7 +10,7 @@
     "start:js": "rollup -c -w",
     "start:css": "gulp watch",
     "prebuild": "rimraf dist",
-    "build": "rollup -c && gulp && npm run build:types",
+    "build": "npm run build:types && rollup -c && gulp",
     "build:types": "tsc --declaration src/index.ts --declarationDir dist --emitDeclarationOnly",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
