@@ -35,6 +35,11 @@ export default class Calendar {
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
   // State
+  weekdayTypeOptions = {
+    "short": ["S", "M", "T", "W", "T", "F", "S"] as Weekdays,
+    "long-lower": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as Weekdays,
+    "long-upper": ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"] as Weekdays,
+  }
   weekdays: Weekdays;
   today: Date;
   currentDate: Date;
@@ -93,19 +98,7 @@ export default class Calendar {
 
     // Initialize State
     this.weekdayType = (options.weekdayType ?? "long") as WeekdayType;
-    switch (this.weekdayType) {
-      case "short":
-        this.weekdays = ["S", "M", "T", "W", "T", "F", "S"];
-        break;
-      case "long-lower":
-        this.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        break;
-      case "long-upper":
-        this.weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        break;
-      default:
-        this.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    }
+    this.weekdays = this.weekdayTypeOptions[this.weekdayType] ?? this.weekdayTypeOptions["short"];
     this.today = new Date();
     this.currentDate = new Date();
     this.pickerType = 'month';
@@ -377,6 +370,17 @@ export default class Calendar {
     const eventAddedCount = this.eventsData.push(...newEvents);
     this.setDate(this.currentDate);
     return eventAddedCount;
+  }
+
+  setWeekdayType(weekdayType: WeekdayType) {
+    this.weekdayType = weekdayType;
+    this.weekdays = this.weekdayTypeOptions[this.weekdayType] ?? this.weekdayTypeOptions["short"];
+    this.generateWeekdays();
+  }
+
+  setMonthDisplayType(monthDisplayType: MonthDisplayType) {
+    this.monthDisplayType = monthDisplayType;
+    this.updateMonthYear();
   }
 
   /** Invoked on month or year click */
@@ -697,6 +701,7 @@ export default class Calendar {
     this.yearDisplay!.innerHTML = this.currentDate.getFullYear().toString();
   }
 
+  /** Update Weekdays HTML */
   generateWeekdays() {
     let newHTML = '';
     for (let i = 0; i < 7; i++) {

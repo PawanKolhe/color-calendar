@@ -123,7 +123,7 @@ Default: `#color-calendar`
 Selector referencing HTMLElement where the calendar instance will bind to.
 
 ### `eventsData`
-Type: [`EventData`](#event-data)[]  
+Type: [`EventData`](#type-event-data)[]  
 Default: `null`  
 
 ```javascript
@@ -178,14 +178,14 @@ Color of weekdays text.  *Only works on some themes.*
 ### `weekdayType`
 Type: `String`  
 Default: `long-lower`  
-Options: `short` | `long-lower` | `long-upper`  
+Options: [WeekdayType](#type-weekday-type) (`'short'` | `'long-lower'` | `'long-upper'`)  
 
 Select how weekdays will be displayed. E.g. M, Mon, or MON.
 
 ### `monthDisplayType`
 Type: `String`  
 Default: `long`  
-Options: `short` | `long`  
+Options: [MonthDisplayType](#type-month-display-type) (`short` | `long`)  
 
 Select how month will be displayed in header. E.g. Feb, February.
 
@@ -251,7 +251,7 @@ Props:
     - Type: `Date`
     - Currently selected date
 - `filteredDateEvents`
-    - Type: [`EventData`](#eventdata)[]
+    - Type: [`EventData`](#type-event-data)[]
     - All events on that particular date
 ```typescript
 const options = {
@@ -272,7 +272,7 @@ Props:
     - Type: `Date`
     - Currently selected date
 - `filteredMonthEvents`
-    - Type: [`EventData`](#eventdata)[]
+    - Type: [`EventData`](#type-event-data)[]
     - All events on that particular month
 
 Emitted when the current month is changed.
@@ -280,9 +280,6 @@ Emitted when the current month is changed.
 <a id="methods"></a>
 ## 🔧 Methods
 ### `reset()`
-
-Return:
-- Type: `void`  
 
 Reset calendar to today's date.
 ```javascript
@@ -295,9 +292,6 @@ Props:
 | Props | Type | Required | Description        |
 |-------|------|----------|--------------------|
 | date  | Date | required | New date to be set |
-
-Return:
-- Type: `void`  
 
 Set new selected date.
 
@@ -312,7 +306,7 @@ Get currently selected date.
 Props:
 | Props  | Type       | Required | Description      |
 |--------|------------|----------|------------------|
-| events | [EventData](#eventdata)[] | required | Events to be set |
+| events | [EventData](#type-event-data)[] | required | Events to be set |
 
 Return:
 - Type: `Number`
@@ -324,7 +318,7 @@ Set a new events array.
 Props:
 | Props  | Type       | Required | Description        |
 |--------|------------|----------|--------------------|
-| events | [EventData](#eventdata)[] | required | Events to be added |
+| events | [EventData](#type-event-data)[] | required | Events to be added |
 
 Return:
 - Type: `Number`
@@ -332,9 +326,25 @@ Return:
 
 Add events of the events array.
 
+### `setWeekdayType()`
+Props:
+| Props  | Type       | Required | Description        |
+|--------|------------|----------|--------------------|
+| weekdayType | [WeekdayType](#type-weekday-type) | required | New weekday type |
+
+Add events of the events array.
+
+### `setMonthDisplayType()`
+Props:
+| Props  | Type       | Required | Description        |
+|--------|------------|----------|--------------------|
+| monthDisplayType | [MonthDisplayType](#type-month-display-type) | required | New month display type |
+
+Add events of the events array.
+
 <a id="types"></a>
 ## 💎 Types
-<a id="event-data"></a>
+<a id="type-event-data"></a>
 ### `EventData`
 ```javascript
 interface EventData {
@@ -343,6 +353,14 @@ interface EventData {
     [key: string]: any,
 }
 ```
+
+<a id="type-weekday-type"></a>
+### `WeekdayType`
+`"short"` | `"long-lower"` | `"long-upper"`
+
+<a id="type-month-display-type"></a>
+### `MonthDisplayType`
+`"short"` | `"long"`
 
 <a id="themes"></a>
 ## 🎨 Themes
