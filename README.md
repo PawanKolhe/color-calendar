@@ -348,8 +348,8 @@ Set month display type.
 ### `EventData`
 ```javascript
 {
-    start: string,
-    end: string,
+    start: string,    // ISO 8601 date and time format
+    end: string,      // ISO 8601 date and time format
     [key: string]: any,
 }
 ```
@@ -359,13 +359,13 @@ Set month display type.
 `"short"` | `"long-lower"` | `"long-upper"`
 
 ```markdown
-// short
+// "short"
 M T W ...
 
-// long-lower
+// "long-lower"
 Mon Tue Wed ...
 
-// long-upper
+// "long-upper"
 MON TUE WED ...
 ```
 
@@ -374,10 +374,10 @@ MON TUE WED ...
 `"short"` | `"long"`
 
 ```markdown
-// short
+// "short"
 Jan Feb Mar ...
 
-// long
+// "long"
 January February March ...
 ```
 
