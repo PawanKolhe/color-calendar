@@ -40,6 +40,8 @@
 * [Methods](#methods)
 * [Types](#types)
 * [Themes](#themes)
+* [Bug Reporting](#bug)
+* [Feature Request](#feature-request)
 * [License](#license)
 
 <a id="features"></a>
@@ -104,7 +106,8 @@ new Calendar()
 Or you can pass in **options**.
 ```javascript
 new Calendar({
-    id: '#color-calendar'
+    id: '#color-calendar',
+    compactMode: true
 })
 ```
 
@@ -121,6 +124,12 @@ Type: `String`
 Default: `#color-calendar`  
 
 Selector referencing HTMLElement where the calendar instance will bind to.
+
+### `compactMode`
+Type: `Boolean`  
+Default: `false`  
+
+Make calendar UI smaller.
 
 ### `eventsData`
 Type: [`EventData`](#type-event-data)[]  
@@ -412,6 +421,14 @@ Currently 2 themes available. More on the way.
 `--cal-border-radius`: 0.5rem;  
 `--cal-header-color`: white;  
 `--cal-header-background-color`: rgba(0, 0, 0, 0.3);  
+
+<a id="bug"></a>
+## 🐛 Bug Reporting
+Feel free to [open an issue](https://github.com/PawanKolhe/color-calendar/issues) on GitHub if you find any bug.
+
+<a id="feature-request"></a>
+## ⭐ Feature Request
+I'd love ❤️️ to hear where you are using this library or any additional features you might need for your use case. [Open an issue](https://github.com/PawanKolhe/color-calendar/issues) on GitHub or connect with me on [LinkedIn](https://www.linkedin.com/in/kolhepawan/).
 
 <a id="license"></a>
 ## 📜 License
