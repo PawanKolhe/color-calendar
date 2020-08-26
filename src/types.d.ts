@@ -12,7 +12,7 @@ export interface CalendarOptions {
   fontFamilyHeader?: string;
   fontFamilyWeekdays?: string;
   fontFamilyBody?: string;
-  dropShadow?: boolean;
+  dropShadow?: string;
   border?: string;
   borderRadius?: string;
   disableMonthYearPickers?: boolean;

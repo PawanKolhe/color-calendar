@@ -27,7 +27,7 @@ export default class Calendar {
   fontFamilyHeader?: string;
   fontFamilyWeekdays?: string;
   fontFamilyBody?: string;
-  dropShadow: boolean;
+  dropShadow?: string;
   border?: string;
   borderRadius?: string;
   disableMonthYearPickers: boolean;
@@ -81,7 +81,7 @@ export default class Calendar {
     this.fontFamilyHeader = options.fontFamilyHeader;
     this.fontFamilyWeekdays = options.fontFamilyWeekdays;
     this.fontFamilyBody = options.fontFamilyBody;
-    this.dropShadow = options.dropShadow ?? true;
+    this.dropShadow = options.dropShadow;
     this.border = options.border;
     this.borderRadius = options.borderRadius;
     this.headerColor = options.headerColor;
@@ -291,8 +291,8 @@ export default class Calendar {
     if (this.fontFamilyBody) {
       root.style.setProperty("--cal-font-family-body", this.fontFamilyBody);
     }
-    if (!this.dropShadow) {
-      root.style.setProperty("--cal-drop-shadow", "none");
+    if (this.dropShadow) {
+      root.style.setProperty("--cal-drop-shadow", this.dropShadow);
     }
     if (this.border) {
       root.style.setProperty("--cal-border", this.border);
