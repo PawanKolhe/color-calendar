@@ -1,6 +1,6 @@
 {
   "name": "color-calendar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A customizable events calendar widget library",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
@@ -67,9 +67,10 @@
   "keywords": [
     "calendar",
     "event calendar",
+    "calendar ui",
+    "calendar widget",
     "color calendar",
-    "cal",
-    "calendar ui"
+    "cal"
   ],
   "browserslist": [
     "defaults"
