@@ -358,7 +358,7 @@ interface EventData {
 ### `WeekdayType`
 `"short"` | `"long-lower"` | `"long-upper"`
 
-```javascript
+```markdown
 // short
 M T W ...
 
@@ -373,7 +373,7 @@ MON TUE WED ...
 ### `MonthDisplayType`
 `"short"` | `"long"`
 
-```javascript
+```markdown
 // short
 Jan Feb Mar ...
 
