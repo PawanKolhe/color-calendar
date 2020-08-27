@@ -132,6 +132,13 @@ Options: `small` | `large`
 
 Size of calendar UI.
 
+### `layoutModifiers`
+Type: [`LayoutModifier`](#type-layout-modifier)[]  
+Default: `[]`  
+Example: `['month-left-align']`
+
+Modifiers to alter the layout of the calendar.
+
 ### `eventsData`
 Type: [`EventData`](#type-event-data)[]  
 Default: `null`  
@@ -391,6 +398,10 @@ Jan Feb Mar ...
 January February March ...
 ```
 
+<a id="type-layout-modifier"></a>
+### `LayoutModifier`
+`"month-align-left"`
+
 <a id="themes"></a>
 ## 🎨 Themes
 Currently 2 themes available. More on the way.
@@ -399,12 +410,12 @@ Currently 2 themes available. More on the way.
 <img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/theme-basic.PNG" alt="Basic Theme" width="400" />  
 
 #### CSS Custom Properties
-`--cal-color-primary`: #0440a0;  
+`--cal-color-primary`: #000000;  
 `--cal-font-family-header`: "Work Sans", sans-serif;  
 `--cal-font-family-weekdays`: "Work Sans", sans-serif;  
 `--cal-font-family-body`: "Work Sans", sans-serif;  
 `--cal-drop-shadow`: 0 7px 30px -10px rgba(150, 170, 180, 0.5);  
-`--cal-border`: 5px solid rgba(4, 64, 160, 0.1);  
+`--cal-border`: none;  
 `--cal-border-radius`: 0.5rem;  
 `--cal-header-color`: black;  
 `--cal-weekdays-color`: black;  

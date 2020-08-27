@@ -1,0 +1,11 @@
+$calName: ".color-calendar";
+$layout: ".month-left-align";
+
+#{$calName}#{$layout} {
+  .calendar__header .calendar__monthyear {
+    grid-column: 1 / span 5;
+    margin: 0;
+    justify-content: flex-start;
+    padding-left: 5%;
+  }
+}

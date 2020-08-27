@@ -1,5 +1,6 @@
 import {
   CalendarSize,
+  LayoutModifier,
   CalendarOptions,
   EventData,
   Day,
@@ -17,6 +18,7 @@ export default class Calendar {
   // Options
   id: string;
   calendarSize: CalendarSize;
+  layoutModifiers: LayoutModifier[];
   eventsData: EventData[];
   theme: string;
   primaryColor?: string;
@@ -63,7 +65,8 @@ export default class Calendar {
 
   // Elements
   calendar: HTMLElement;
-  calendarMonthYear: HTMLElement;
+  calendarRoot: HTMLElement;
+  calendarHeader: HTMLElement;
   calendarWeekdays: HTMLElement;
   calendarDays: HTMLElement;
   prevButton: HTMLElement;
@@ -81,6 +84,7 @@ export default class Calendar {
     // Initialize Options
     this.id = options.id ?? "#calendar";
     this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
+    this.layoutModifiers = options.layoutModifiers ?? [];
     this.eventsData = options.eventsData ?? [];
     this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
@@ -182,19 +186,37 @@ export default class Calendar {
     `;
 
     // Store HTML element references
-    this.calendarMonthYear = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
+    this.calendarRoot = document.querySelector(`${this.id} .${this.CAL_NAME}`) as HTMLElement;
+    this.calendarHeader = document.querySelector(`${this.id} .calendar__header`) as HTMLElement;
     this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`) as HTMLElement;
     this.calendarDays = document.querySelector(`${this.id} .calendar__days`) as HTMLElement;
-    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`) as HTMLElement;
-    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`) as HTMLElement;
     this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`) as HTMLElement;
     this.pickerMonthContainer = document.querySelector(`${this.id} .calendar__picker-month`) as HTMLElement;
     this.pickerYearContainer = document.querySelector(`${this.id} .calendar__picker-year`) as HTMLElement;
     this.yearPickerChevronLeft = document.querySelector(`${this.id} .calendar__picker-year-arrow-left`) as HTMLElement;
     this.yearPickerChevronRight = document.querySelector(`${this.id} .calendar__picker-year-arrow-right`) as HTMLElement;
+
+    // Apply Layout Modifiers
+    this.layoutModifiers.forEach(item => {
+      this.calendarRoot.classList.add(item);
+    });
+
+    if(this.layoutModifiers.includes('month-left-align')) {
+      this.calendarHeader.innerHTML = `
+        <div class="calendar__monthyear">
+          <span class="calendar__month"></span>&nbsp;
+          <span class="calendar__year"></span>
+        </div>
+        <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
+        <div class="calendar__arrow calendar__arrow-next"><div class="calendar__arrow-inner"></div></div>
+      `
+    }
+
     this.monthyearDisplay = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
     this.monthDisplay = document.querySelector(`${this.id} .calendar__month`) as HTMLElement;
     this.yearDisplay = document.querySelector(`${this.id} .calendar__year`) as HTMLElement;
+    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`) as HTMLElement;
+    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`) as HTMLElement;
 
     // Set initial picker styles
     this.togglePicker(false);
@@ -273,8 +295,7 @@ export default class Calendar {
 
   /** Configure calendar style preferences */
   configureStylePreferences() {
-    // let root = document.documentElement;
-    let root = document.querySelector(`${this.id} .${this.CAL_NAME}`) as HTMLElement;
+    let root = this.calendarRoot;
     if (this.primaryColor) {
       root.style.setProperty("--cal-color-primary", this.primaryColor);
     }
