@@ -116,13 +116,37 @@ $theme: ".basic";
 }
 
 #{$calName}#{$theme} .calendar__days {
+  .calendar__day-other {
+    color: var(--cal-color-primary);
+    opacity: 0.2;
+  }
+
   .calendar__day {
     font-weight: 600;
   }
 
+  .calendar__day-today {
+    font-weight: 700;
+    color: var(--cal-color-primary);
+
+    .calendar__day-box {
+      border-radius: 0.5rem;
+      background-color: var(--cal-color-primary);
+      opacity: 0.1;
+    }
+  }
+
   .calendar__day-text {
     &:hover ~ .calendar__day-box {
-      opacity: 0.08;
+      opacity: 0.1;
+    }
+  }
+
+  .calendar__day-bullet {
+    background-color: var(--cal-color-primary);
+
+    &:hover ~ .calendar__day-box {
+      opacity: 0.1;
     }
   }
 
@@ -132,47 +156,37 @@ $theme: ".basic";
     box-shadow: 0 3px 15px -5px var(--cal-color-primary);
 
     &:hover {
-      opacity: 0.08;
+      opacity: 0.1;
     }
-  }
-
-  .calendar__day-other {
-    color: var(--cal-color-primary);
-    opacity: 0.3;
   }
 
   .calendar__day-event {
     font-weight: 700;
-
-    /* Event Bullet */
-    .calendar__day-bullet {
-      background-color: var(--cal-color-primary);
-
-      &:hover ~ .calendar__day-box {
-        opacity: 0.08;
-      }
-    }
   }
 
-  .calendar__day-selected:not(.calendar__day-today) {
-    color: var(--cal-color-primary);
+  .calendar__day-selected {
+    color: white;
     font-weight: 700;
 
     .calendar__day-box {
       border-radius: 0.5rem;
       background-color: var(--cal-color-primary);
-      opacity: 0.1;
-    }
-  }
-
-  .calendar__day-today {
-    font-weight: 700;
-    color: white;
-
-    .calendar__day-box-today {
-      border-radius: 0.5rem;
-      background-color: var(--cal-color-primary);
+      opacity: 1;
       box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+    }
+
+    .calendar__day-text {
+      &:hover ~ .calendar__day-box {
+        opacity: 1;
+      }
+    }
+  
+    .calendar__day-bullet {
+      background-color: white;
+  
+      &:hover ~ .calendar__day-box {
+        opacity: 1;
+      }
     }
   }
 }
@@ -188,7 +202,7 @@ $theme: ".basic";
 
   .calendar__header {
     padding: 10px 10px 0 10px;
-    grid-template-columns: repeat(7, minmax(20px, 40px));
+    grid-template-columns: repeat(7, minmax(25px, 41px));
 
     .calendar__monthyear {
       font-size: 1.2rem;
@@ -204,12 +218,12 @@ $theme: ".basic";
     padding: 0 10px 10px 10px;
 
     .calendar__weekdays {
-      grid-template-columns: repeat(7, minmax(20px, 40px));
+      grid-template-columns: repeat(7, minmax(25px, 41px));
       margin-bottom: 0;
     }
 
     .calendar__days {
-      grid-template-columns: repeat(7, minmax(20px, 40px));
+      grid-template-columns: repeat(7, minmax(25px, 41px));
       grid-template-rows: repeat(6, minmax(30px, 35px));
     }
 

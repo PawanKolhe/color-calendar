@@ -137,7 +137,7 @@ $calName: ".color-calendar";
     /* Event Bullet */
     .calendar__day-bullet {
       position: absolute;
-      top: 85%;
+      top: 80%;
       border-radius: 50%;
       width: 4px;
       height: 4px;
@@ -159,24 +159,6 @@ $calName: ".color-calendar";
       z-index: -1;
       cursor: pointer;
     }
-  }
-
-  .calendar__day-today {
-    .calendar__day-box-today {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: calc(55% + 8px);
-      height: 90%;
-      z-index: -1;
-      cursor: pointer;
-      display: block;
-    }
-
-    // &.calendar__day-selected .calendar__day-box-today {
-    //   box-shadow: 0 3px 15px -5px var(--cal-color-primary), inset 0px 3px 8px -4px white !important
-    // }
   }
 }
 

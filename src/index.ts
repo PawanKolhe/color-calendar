@@ -812,7 +812,6 @@ export default class Calendar {
         }${day.selected ? ' calendar__day-selected' : ''}">
           <span class="calendar__day-text">${day.day}</span>
           <div class="calendar__day-bullet"></div>
-          ${isTodayDate ? '<div class="calendar__day-box-today"></div>' : ''}
           <div class="calendar__day-box"></div>
         </div>
       `;
@@ -856,9 +855,8 @@ export default class Calendar {
     }`;
     div.innerHTML = `
       <span class="calendar__day-text">${dayNum}</span>
-      <div class="calendar__day-box"></div>
       <div class="calendar__day-bullet"></div>
-      ${isTodayDate ? '<div class="calendar__day-box-today"></div>' : ""}
+      <div class="calendar__day-box"></div>
     `;
 
     // Insert newly created target day to DOM
