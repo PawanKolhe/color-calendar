@@ -1,8 +1,8 @@
-<p align="center"><img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/logo.png" alt="logo" width="20%" /></p>
-<p align="center">
-    <h1 align="center">Color Calendar</h1>
+<p><img src="https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/logo.png" alt="logo" width="20%" /></p>
+<p>
+    <h1>Color Calendar</h1>
 </p>
-<p align="center">
+<p>
     <a href="https://www.npmjs.com/package/color-calendar">
         <img src="https://img.shields.io/npm/v/color-calendar?style=flat-square" alt="npm version" />
     </a>
@@ -16,7 +16,7 @@
     <img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2FPawanKolhe%2Fcolor-calendar" alt="Hits">
     <img src="https://img.shields.io/npm/l/color-calendar?style=flat-square" alt="license" />
 </p>
-<p align="center">
+<p>
     A customizable events calendar component library. Checkout <a href="https://v84yk.csb.app/">Demo 1</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 2.</a>
 </p>
 
