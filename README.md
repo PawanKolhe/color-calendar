@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/npm/l/color-calendar?style=flat-square" alt="license" />
 </p>
 <p>
-    A customizable events calendar component library. Checkout <a href="https://v84yk.csb.app/">Demo 1</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 2.</a>
+    A customizable events calendar component library. Checkout <a href="https://online-tech-confs.herokuapp.com/">Demo 1</a>, <a href="https://v84yk.csb.app/">Demo 2</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 3.</a>
 </p>
 
 <!-- # Color Calendar

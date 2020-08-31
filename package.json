@@ -67,10 +67,22 @@
   "keywords": [
     "calendar",
     "event calendar",
-    "date picker",
+    "date-picker",
     "calendar ui",
     "calendar widget",
-    "color calendar"
+    "color calendar",
+    "typescript",
+    "front-end",
+    "sass",
+    "web",
+    "css",
+    "ui",
+    "events",
+    "component",
+    "widget",
+    "vanilla",
+    "simple",
+    "dots"
   ],
   "browserslist": [
     "defaults"
