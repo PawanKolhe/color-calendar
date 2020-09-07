@@ -313,6 +313,7 @@ Emitted when the current month is changed.
 
 Reset calendar to today's date.
 ```javascript
+// Example
 let myCal = new Calendar();
 myCal.reset();
 ```

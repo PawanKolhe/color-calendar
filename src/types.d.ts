@@ -41,7 +41,7 @@ export type LayoutModifier = "month-left-align";
 
 export type MonthDisplayType = "short" | "long";
 
-export  type WeekdayDisplayType = "short" | "long-lower" | "long-upper";
+export type WeekdayDisplayType = "short" | "long-lower" | "long-upper";
 
 export type Weekdays = [string, string, string, string, string, string, string];
 
