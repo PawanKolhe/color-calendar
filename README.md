@@ -235,10 +235,10 @@ Default: *based on theme*
 Font of calendar days as well as month and year picker text.
 
 ### `dropShadow`
-Type: `Boolean`  
-Default: `true`  
+Type: `String`  
+Default: *based on theme*  
 
-Whether to have a calendar drop shadow.
+Set CSS of calendar drop shadow.
 
 ### `border`
 Type: `String`  
