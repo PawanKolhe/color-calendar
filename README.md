@@ -28,7 +28,7 @@
 ![HitCount](http://hits.dwyl.com/PawanKolhe/color-calendar.svg)
 ![NPM](https://img.shields.io/npm/l/color-calendar?style=flat-square) -->
 
-![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/banner.PNG)
+![Color Calendar](https://raw.githubusercontent.com/PawanKolhe/color-calendar/master/screenshots/poster_calendar.png)
 
 * [Features](#features)
 * [Getting Started](#getting-started)
