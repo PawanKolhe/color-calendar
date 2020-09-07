@@ -8,7 +8,7 @@ export interface CalendarOptions {
   headerColor?: string;
   headerBackgroundColor?: string;
   weekdaysColor?: string;
-  weekdayType?: WeekdayType;
+  weekdayDisplayType?: WeekdayDisplayType;
   monthDisplayType?: MonthDisplayType;
   startWeekday?: StartWeekday;
   fontFamilyHeader?: string;
@@ -18,6 +18,8 @@ export interface CalendarOptions {
   border?: string;
   borderRadius?: string;
   disableMonthYearPickers?: boolean;
+  disableDayClick?: boolean;
+  disableMonthArrowClick? : boolean;
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 }
@@ -39,7 +41,7 @@ export type LayoutModifier = "month-left-align";
 
 export type MonthDisplayType = "short" | "long";
 
-export  type WeekdayType = "short" | "long-lower" | "long-upper";
+export  type WeekdayDisplayType = "short" | "long-lower" | "long-upper";
 
 export type Weekdays = [string, string, string, string, string, string, string];
 

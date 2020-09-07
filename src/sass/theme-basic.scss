@@ -195,6 +195,18 @@ $theme: ".basic";
 #{$calName}#{$theme} .calendar__picker {
   background-color: white;
   border-radius: var(--cal-border-radius);
+  
+  &-month {
+    &-today {
+      box-shadow: inset 0px 0px 0px 1px var(--cal-color-primary);
+    }
+  }
+
+  &-year {
+    &-today {
+      box-shadow: inset 0px 0px 0px 1px var(--cal-color-primary);
+    }
+  }
 }
 
 // COMPACT MODE

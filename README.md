@@ -51,8 +51,8 @@
 - Perform some action on calendar date change
 - Month and year picker built-in
 - Themes available
-- Customize using CSS variables or passing options parameters while creating calendar.
-- More coming soon...
+- Fully customizable using CSS variables, passing options parameters while creating calendar, or overriding CSS.
+- [Request more features](#feature-request)...
 
 <a id="getting-started"></a>
 ## 📦 Getting Started
@@ -192,10 +192,10 @@ Default: *based on theme*
 
 Color of weekdays text.  *Only works on some themes.*
 
-### `weekdayType`
+### `weekdayDisplayType`
 Type: `String`  
 Default: `long-lower`  
-Options: [WeekdayType](#type-weekday-type) (`short` | `long-lower` | `long-upper`)  
+Options: [WeekdayDisplayType](#type-weekday-display-type) (`short` | `long-lower` | `long-upper`)  
 
 Select how weekdays will be displayed. E.g. M, Mon, or MON.
 
@@ -258,6 +258,18 @@ Default: `false`
 
 If month and year picker should be disabled.
 
+### `disableDayClick`
+Type: `Boolean`  
+Default: `false`  
+
+If day click should be disabled.
+
+### `disableMonthArrowClick`
+Type: `Boolean`  
+Default: `false`  
+
+If month arrows should be disabled.
+
 <a id="events"></a>
 ## 🖱 Events
 
@@ -312,6 +324,11 @@ Props:
 
 Set new selected date.
 
+```javascript
+// Example
+myCal.setDate(new Date());
+```
+
 ### `getSelectedDate()`
 Return:
 - Type: `Date`  
@@ -343,13 +360,18 @@ Return:
 
 Add events of the events array.
 
-### `setWeekdayType()`
+### `setWeekdayDisplayType()`
 Props:
 | Props  | Type       | Required | Description        |
 |--------|------------|----------|--------------------|
-| weekdayType | [WeekdayType](#type-weekday-type) | required | New weekday type |
+| weekdayDisplayType | [WeekdayDisplayType](#type-weekday-display-type) | required | New weekday type |
 
 Set weekdays display type. 
+
+```javascript
+// Example
+myCal.setWeekdayDisplayType("short");
+```
 
 ### `setMonthDisplayType()`
 Props:
@@ -371,8 +393,8 @@ Set month display type.
 }
 ```
 
-<a id="type-weekday-type"></a>
-### `WeekdayType`
+<a id="type-weekday-display-type"></a>
+### `WeekdayDisplayType`
 `"short"` | `"long-lower"` | `"long-upper"`
 
 ```markdown
@@ -440,7 +462,8 @@ Feel free to [open an issue](https://github.com/PawanKolhe/color-calendar/issues
 
 <a id="feature-request"></a>
 ## ⭐ Feature Request
-I'd love ❤️️ to hear where you are using this library or any additional features you might need for your use case. [Open an issue](https://github.com/PawanKolhe/color-calendar/issues) on GitHub or connect with me on [LinkedIn](https://www.linkedin.com/in/kolhepawan/).
+- Feel free to [Open an issue](https://github.com/PawanKolhe/color-calendar/issues) on GitHub to request any additional features you might need for your use case.  
+- Connect with me on [LinkedIn](https://www.linkedin.com/in/kolhepawan/). I'd love ❤️️ to hear where you are using this library.  
 
 <a id="license"></a>
 ## 📜 License

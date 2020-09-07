@@ -5,7 +5,7 @@ import {
   EventData,
   Day,
   MonthDisplayType,
-  WeekdayType,
+  WeekdayDisplayType,
   Weekdays,
   StartWeekday,
 } from "./types.d";
@@ -25,7 +25,7 @@ export default class Calendar {
   headerColor?: string;
   headerBackgroundColor?: string;
   weekdaysColor?: string;
-  weekdayType: WeekdayType;
+  weekdayDisplayType: WeekdayDisplayType;
   monthDisplayType: MonthDisplayType;
   startWeekday: StartWeekday;
   fontFamilyHeader?: string;
@@ -35,11 +35,13 @@ export default class Calendar {
   border?: string;
   borderRadius?: string;
   disableMonthYearPickers: boolean;
+  disableDayClick: boolean;
+  disableMonthArrowClick: boolean;
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
   // State
-  weekdayTypeOptions = {
+  weekdayDisplayTypeOptions = {
     "short": ["S", "M", "T", "W", "T", "F", "S"] as Weekdays,
     "long-lower": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as Weekdays,
     "long-upper": ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"] as Weekdays,
@@ -99,13 +101,15 @@ export default class Calendar {
     this.headerColor = options.headerColor;
     this.headerBackgroundColor = options.headerBackgroundColor;
     this.weekdaysColor = options.weekdaysColor;
-    this.disableMonthYearPickers =  options.disableMonthYearPickers ?? false;
+    this.disableMonthYearPickers = options.disableMonthYearPickers ?? false;
+    this.disableDayClick = options.disableDayClick ?? false;
+    this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
 
     // Initialize State
-    this.weekdayType = (options.weekdayType ?? "long") as WeekdayType;
-    this.weekdays = this.weekdayTypeOptions[this.weekdayType] ?? this.weekdayTypeOptions["short"];
+    this.weekdayDisplayType = (options.weekdayDisplayType ?? "long") as WeekdayDisplayType;
+    this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     this.today = new Date();
     this.currentDate = new Date();
     this.pickerType = 'month';
@@ -196,6 +200,9 @@ export default class Calendar {
     this.yearPickerChevronLeft = document.querySelector(`${this.id} .calendar__picker-year-arrow-left`) as HTMLElement;
     this.yearPickerChevronRight = document.querySelector(`${this.id} .calendar__picker-year-arrow-right`) as HTMLElement;
 
+    // Mark today's month in month picker
+    this.pickerMonthContainer!.children[this.today.getMonth()].classList.add('calendar__picker-month-today');
+
     // Apply Layout Modifiers
     this.layoutModifiers.forEach(item => {
       this.calendarRoot.classList.add(item);
@@ -237,6 +244,7 @@ export default class Calendar {
     this.updateMonthPickerSelection(this.currentDate.getMonth());
     this.generatePickerYears();
     this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
+    this.updateYearPickerTodaySelection();
     this.generateWeekdays();
     this.generateDays();
     this.selectDayInitial(date ? true : false);
@@ -396,9 +404,9 @@ export default class Calendar {
     return eventAddedCount;
   }
 
-  setWeekdayType(weekdayType: WeekdayType) {
-    this.weekdayType = weekdayType;
-    this.weekdays = this.weekdayTypeOptions[this.weekdayType] ?? this.weekdayTypeOptions["short"];
+  setWeekdayDisplayType(weekdayDisplayType: WeekdayDisplayType) {
+    this.weekdayDisplayType = weekdayDisplayType;
+    this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     this.generateWeekdays();
   }
 
@@ -538,8 +546,8 @@ export default class Calendar {
     if(newYearIndex === undefined) {
       for(let i = 0; i < 12; i++) {
         let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
-        let year = parseInt(yearPickerChildren.innerHTML)
-        if(year === newYearValue && yearPickerChildren.dataset.value) {
+        let elementYear = parseInt(yearPickerChildren.innerHTML)
+        if(elementYear === newYearValue && yearPickerChildren.dataset.value) {
           newYearIndex = parseInt(yearPickerChildren.dataset.value);
           break;
         }
@@ -552,6 +560,15 @@ export default class Calendar {
 
     this.removeYearPickerSelection();
     this.pickerYearContainer!.children[newYearIndex].classList.add('calendar__picker-year-selected');
+  }
+
+  updateYearPickerTodaySelection() {
+    // Add today year marker
+    if(parseInt(this.pickerYearContainer!.children[4].innerHTML) === this.today.getFullYear()) {
+      this.pickerYearContainer!.children[4].classList.add('calendar__picker-year-today');
+    } else {
+      this.pickerYearContainer!.children[4].classList.remove('calendar__picker-year-today');
+    }
   }
 
   removeYearPickerSelection() {
@@ -571,6 +588,8 @@ export default class Calendar {
       element.innerText = i.toString();
       count++;
     }
+
+    this.updateYearPickerTodaySelection();
   }
 
   handleYearChevronLeftClick() {
@@ -578,6 +597,7 @@ export default class Calendar {
     this.generatePickerYears();
     this.removeYearPickerSelection();
     this.updateYearPickerSelection(this.currentDate.getFullYear());
+    this.updateYearPickerTodaySelection();
   }
 
   handleYearChevronRightClick() {
@@ -585,6 +605,7 @@ export default class Calendar {
     this.generatePickerYears();
     this.removeYearPickerSelection();
     this.updateYearPickerSelection(this.currentDate.getFullYear());
+    this.updateYearPickerTodaySelection();
   }
 
   /** Invoked on calendar day click */
@@ -599,6 +620,11 @@ export default class Calendar {
       ) ||
       e.target.parentElement.classList.contains("calendar__day-selected")
     ) {
+      return;
+    }
+
+    // Check if Day click is disabled
+    if(this.disableDayClick) {
       return;
     }
 
@@ -659,6 +685,11 @@ export default class Calendar {
   }
 
   handlePrevMonthButtonClick() {
+    // Check if Month arrow click is disabled
+    if(this.disableMonthArrowClick) {
+      return;
+    }
+
     const newMonthValue = this.currentDate.getMonth() - 1;
     if(this.currentDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 && newMonthValue < 0) {
       this.yearPickerOffset -=12;
@@ -673,6 +704,11 @@ export default class Calendar {
   }
 
   handleNextMonthButtonClick() {
+    // Check if Month arrow click is disabled
+    if(this.disableMonthArrowClick) {
+      return;
+    }
+
     const newMonthValue = this.currentDate.getMonth() + 1;
     if(this.currentDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 && newMonthValue > 11) {
       this.yearPickerOffset +=12;
