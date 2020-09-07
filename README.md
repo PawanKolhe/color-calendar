@@ -42,6 +42,7 @@
 * [Themes](#themes)
 * [Bug Reporting](#bug)
 * [Feature Request](#feature-request)
+* [Release Notes](#release-notes)
 * [License](#license)
 
 <a id="features"></a>
@@ -194,7 +195,7 @@ Color of weekdays text.  *Only works on some themes.*
 
 ### `weekdayDisplayType`
 Type: `String`  
-Default: `long-lower`  
+Default: `short`  
 Options: [WeekdayDisplayType](#type-weekday-display-type) (`short` | `long-lower` | `long-upper`)  
 
 Select how weekdays will be displayed. E.g. M, Mon, or MON.
@@ -464,6 +465,10 @@ Feel free to [open an issue](https://github.com/PawanKolhe/color-calendar/issues
 ## ⭐ Feature Request
 - Feel free to [Open an issue](https://github.com/PawanKolhe/color-calendar/issues) on GitHub to request any additional features you might need for your use case.  
 - Connect with me on [LinkedIn](https://www.linkedin.com/in/kolhepawan/). I'd love ❤️️ to hear where you are using this library.  
+
+<a id="release-notes"></a>
+## 📋 Release Notes
+Check [here](https://github.com/PawanKolhe/color-calendar/releases) for release notes.
 
 <a id="license"></a>
 ## 📜 License
