@@ -35,6 +35,9 @@
     * [CDN](#cdn)
     * [NPM](#npm)
 * [Usage](#usage)
+    * [Basic](#usage-basic)
+    * [React](#usage-react)
+    * [Vue](#usage-vue)
 * [Options](#options)
 * [Events](#events)
 * [Methods](#methods)
@@ -100,11 +103,13 @@ Then add fonts.
 
 <a id="usage"></a>
 ## 🔨 Usage
-### JavaScript
+<a id="usage-basic"></a>
+### Basic
+#### JavaScript
 ```javascript
 new Calendar()
 ```
-Or you can pass in **options**.
+_Or_ you can pass in **options**.
 ```javascript
 new Calendar({
     id: '#color-calendar',
@@ -112,10 +117,19 @@ new Calendar({
 })
 ```
 
-### HTML
+#### HTML
 ```html
 <div id="color-calendar"></div>
 ```
+[Example](https://codesandbox.io/s/color-calendar-bnwdu)
+
+<a id="usage-react"></a>
+### React
+[Example](https://codesandbox.io/s/color-calendar-react-y0cyf?file=/src/CalendarComponent.jsx)
+
+<a id="usage-vue"></a>
+### Vue
+[Example](https://codesandbox.io/s/color-calendar-vue-byo6e?file=/src/components/ColorCalendar.vue)
 
 <a id="options"></a>
 ## ⚙️ Options
