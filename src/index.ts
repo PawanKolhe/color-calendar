@@ -1,6 +1,9 @@
 import * as api from "./modules/api";
 import { addEventListeners } from "./modules/addEventListeners";
 import { configureStylePreferences } from "./modules/stylePreferences";
+import * as picker from "./modules/picker/picker";
+import * as monthPicker from "./modules/picker/month/monthPicker";
+import * as yearPicker from "./modules/picker/year/yearPicker";
 
 import {
   CalendarSize,
@@ -100,6 +103,20 @@ export default class Calendar {
   addEventListeners: () => void;
   // Style Preferences
   configureStylePreferences: () => void;
+  // Picker
+  togglePicker: (shouldOpen?: boolean) => void;
+  // Picker - Month
+  handleMonthPickerClick: (e: any) => void;
+  updateMonthPickerSelection: (newMonthValue: number) => void;
+  removeMonthPickerSelection: () => void;
+  // Picker - Year
+  handleYearPickerClick: (e: any) => void;
+  updateYearPickerSelection: (newYearValue: number, newYearIndex?: number) => void;
+  updateYearPickerTodaySelection: () => void;
+  removeYearPickerSelection: () => void;
+  generatePickerYears: () => void;
+  handleYearChevronLeftClick: () => void;
+  handleYearChevronRightClick: () => void;
 
   constructor(options: CalendarOptions = {}) {
     /* Initialize Options */
@@ -161,6 +178,20 @@ export default class Calendar {
     this.addEventListeners = addEventListeners;
     // Style Preferences
     this.configureStylePreferences = configureStylePreferences;
+    // Picker
+    this.togglePicker = picker.togglePicker;
+    // Picker - Month
+    this.handleMonthPickerClick = monthPicker.handleMonthPickerClick;
+    this.updateMonthPickerSelection = monthPicker.updateMonthPickerSelection;
+    this.removeMonthPickerSelection = monthPicker.removeMonthPickerSelection;
+    // Picker - Year
+    this.handleYearPickerClick = yearPicker.handleYearPickerClick;
+    this.updateYearPickerSelection = yearPicker.updateYearPickerSelection;
+    this.updateYearPickerTodaySelection = yearPicker.updateYearPickerTodaySelection;
+    this.removeYearPickerSelection = yearPicker.removeYearPickerSelection;
+    this.generatePickerYears = yearPicker.generatePickerYears;
+    this.handleYearChevronLeftClick = yearPicker.handleYearChevronLeftClick;
+    this.handleYearChevronRightClick = yearPicker.handleYearChevronRightClick;
 
     // Check if HTML element with given selector exists in DOM
     this.calendar = document.querySelector(this.id) as HTMLElement;
@@ -359,158 +390,6 @@ export default class Calendar {
       // Open picker
       this.togglePicker(true);
     }
-  }
-
-  togglePicker(shouldOpen?: boolean) {
-    if(shouldOpen === true) {
-      this.pickerContainer.style.visibility = 'visible';
-      this.pickerContainer.style.opacity = '1';
-      if(this.pickerType === 'year') {
-        this.generatePickerYears();
-      }
-      this.removeYearPickerSelection();
-      this.updateYearPickerSelection(this.currentDate.getFullYear());
-    } else if(shouldOpen === false) {
-      this.pickerContainer.style.visibility = 'hidden';
-      this.pickerContainer.style.opacity = '0';
-      if(this.monthDisplay && this.yearDisplay) {
-        this.monthDisplay.style.opacity = '1';
-        this.yearDisplay.style.opacity = '1';
-      }
-      this.yearPickerOffsetTemporary = 0;
-    } else {
-      if(this.pickerContainer.style.visibility === 'hidden') {
-        this.pickerContainer.style.visibility = 'visible';
-        this.pickerContainer.style.opacity = '1';
-        if(this.pickerType === 'year') {
-          this.generatePickerYears();
-        }
-        this.removeYearPickerSelection();
-        this.updateYearPickerSelection(this.currentDate.getFullYear());
-      } else {
-        this.pickerContainer.style.visibility = 'hidden';
-        this.pickerContainer.style.opacity = '0';
-        if(this.monthDisplay && this.yearDisplay) {
-          this.monthDisplay.style.opacity = '1';
-          this.yearDisplay.style.opacity = '1';
-        }
-        this.yearPickerOffsetTemporary = 0;
-      }
-    }
-  }
-
-  handleMonthPickerClick(e: any) {
-    // Filter out unwanted click events
-    if (!(e.target.classList.contains("calendar__picker-month-option"))) {
-      return;
-    }
-
-    const newMonthValue = parseInt(e.target.dataset.value);
-    
-    this.updateMonthPickerSelection(newMonthValue);
-    this.updateCurrentDate(0, undefined, newMonthValue);
-    this.togglePicker(false);
-  }
-
-  updateMonthPickerSelection(newMonthValue: number) {
-    if(newMonthValue < 0) {
-      newMonthValue = 11;
-    } else {
-      newMonthValue = newMonthValue % 12;
-    }
-
-    this.removeMonthPickerSelection();
-    this.pickerMonthContainer!.children[newMonthValue].classList.add('calendar__picker-month-selected');
-  }
-
-  removeMonthPickerSelection() {
-    // Remove old year selection by scanning for the selected month
-    for(let i = 0; i < 12; i++) {
-      if(this.pickerMonthContainer!.children[i].classList.contains('calendar__picker-month-selected')) {
-        this.pickerMonthContainer!.children[i].classList.remove('calendar__picker-month-selected');
-      }
-    }
-  }
-
-  handleYearPickerClick(e: any) {
-    // Filter out unwanted click events
-    if (!(e.target.classList.contains("calendar__picker-year-option"))) {
-      return;
-    }
-
-    this.yearPickerOffset += this.yearPickerOffsetTemporary;
-
-    const newYearValue = parseInt(e.target.innerText);
-    const newYearIndex = parseInt(e.target.dataset.value);
-    this.updateYearPickerSelection(newYearValue, newYearIndex);
-    this.updateCurrentDate(0, undefined, undefined, newYearValue);
-    this.togglePicker(false);
-  }
-
-  updateYearPickerSelection(newYearValue: number, newYearIndex?: number) {
-    if(newYearIndex === undefined) {
-      for(let i = 0; i < 12; i++) {
-        let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
-        let elementYear = parseInt(yearPickerChildren.innerHTML)
-        if(elementYear === newYearValue && yearPickerChildren.dataset.value) {
-          newYearIndex = parseInt(yearPickerChildren.dataset.value);
-          break;
-        }
-      }
-
-      if(newYearIndex === undefined) {
-        return;
-      }
-    }
-
-    this.removeYearPickerSelection();
-    this.pickerYearContainer!.children[newYearIndex].classList.add('calendar__picker-year-selected');
-  }
-
-  updateYearPickerTodaySelection() {
-    // Add today year marker
-    if(parseInt(this.pickerYearContainer!.children[4].innerHTML) === this.today.getFullYear()) {
-      this.pickerYearContainer!.children[4].classList.add('calendar__picker-year-today');
-    } else {
-      this.pickerYearContainer!.children[4].classList.remove('calendar__picker-year-today');
-    }
-  }
-
-  removeYearPickerSelection() {
-    // Remove old year selection by scanning for the selected year
-    for(let i = 0; i < 12; i++) {
-      if(this.pickerYearContainer!.children[i].classList.contains('calendar__picker-year-selected')) {
-        this.pickerYearContainer!.children[i].classList.remove('calendar__picker-year-selected');
-      }
-    }
-  }
-
-  generatePickerYears() {
-    const currentYear = this.today.getFullYear() + this.yearPickerOffset + this.yearPickerOffsetTemporary;
-    let count = 0;
-    for(let i = currentYear - 4; i <= currentYear + 7; i++) {
-      let element = this.pickerYearContainer!.children[count] as HTMLElement;
-      element.innerText = i.toString();
-      count++;
-    }
-
-    this.updateYearPickerTodaySelection();
-  }
-
-  handleYearChevronLeftClick() {
-    this.yearPickerOffsetTemporary -= 12;
-    this.generatePickerYears();
-    this.removeYearPickerSelection();
-    this.updateYearPickerSelection(this.currentDate.getFullYear());
-    this.updateYearPickerTodaySelection();
-  }
-
-  handleYearChevronRightClick() {
-    this.yearPickerOffsetTemporary += 12;
-    this.generatePickerYears();
-    this.removeYearPickerSelection();
-    this.updateYearPickerSelection(this.currentDate.getFullYear());
-    this.updateYearPickerTodaySelection();
   }
 
   /** Invoked on calendar day click */
