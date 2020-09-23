@@ -352,6 +352,13 @@ Return:
 
 Get currently selected date.
 
+### `getEventsData()`
+Return:
+- Type: [EventData](#type-event-data)[]
+- Description: `All events`
+
+Get events array.
+
 ### `setEventsData()`
 Props:
 | Props  | Type       | Required | Description      |

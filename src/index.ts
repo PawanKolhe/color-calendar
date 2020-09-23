@@ -1,4 +1,6 @@
 import * as api from "./modules/api";
+import { addEventListeners } from "./modules/addEventListeners";
+import { configureStylePreferences } from "./modules/stylePreferences";
 
 import {
   CalendarSize,
@@ -94,6 +96,10 @@ export default class Calendar {
   addEventsData: (newEvents?: EventData[]) => number;
   setWeekdayDisplayType: (weekdayDisplayType: WeekdayDisplayType) => void;
   setMonthDisplayType: (monthDisplayType: MonthDisplayType) => void;
+  // Event Listeners
+  addEventListeners: () => void;
+  // Style Preferences
+  configureStylePreferences: () => void;
 
   constructor(options: CalendarOptions = {}) {
     /* Initialize Options */
@@ -142,6 +148,7 @@ export default class Calendar {
     this.yearPickerOffsetTemporary = 0;
 
     /* Initialize Methods */
+    // API
     this.reset = api.reset;
     this.setDate = api.setDate;
     this.getSelectedDate = api.getSelectedDate;
@@ -150,6 +157,10 @@ export default class Calendar {
     this.addEventsData = api.addEventsData;
     this.setWeekdayDisplayType = api.setWeekdayDisplayType;
     this.setMonthDisplayType = api.setMonthDisplayType;
+    // Add Event Listeners
+    this.addEventListeners = addEventListeners;
+    // Style Preferences
+    this.configureStylePreferences = configureStylePreferences;
 
     // Check if HTML element with given selector exists in DOM
     this.calendar = document.querySelector(this.id) as HTMLElement;
@@ -257,69 +268,6 @@ export default class Calendar {
     this.addEventListeners();
 
     this.reset(new Date());
-  }
-
-  addEventListeners() {
-    // Event Listeners
-    this.prevButton.addEventListener("click",
-      this.handlePrevMonthButtonClick.bind(this)
-    );
-    this.nextButton.addEventListener("click",
-      this.handleNextMonthButtonClick.bind(this)
-    );
-    this.monthyearDisplay.addEventListener("click",
-      this.handleMonthYearDisplayClick.bind(this)
-    );
-    this.calendarDays.addEventListener("click",
-      this.handleCalendarDayClick.bind(this)
-    );
-    this.pickerMonthContainer.addEventListener("click",
-      this.handleMonthPickerClick.bind(this)
-    );
-    this.pickerYearContainer.addEventListener("click",
-      this.handleYearPickerClick.bind(this)
-    );
-    this.yearPickerChevronLeft.addEventListener("click",
-      this.handleYearChevronLeftClick.bind(this)
-    );
-    this.yearPickerChevronRight.addEventListener("click",
-      this.handleYearChevronRightClick.bind(this)
-    );
-  }
-
-  /** Configure calendar style preferences */
-  configureStylePreferences() {
-    let root = this.calendarRoot;
-    if (this.primaryColor) {
-      root.style.setProperty("--cal-color-primary", this.primaryColor);
-    }
-    if (this.fontFamilyHeader) {
-      root.style.setProperty("--cal-font-family-header", this.fontFamilyHeader);
-    }
-    if (this.fontFamilyWeekdays) {
-      root.style.setProperty("--cal-font-family-weekdays", this.fontFamilyWeekdays);
-    }
-    if (this.fontFamilyBody) {
-      root.style.setProperty("--cal-font-family-body", this.fontFamilyBody);
-    }
-    if (this.dropShadow) {
-      root.style.setProperty("--cal-drop-shadow", this.dropShadow);
-    }
-    if (this.border) {
-      root.style.setProperty("--cal-border", this.border);
-    }
-    if (this.borderRadius) {
-      root.style.setProperty("--cal-border-radius", this.borderRadius);
-    }
-    if(this.headerColor) {
-      root.style.setProperty("--cal-header-color", this.headerColor);
-    }
-    if(this.headerBackgroundColor) {
-      root.style.setProperty("--cal-header-background-color", this.headerBackgroundColor);
-    }
-    if(this.weekdaysColor) {
-      root.style.setProperty("--cal-weekdays-color", this.weekdaysColor);
-    }
   }
 
   /** Clear calendar day values */
