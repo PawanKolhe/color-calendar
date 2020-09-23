@@ -3,6 +3,7 @@
     "target": "ES2015",
     "module": "ES2020",
     "strict": true,
+    "noImplicitThis": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowUmdGlobalAccess": true,

@@ -1,3 +1,5 @@
+import * as api from "./modules/api";
+
 import {
   CalendarSize,
   LayoutModifier,
@@ -11,11 +13,11 @@ import {
 } from "./types.d";
 
 export default class Calendar {
-  // Constants
+  /* Constants */
   readonly CAL_NAME = 'color-calendar';
   readonly DAYS_TO_DISPLAY = 42;
 
-  // Options
+  /* Options */
   id: string;
   calendarSize: CalendarSize;
   layoutModifiers: LayoutModifier[];
@@ -40,7 +42,7 @@ export default class Calendar {
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
-  // State
+  /* State */
   weekdayDisplayTypeOptions = {
     "short": ["S", "M", "T", "W", "T", "F", "S"] as Weekdays,
     "long-lower": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as Weekdays,
@@ -65,7 +67,7 @@ export default class Calendar {
   yearPickerOffset: number;
   yearPickerOffsetTemporary: number;
 
-  // Elements
+  /* Elements */
   calendar: HTMLElement;
   calendarRoot: HTMLElement;
   calendarHeader: HTMLElement;
@@ -82,8 +84,19 @@ export default class Calendar {
   monthDisplay: HTMLElement;
   yearDisplay: HTMLElement;
 
+  /* Methods */
+  // API
+  reset: (date: Date) => void;
+  setDate: (date: Date) => void;
+  getSelectedDate: () => Date;
+  getEventsData: () => any;
+  setEventsData: (events: EventData[]) => number;
+  addEventsData: (newEvents?: EventData[]) => number;
+  setWeekdayDisplayType: (weekdayDisplayType: WeekdayDisplayType) => void;
+  setMonthDisplayType: (monthDisplayType: MonthDisplayType) => void;
+
   constructor(options: CalendarOptions = {}) {
-    // Initialize Options
+    /* Initialize Options */
     this.id = options.id ?? "#calendar";
     this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
     this.layoutModifiers = options.layoutModifiers ?? [];
@@ -107,7 +120,7 @@ export default class Calendar {
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
 
-    // Initialize State
+    /* Initialize State */
     this.weekdayDisplayType = (options.weekdayDisplayType ?? "long") as WeekdayDisplayType;
     this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     this.today = new Date();
@@ -128,9 +141,18 @@ export default class Calendar {
     this.yearPickerOffset = 0;
     this.yearPickerOffsetTemporary = 0;
 
-    this.calendar = document.querySelector(this.id) as HTMLElement;
-    
+    /* Initialize Methods */
+    this.reset = api.reset;
+    this.setDate = api.setDate;
+    this.getSelectedDate = api.getSelectedDate;
+    this.getEventsData = api.getEventsData;
+    this.setEventsData = api.setEventsData;
+    this.addEventsData = api.addEventsData;
+    this.setWeekdayDisplayType = api.setWeekdayDisplayType;
+    this.setMonthDisplayType = api.setMonthDisplayType;
+
     // Check if HTML element with given selector exists in DOM
+    this.calendar = document.querySelector(this.id) as HTMLElement;
     if(!this.calendar) {
       throw new Error(`[COLOR-CALENDAR] Element with selector '${this.id}' not found`);
     }
@@ -235,42 +257,6 @@ export default class Calendar {
     this.addEventListeners();
 
     this.reset(new Date());
-  }
-
-  reset(date: Date) {
-    this.currentDate = date ? date : new Date();
-    this.clearCalendarDays();
-    this.updateMonthYear();
-    this.updateMonthPickerSelection(this.currentDate.getMonth());
-    this.generatePickerYears();
-    this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
-    this.updateYearPickerTodaySelection();
-    this.generateWeekdays();
-    this.generateDays();
-    this.selectDayInitial(date ? true : false);
-    this.renderDays();
-    this.setOldSelectedNode();
-    if(this.dateChanged) {
-      this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
-    }
-    if(this.monthChanged) {
-      this.monthChanged(this.currentDate, this.getMonthEvents());
-    }
-  }
-
-  setDate(date: Date) {
-    if(!date) {
-      return;
-    }
-    if(date instanceof Date) {
-      this.reset(date);
-    } else {
-      this.reset(new Date(date));
-    }
-  }
-
-  getSelectedDate() {
-    return this.currentDate;
   }
 
   addEventListeners() {
@@ -384,35 +370,6 @@ export default class Calendar {
         this.daysIn_CurrentMonth[0].selected = true;
       }
     }
-  }
-
-  getEventsData() {
-    return JSON.parse(JSON.stringify(this.eventsData));
-  }
-
-  /** Set new events data array */
-  setEventsData(events: EventData[]) {
-    this.eventsData = JSON.parse(JSON.stringify(events));
-    this.setDate(this.currentDate);
-    return this.eventsData.length;
-  }
-
-  /** Add events to existing events data array */
-  addEventsData(newEvents: EventData[] = []) {
-    const eventAddedCount = this.eventsData.push(...newEvents);
-    this.setDate(this.currentDate);
-    return eventAddedCount;
-  }
-
-  setWeekdayDisplayType(weekdayDisplayType: WeekdayDisplayType) {
-    this.weekdayDisplayType = weekdayDisplayType;
-    this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
-    this.generateWeekdays();
-  }
-
-  setMonthDisplayType(monthDisplayType: MonthDisplayType) {
-    this.monthDisplayType = monthDisplayType;
-    this.updateMonthYear();
   }
 
   /** Invoked on month or year click */
