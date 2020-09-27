@@ -142,7 +142,7 @@ export default class Calendar {
 
   constructor(options: CalendarOptions = {}) {
     /* Initialize Options */
-    this.id = options.id ?? "#calendar";
+    this.id = options.id ?? "#color-calendar";
     this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
     this.layoutModifiers = options.layoutModifiers ?? [];
     this.eventsData = options.eventsData ?? [];
