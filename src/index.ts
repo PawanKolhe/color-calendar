@@ -313,6 +313,7 @@ export default class Calendar {
       this.calendarRoot.classList.add(item);
     });
 
+    // Shifts month and year header UI to be left aligned
     if(this.layoutModifiers.includes('month-left-align')) {
       this.calendarHeader.innerHTML = `
         <div class="calendar__monthyear">
