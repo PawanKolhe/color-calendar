@@ -166,7 +166,7 @@ export default class Calendar {
     this.dateChanged = options.dateChanged;
 
     /* Initialize State */
-    this.weekdayDisplayType = (options.weekdayDisplayType ?? "long") as WeekdayDisplayType;
+    this.weekdayDisplayType = (options.weekdayDisplayType ?? "long-lower") as WeekdayDisplayType;
     this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     this.today = new Date();
     this.currentDate = new Date();
