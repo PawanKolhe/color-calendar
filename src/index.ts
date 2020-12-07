@@ -146,19 +146,20 @@ export default class Calendar {
     this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
     this.layoutModifiers = options.layoutModifiers ?? [];
     this.eventsData = options.eventsData ?? [];
-    this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
-    this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thurs), 5 (Fri), 6 (Sat)
     this.theme = options.theme ?? "basic";
     this.primaryColor = options.primaryColor;
+    this.headerColor = options.headerColor;
+    this.headerBackgroundColor = options.headerBackgroundColor;
+    this.weekdaysColor = options.weekdaysColor;
+    this.weekdayDisplayType = (options.weekdayDisplayType ?? "long-lower") as WeekdayDisplayType;
+    this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
+    this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thu), 5 (Fri), 6 (Sat)
     this.fontFamilyHeader = options.fontFamilyHeader;
     this.fontFamilyWeekdays = options.fontFamilyWeekdays;
     this.fontFamilyBody = options.fontFamilyBody;
     this.dropShadow = options.dropShadow;
     this.border = options.border;
     this.borderRadius = options.borderRadius;
-    this.headerColor = options.headerColor;
-    this.headerBackgroundColor = options.headerBackgroundColor;
-    this.weekdaysColor = options.weekdaysColor;
     this.disableMonthYearPickers = options.disableMonthYearPickers ?? false;
     this.disableDayClick = options.disableDayClick ?? false;
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
@@ -166,7 +167,6 @@ export default class Calendar {
     this.dateChanged = options.dateChanged;
 
     /* Initialize State */
-    this.weekdayDisplayType = (options.weekdayDisplayType ?? "long-lower") as WeekdayDisplayType;
     this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     this.today = new Date();
     this.currentDate = new Date();
