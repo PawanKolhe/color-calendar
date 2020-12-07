@@ -3,10 +3,10 @@ import { configureStylePreferences } from "./modules/stylePreference";
 import * as picker from "./modules/picker/picker";
 import * as monthPicker from "./modules/picker/month/monthPicker";
 import * as yearPicker from "./modules/picker/year/yearPicker";
-import * as header from "./modules/header";
-import * as weekday from "./modules/weekday";
-import * as day from "./modules/day";
-import * as events from "./modules/events";
+import * as header from "./modules/header/header";
+import * as weekday from "./modules/weekday/weekday";
+import * as day from "./modules/day/day";
+import * as events from "./modules/events/events";
 
 import {
   CalendarSize,

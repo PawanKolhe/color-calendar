@@ -1,4 +1,4 @@
-import { EventData } from "../types";
+import { EventData } from "../../types";
 
 export function getEventsData() {
   return JSON.parse(JSON.stringify(this.eventsData));

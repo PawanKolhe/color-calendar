@@ -1,4 +1,4 @@
-import { Day, EventData, StartWeekday } from "../types";
+import { Day, EventData, StartWeekday } from "../../types";
 
 export function setDate(date: Date) {
   if(!date) {

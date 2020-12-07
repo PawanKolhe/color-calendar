@@ -1,4 +1,4 @@
-import { WeekdayDisplayType } from "../types";
+import { WeekdayDisplayType } from "../../types";
 
 export function setWeekdayDisplayType(weekdayDisplayType: WeekdayDisplayType) {
   this.weekdayDisplayType = weekdayDisplayType;

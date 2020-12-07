@@ -1,4 +1,4 @@
-import { MonthDisplayType } from "../types";
+import { MonthDisplayType } from "../../types";
 
 export function setMonthDisplayType(monthDisplayType: MonthDisplayType) {
   this.monthDisplayType = monthDisplayType;
