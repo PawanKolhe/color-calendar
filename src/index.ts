@@ -94,51 +94,51 @@ export default class Calendar {
 
   /* Methods */
   // Event Listeners
-  addEventListeners: () => void;
+  addEventListeners!: () => void;
   // Style Preference
-  configureStylePreferences: () => void;
+  configureStylePreferences!: () => void;
   // Picker
-  togglePicker: (shouldOpen?: boolean) => void;
+  togglePicker!: (shouldOpen?: boolean) => void;
   // Picker - Month
-  handleMonthPickerClick: (e: any) => void;
-  updateMonthPickerSelection: (newMonthValue: number) => void;
-  removeMonthPickerSelection: () => void;
+  handleMonthPickerClick!: (e: any) => void;
+  updateMonthPickerSelection!: (newMonthValue: number) => void;
+  removeMonthPickerSelection!: () => void;
   // Picker - Year
-  handleYearPickerClick: (e: any) => void;
-  updateYearPickerSelection: (newYearValue: number, newYearIndex?: number) => void;
-  updateYearPickerTodaySelection: () => void;
-  removeYearPickerSelection: () => void;
-  generatePickerYears: () => void;
-  handleYearChevronLeftClick: () => void;
-  handleYearChevronRightClick: () => void;
+  handleYearPickerClick!: (e: any) => void;
+  updateYearPickerSelection!: (newYearValue: number, newYearIndex?: number) => void;
+  updateYearPickerTodaySelection!: () => void;
+  removeYearPickerSelection!: () => void;
+  generatePickerYears!: () => void;
+  handleYearChevronLeftClick!: () => void;
+  handleYearChevronRightClick!: () => void;
   // Header
-  setMonthDisplayType: (monthDisplayType: MonthDisplayType) => void;
-  handleMonthYearDisplayClick: (e: any) => void;
-  handlePrevMonthButtonClick: () => void;
-  handleNextMonthButtonClick: () => void;
-  updateMonthYear: () => void;
+  setMonthDisplayType!: (monthDisplayType: MonthDisplayType) => void;
+  handleMonthYearDisplayClick!: (e: any) => void;
+  handlePrevMonthButtonClick!: () => void;
+  handleNextMonthButtonClick!: () => void;
+  updateMonthYear!: () => void;
   // Weekday
-  setWeekdayDisplayType: (weekdayDisplayType: WeekdayDisplayType) => void;
-  generateWeekdays: () => void;
+  setWeekdayDisplayType!: (weekdayDisplayType: WeekdayDisplayType) => void;
+  generateWeekdays!: () => void;
   // Day
-  setDate: (date: Date) => void;
-  getSelectedDate: () => Date;
-  clearCalendarDays: () => void;
-  updateCalendar: (isMonthChanged?: boolean) => void;
-  setOldSelectedNode: () => void;
-  selectDayInitial: (setDate?: boolean) => void;
-  handleCalendarDayClick: (e: any) => void;
-  removeOldDaySelection: () => void;
-  updateCurrentDate: (monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) => void;
-  generateDays: () => void;
-  renderDays: () => void;
-  rerenderSelectedDay: (element: HTMLElement, dayNum: number, storeOldSelected?: boolean) => void;
+  setDate!: (date: Date) => void;
+  getSelectedDate!: () => Date;
+  clearCalendarDays!: () => void;
+  updateCalendar!: (isMonthChanged?: boolean) => void;
+  setOldSelectedNode!: () => void;
+  selectDayInitial!: (setDate?: boolean) => void;
+  handleCalendarDayClick!: (e: any) => void;
+  removeOldDaySelection!: () => void;
+  updateCurrentDate!: (monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) => void;
+  generateDays!: () => void;
+  renderDays!: () => void;
+  rerenderSelectedDay!: (element: HTMLElement, dayNum: number, storeOldSelected?: boolean) => void;
   // Events
-  getEventsData: () => any;
-  setEventsData: (events: EventData[]) => number;
-  addEventsData: (newEvents?: EventData[]) => number;
-  getDateEvents: (date: Date) => EventData[];
-  getMonthEvents: () => EventData[];
+  getEventsData!: () => any;
+  setEventsData!: (events: EventData[]) => number;
+  addEventsData!: (newEvents?: EventData[]) => number;
+  getDateEvents!: (date: Date) => EventData[];
+  getMonthEvents!: () => EventData[];
 
   constructor(options: CalendarOptions = {}) {
     /* Initialize Options */
@@ -185,54 +185,6 @@ export default class Calendar {
     this.numOfDays_NextMonth = 0;
     this.yearPickerOffset = 0;
     this.yearPickerOffsetTemporary = 0;
-
-    /* Initialize Methods */
-    // Add Event Listeners
-    this.addEventListeners = addEventListeners;
-    // Style Preference
-    this.configureStylePreferences = configureStylePreferences;
-    // Picker
-    this.togglePicker = picker.togglePicker;
-    // Picker - Month
-    this.handleMonthPickerClick = monthPicker.handleMonthPickerClick;
-    this.updateMonthPickerSelection = monthPicker.updateMonthPickerSelection;
-    this.removeMonthPickerSelection = monthPicker.removeMonthPickerSelection;
-    // Picker - Year
-    this.handleYearPickerClick = yearPicker.handleYearPickerClick;
-    this.updateYearPickerSelection = yearPicker.updateYearPickerSelection;
-    this.updateYearPickerTodaySelection = yearPicker.updateYearPickerTodaySelection;
-    this.removeYearPickerSelection = yearPicker.removeYearPickerSelection;
-    this.generatePickerYears = yearPicker.generatePickerYears;
-    this.handleYearChevronLeftClick = yearPicker.handleYearChevronLeftClick;
-    this.handleYearChevronRightClick = yearPicker.handleYearChevronRightClick;
-    // Header
-    this.setMonthDisplayType = header.setMonthDisplayType;
-    this.handleMonthYearDisplayClick = header.handleMonthYearDisplayClick;
-    this.handlePrevMonthButtonClick = header.handlePrevMonthButtonClick;
-    this.handleNextMonthButtonClick = header.handleNextMonthButtonClick;
-    this.updateMonthYear = header.updateMonthYear;
-    // Weekday
-    this.setWeekdayDisplayType = weekday.setWeekdayDisplayType;
-    this.generateWeekdays = weekday.generateWeekdays;
-    // Day
-    this.setDate = day.setDate;
-    this.getSelectedDate = day.getSelectedDate;
-    this.clearCalendarDays = day.clearCalendarDays;
-    this.updateCalendar = day.updateCalendar;
-    this.setOldSelectedNode = day.setOldSelectedNode;
-    this.selectDayInitial = day.selectDayInitial;
-    this.handleCalendarDayClick = day.handleCalendarDayClick;
-    this.removeOldDaySelection = day.removeOldDaySelection;
-    this.updateCurrentDate = day.updateCurrentDate;
-    this.generateDays = day.generateDays;
-    this.renderDays = day.renderDays;
-    this.rerenderSelectedDay = day.rerenderSelectedDay;
-    // Events
-    this.getEventsData = events.getEventsData;
-    this.setEventsData = events.setEventsData;
-    this.addEventsData = events.addEventsData;
-    this.getDateEvents = events.getDateEvents;
-    this.getMonthEvents = events.getMonthEvents;
 
     // Check if HTML element with given selector exists in DOM
     this.calendar = document.querySelector(this.id) as HTMLElement;
@@ -365,3 +317,51 @@ export default class Calendar {
   }
   
 }
+
+/* Methods */
+// Add Event Listeners
+Calendar.prototype.addEventListeners = addEventListeners;
+// Style Preference
+Calendar.prototype.configureStylePreferences = configureStylePreferences;
+// Picker
+Calendar.prototype.togglePicker = picker.togglePicker;
+// Picker - Month
+Calendar.prototype.handleMonthPickerClick = monthPicker.handleMonthPickerClick;
+Calendar.prototype.updateMonthPickerSelection = monthPicker.updateMonthPickerSelection;
+Calendar.prototype.removeMonthPickerSelection = monthPicker.removeMonthPickerSelection;
+// Picker - Year
+Calendar.prototype.handleYearPickerClick = yearPicker.handleYearPickerClick;
+Calendar.prototype.updateYearPickerSelection = yearPicker.updateYearPickerSelection;
+Calendar.prototype.updateYearPickerTodaySelection = yearPicker.updateYearPickerTodaySelection;
+Calendar.prototype.removeYearPickerSelection = yearPicker.removeYearPickerSelection;
+Calendar.prototype.generatePickerYears = yearPicker.generatePickerYears;
+Calendar.prototype.handleYearChevronLeftClick = yearPicker.handleYearChevronLeftClick;
+Calendar.prototype.handleYearChevronRightClick = yearPicker.handleYearChevronRightClick;
+// Header
+Calendar.prototype.setMonthDisplayType = header.setMonthDisplayType;
+Calendar.prototype.handleMonthYearDisplayClick = header.handleMonthYearDisplayClick;
+Calendar.prototype.handlePrevMonthButtonClick = header.handlePrevMonthButtonClick;
+Calendar.prototype.handleNextMonthButtonClick = header.handleNextMonthButtonClick;
+Calendar.prototype.updateMonthYear = header.updateMonthYear;
+// Weekday
+Calendar.prototype.setWeekdayDisplayType = weekday.setWeekdayDisplayType;
+Calendar.prototype.generateWeekdays = weekday.generateWeekdays;
+// Day
+Calendar.prototype.setDate = day.setDate;
+Calendar.prototype.getSelectedDate = day.getSelectedDate;
+Calendar.prototype.clearCalendarDays = day.clearCalendarDays;
+Calendar.prototype.updateCalendar = day.updateCalendar;
+Calendar.prototype.setOldSelectedNode = day.setOldSelectedNode;
+Calendar.prototype.selectDayInitial = day.selectDayInitial;
+Calendar.prototype.handleCalendarDayClick = day.handleCalendarDayClick;
+Calendar.prototype.removeOldDaySelection = day.removeOldDaySelection;
+Calendar.prototype.updateCurrentDate = day.updateCurrentDate;
+Calendar.prototype.generateDays = day.generateDays;
+Calendar.prototype.renderDays = day.renderDays;
+Calendar.prototype.rerenderSelectedDay = day.rerenderSelectedDay;
+// Events
+Calendar.prototype.getEventsData = events.getEventsData;
+Calendar.prototype.setEventsData = events.setEventsData;
+Calendar.prototype.addEventsData = events.addEventsData;
+Calendar.prototype.getDateEvents = events.getDateEvents;
+Calendar.prototype.getMonthEvents = events.getMonthEvents;
