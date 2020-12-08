@@ -129,6 +129,7 @@ export function removeOldDaySelection() {
  * @param {number} monthOffset - Months to go backward or forward
  * @param {number} [newDay] - Value of new day
  * @param {number} [newMonth] - Value of new month
+ * @param {number} [newYear] - Value of new year
  */
 export function updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) {
   this.currentDate = new Date(
