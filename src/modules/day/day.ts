@@ -51,6 +51,7 @@ export function setOldSelectedNode() {
   }
 }
 
+/** Updates which element is to be selected when month changes */
 export function selectDayInitial(setDate?: boolean) {
   if(setDate) {
     this.daysIn_CurrentMonth[this.currentDate.getDate() - 1].selected = true;
