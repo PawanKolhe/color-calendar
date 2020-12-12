@@ -1,14 +1,5 @@
 import Calendar from './index';
-
-const DEFAULT_ID = '#color-calendar';
-
-const resetDOM = () => {
-  // Inserts clean DIVs with id to the DOM before each test
-  document.body.innerHTML = `
-    <div id="MyTestCalendar"></div>
-    <div id="color-calendar"></div>
-  `;
-}
+import { DEFAULT_ID, MONTH_NAMES_SHORT, MONTH_NAMES_LONG, resetDOM } from './testHelper';
 
 jest.autoMockOff();
 
@@ -91,8 +82,7 @@ describe('default calendar options when instantiated', () => {
   });
 
   test('monthDisplayType should be long', () => {
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const todayMonth = monthNames[new Date().getMonth()];
+    const todayMonth = MONTH_NAMES_LONG[new Date().getMonth()];
     expect(myCalendar.monthDisplayType).toBe('long');
     expect(calendarHTMLElement?.querySelector('.calendar__month')?.innerHTML).toBe(todayMonth);
   });
@@ -289,8 +279,7 @@ describe('custom calendar options when instantiated', () => {
       monthDisplayType: 'short'
     });
     let calendarHTMLElement = document.querySelector(`${DEFAULT_ID} .color-calendar`) as HTMLElement;
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const todayMonth = monthNames[new Date().getMonth()];
+    const todayMonth = MONTH_NAMES_SHORT[new Date().getMonth()];
     expect(myCalendar.monthDisplayType).toBe('short');
     expect(calendarHTMLElement?.querySelector('.calendar__month')?.innerHTML).toBe(todayMonth);
   });

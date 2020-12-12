@@ -1,43 +1,34 @@
 import Calendar from '../../index';
 
-const DEFAULT_ID = '#color-calendar';
-
-const resetDOM = () => {
-  // Inserts clean DIVs with id to the DOM before each test
-  document.body.innerHTML = `
-    <div id="color-calendar"></div>
-  `;
-}
+import { MONTH_NAMES_SHORT, resetDOM } from '../../testHelper';
 
 beforeEach(() => {
   resetDOM();
 });
 
-test('go to next month on next month click', () => {
+test('go to next month on next month button click', () => {
   const myCalendar = new Calendar({ monthDisplayType: 'short' });
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   const todayMonthIndex = new Date().getMonth();
   myCalendar.nextButton.click();
   const calendarMonth = myCalendar.monthDisplay.innerHTML;
-  const calendarMonthIndex = monthNames.findIndex(month => calendarMonth === month);
+  const calendarMonthIndex = MONTH_NAMES_SHORT.findIndex(month => calendarMonth === month);
 
   expect(calendarMonthIndex).toBe((todayMonthIndex + 1) % 12);
 });
 
-test('go to previous month on previous month click', () => {
+test('go to previous month on previous month button click', () => {
   const myCalendar = new Calendar({ monthDisplayType: 'short' });
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   const todayMonthIndex = new Date().getMonth();
   myCalendar.prevButton.click();
   const calendarMonth = myCalendar.monthDisplay.innerHTML;
-  const calendarMonthIndex = monthNames.findIndex(month => calendarMonth === month);
+  const calendarMonthIndex = MONTH_NAMES_SHORT.findIndex(month => calendarMonth === month);
 
   expect(calendarMonthIndex).toBe((todayMonthIndex - 1) % 12);
 });
 
-test('open month picker on month click', () => {
+test('open month picker on month text click', () => {
   const myCalendar = new Calendar();
   const monthPicker = myCalendar.pickerContainer.querySelector('.calendar__picker-month') as HTMLElement;
   const yearPicker = myCalendar.pickerContainer.querySelector('.calendar__picker-year') as HTMLElement;
@@ -49,7 +40,7 @@ test('open month picker on month click', () => {
   expect(yearPicker.style.display).toBe('none');
 });
 
-test('open year picker on year click', () => {
+test('open year picker on year text click', () => {
   const myCalendar = new Calendar();
   const yearPicker = myCalendar.pickerContainer.querySelector('.calendar__picker-year') as HTMLElement;
   const monthPicker = myCalendar.pickerContainer.querySelector('.calendar__picker-month') as HTMLElement;
