@@ -28,7 +28,7 @@ const config = [
     ],
     plugins: [
       typescript(),
-      strip(),
+      strip(),  // removes console.log
       commonjs({
         include: "node_modules/**",
       }),
@@ -37,7 +37,7 @@ const config = [
         exclude: "node_modules/**",
         babelHelpers: "bundled",
       }),
-      terser(),
+      terser(), // minify javascript
       banner('color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>'),
     ],
   },
