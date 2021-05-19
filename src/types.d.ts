@@ -1,5 +1,5 @@
 export interface CalendarOptions {
-  id?: string;
+  id?: string|HTMLElement;
   calendarSize?: CalendarSize;
   layoutModifiers?: LayoutModifier[];
   eventsData?: EventData[];

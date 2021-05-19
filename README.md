@@ -119,6 +119,13 @@ new Calendar({
     calendarSize: 'small'
 })
 ```
+Option `id` can be `HTMLElement`:
+```javascript
+new Calendar({
+    id: document.querySelector('#color-calendar'),
+    calendarSize: 'small'
+})
+```
 
 #### HTML
 ```html

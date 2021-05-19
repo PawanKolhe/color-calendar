@@ -26,7 +26,7 @@ export default class Calendar {
   readonly DAYS_TO_DISPLAY = 42;
 
   /* Options */
-  id: string;
+  id: string|HTMLElement;
   calendarSize: CalendarSize;
   layoutModifiers: LayoutModifier[];
   eventsData: EventData[];
@@ -186,10 +186,15 @@ export default class Calendar {
     this.yearPickerOffset = 0;
     this.yearPickerOffsetTemporary = 0;
 
-    // Check if HTML element with given selector exists in DOM
-    this.calendar = document.querySelector(this.id) as HTMLElement;
+    const idIsElement = this.id instanceof HTMLElement;
+    if (idIsElement){
+      this.calendar = this.id as HTMLElement;
+    }else {
+      // Check if HTML element with given selector exists in DOM
+      this.calendar = document.querySelector(this.id as string) as HTMLElement;
+    }
     if(!this.calendar) {
-      throw new Error(`[COLOR-CALENDAR] Element with selector '${this.id}' not found`);
+      throw new Error(`[COLOR-CALENDAR] Element${idIsElement?'':' with selector'} '${this.id}' not found`);
     }
 
     // Initialize initial HTML layout
@@ -247,15 +252,15 @@ export default class Calendar {
     `;
 
     // Store HTML element references
-    this.calendarRoot = document.querySelector(`${this.id} .${this.CAL_NAME}`) as HTMLElement;
-    this.calendarHeader = document.querySelector(`${this.id} .calendar__header`) as HTMLElement;
-    this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`) as HTMLElement;
-    this.calendarDays = document.querySelector(`${this.id} .calendar__days`) as HTMLElement;
-    this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`) as HTMLElement;
-    this.pickerMonthContainer = document.querySelector(`${this.id} .calendar__picker-month`) as HTMLElement;
-    this.pickerYearContainer = document.querySelector(`${this.id} .calendar__picker-year`) as HTMLElement;
-    this.yearPickerChevronLeft = document.querySelector(`${this.id} .calendar__picker-year-arrow-left`) as HTMLElement;
-    this.yearPickerChevronRight = document.querySelector(`${this.id} .calendar__picker-year-arrow-right`) as HTMLElement;
+    this.calendarRoot = this.calendar.querySelector(`.${this.CAL_NAME}`) as HTMLElement;
+    this.calendarHeader = this.calendar.querySelector(`.calendar__header`) as HTMLElement;
+    this.calendarWeekdays = this.calendar.querySelector(`.calendar__weekdays`) as HTMLElement;
+    this.calendarDays = this.calendar.querySelector(`.calendar__days`) as HTMLElement;
+    this.pickerContainer = this.calendar.querySelector(`.calendar__picker`) as HTMLElement;
+    this.pickerMonthContainer = this.calendar.querySelector(`.calendar__picker-month`) as HTMLElement;
+    this.pickerYearContainer = this.calendar.querySelector(`.calendar__picker-year`) as HTMLElement;
+    this.yearPickerChevronLeft = this.calendar.querySelector(`.calendar__picker-year-arrow-left`) as HTMLElement;
+    this.yearPickerChevronRight = this.calendar.querySelector(`.calendar__picker-year-arrow-right`) as HTMLElement;
 
     // Mark today's month in month picker
     this.pickerMonthContainer!.children[this.today.getMonth()].classList.add('calendar__picker-month-today');
@@ -277,11 +282,11 @@ export default class Calendar {
       `
     }
 
-    this.monthyearDisplay = document.querySelector(`${this.id} .calendar__monthyear`) as HTMLElement;
-    this.monthDisplay = document.querySelector(`${this.id} .calendar__month`) as HTMLElement;
-    this.yearDisplay = document.querySelector(`${this.id} .calendar__year`) as HTMLElement;
-    this.prevButton = document.querySelector(`${this.id} .calendar__arrow-prev .calendar__arrow-inner`) as HTMLElement;
-    this.nextButton = document.querySelector(`${this.id} .calendar__arrow-next .calendar__arrow-inner`) as HTMLElement;
+    this.monthyearDisplay = this.calendar.querySelector(`.calendar__monthyear`) as HTMLElement;
+    this.monthDisplay = this.calendar.querySelector(`.calendar__month`) as HTMLElement;
+    this.yearDisplay = this.calendar.querySelector(`.calendar__year`) as HTMLElement;
+    this.prevButton = this.calendar.querySelector(`.calendar__arrow-prev .calendar__arrow-inner`) as HTMLElement;
+    this.nextButton = this.calendar.querySelector(`.calendar__arrow-next .calendar__arrow-inner`) as HTMLElement;
 
     // Set initial picker styles
     this.togglePicker(false);

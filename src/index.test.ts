@@ -159,6 +159,14 @@ describe('custom calendar options when instantiated', () => {
     expect(myCalendar.id).toBe(id);
     expect(calendarHTMLElement).not.toBeNull();
   });
+  test('id should be string or HTMLElement', () => {
+    for (const id of [DEFAULT_ID, document.querySelector(DEFAULT_ID) as HTMLElement]) {
+      const myCalendar = new Calendar({id});
+      const calendarHTMLElement = myCalendar.calendar.querySelector(`.color-calendar`);
+      expect(myCalendar.id).toBe(id);
+      expect(calendarHTMLElement).not.toBeNull();
+    }
+  });
 
   test('calendarSize should be small', () => {
     const myCalendar = new Calendar({
@@ -208,6 +216,7 @@ describe('custom calendar options when instantiated', () => {
       }
     ]);
     const elementsWithEvents = calendarHTMLElement?.querySelectorAll('.calendar__day-event');
+    // Fixme: this test was failed in commit <882afe2f>
     expect(elementsWithEvents).toHaveLength(2);
     expect(elementsWithEvents?.item(0)?.querySelector('.calendar__day-text')?.innerHTML).toBe('8');
     expect(elementsWithEvents?.item(1)?.querySelector('.calendar__day-text')?.innerHTML).toBe('9');
