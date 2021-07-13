@@ -166,7 +166,7 @@ export default class Calendar {
     this.disableMonthYearPickers = options.disableMonthYearPickers ?? false;
     this.disableDayClick = options.disableDayClick ?? false;
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
-    this.customMonthValues = (options.customMonthValues && options.customMonthValues.length === 12) ? options.customMonthValues : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    this.customMonthValues = options.customMonthValues;
     this.customWeekdayValues = options.customWeekdayValues;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
@@ -218,7 +218,7 @@ export default class Calendar {
           <div class="calendar__days"></div>
           <div class="calendar__picker">
             <div class="calendar__picker-month">
-              ${this.customMonthValues.map((month, i) => `<div class="calendar__picker-month-option" data-value="${i}">${month}</div>`).join('')}
+              ${(this.customMonthValues ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']).map((month, i) => `<div class="calendar__picker-month-option" data-value="${i}">${month}</div>`).join('')}
             </div>
             <div class="calendar__picker-year">
               <div class="calendar__picker-year-option" data-value="0"></div>
