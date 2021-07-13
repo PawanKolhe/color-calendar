@@ -9,13 +9,13 @@ export function setMonthDisplayType(monthDisplayType: MonthDisplayType) {
 export function handleMonthYearDisplayClick(e: any) {
   // Filter out unwanted click events
   if (!(
-      e.target.classList.contains("calendar__month") ||
-      e.target.classList.contains("calendar__year")
-    )) {
+    e.target.classList.contains("calendar__month") ||
+    e.target.classList.contains("calendar__year")
+  )) {
     return;
   }
   // Check if MonthYear click is disabled
-  if(this.disableMonthYearPickers) {
+  if (this.disableMonthYearPickers) {
     return;
   }
 
@@ -23,13 +23,13 @@ export function handleMonthYearDisplayClick(e: any) {
   const classList = e.target.classList;
 
   // Set picker type
-  if(classList.contains("calendar__month")) {
+  if (classList.contains("calendar__month")) {
     this.pickerType = 'month';
     this.monthDisplay!.style.opacity = '1';
     this.yearDisplay!.style.opacity = '0.7';
     this.pickerMonthContainer!.style.display = 'grid';
     this.pickerYearContainer!.style.display = 'none';
-  } else if(classList.contains("calendar__year")) {
+  } else if (classList.contains("calendar__year")) {
     this.pickerType = 'year';
     this.monthDisplay!.style.opacity = '0.7';
     this.yearDisplay!.style.opacity = '1';
@@ -37,7 +37,7 @@ export function handleMonthYearDisplayClick(e: any) {
     this.pickerYearContainer!.style.display = 'grid';
   }
 
-  if(oldPickerType === this.pickerType) {
+  if (oldPickerType === this.pickerType) {
     // Toggle picker
     this.togglePicker();
   } else {
@@ -48,16 +48,16 @@ export function handleMonthYearDisplayClick(e: any) {
 
 export function handlePrevMonthButtonClick() {
   // Check if Month arrow click is disabled
-  if(this.disableMonthArrowClick) {
+  if (this.disableMonthArrowClick) {
     return;
   }
 
   const newMonthValue = this.currentDate.getMonth() - 1;
-  if(this.currentDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 && newMonthValue < 0) {
-    this.yearPickerOffset -=12;
+  if (this.currentDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 && newMonthValue < 0) {
+    this.yearPickerOffset -= 12;
     this.generatePickerYears();
   }
-  if(newMonthValue < 0) {
+  if (newMonthValue < 0) {
     this.updateYearPickerSelection(this.currentDate.getFullYear() - 1);
   }
   this.updateMonthPickerSelection(newMonthValue);
@@ -67,16 +67,16 @@ export function handlePrevMonthButtonClick() {
 
 export function handleNextMonthButtonClick() {
   // Check if Month arrow click is disabled
-  if(this.disableMonthArrowClick) {
+  if (this.disableMonthArrowClick) {
     return;
   }
 
   const newMonthValue = this.currentDate.getMonth() + 1;
-  if(this.currentDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 && newMonthValue > 11) {
-    this.yearPickerOffset +=12;
+  if (this.currentDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 && newMonthValue > 11) {
+    this.yearPickerOffset += 12;
     this.generatePickerYears();
   }
-  if(newMonthValue > 11) {
+  if (newMonthValue > 11) {
     this.updateYearPickerSelection(this.currentDate.getFullYear() + 1);
   }
   this.updateMonthPickerSelection(newMonthValue);
@@ -87,8 +87,12 @@ export function handleNextMonthButtonClick() {
 /** Update Month and Year HTML */
 export function updateMonthYear() {
   this.oldSelectedNode = null;
-  this.monthDisplay!.innerHTML = new Intl.DateTimeFormat("default", {
-    month: this.monthDisplayType,
-  }).format(this.currentDate)
+  if (this.customMonthValues) {
+    this.monthDisplay!.innerHTML = this.customMonthValues[this.currentDate.getMonth()];
+  } else {
+    this.monthDisplay!.innerHTML = new Intl.DateTimeFormat("default", {
+      month: this.monthDisplayType,
+    }).format(this.currentDate)
+  }
   this.yearDisplay!.innerHTML = this.currentDate.getFullYear().toString();
 }

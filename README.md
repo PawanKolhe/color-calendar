@@ -351,6 +351,24 @@ Default: `false`
 
 If month arrows should be disabled.
 
+### `customMonthValues`
+
+Type: `String[]`  
+Default: `undefined`
+
+Set custom display values for Month.
+
+### `customWeekdayValues`
+
+Type: `String[]`  
+Default: `undefined`
+
+Set custom display values for Weekdays.
+
+```javascript
+["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+```
+
 <a id="events"></a>
 
 ## 🖱 Events

@@ -47,6 +47,9 @@ export default class Calendar {
   disableMonthYearPickers: boolean;
   disableDayClick: boolean;
   disableMonthArrowClick: boolean;
+  updateDateOnMonthOrYearChange?: boolean;
+  customMonthValues?: string[];
+  customWeekdayValues?: string[];
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
   selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
@@ -164,12 +167,19 @@ export default class Calendar {
     this.disableMonthYearPickers = options.disableMonthYearPickers ?? false;
     this.disableDayClick = options.disableDayClick ?? false;
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
+    this.updateDateOnMonthOrYearChange = options.updateDateOnMonthOrYearChange ?? true;
+    this.customMonthValues = (options.customMonthValues && options.customMonthValues.length === 12) ? options.customMonthValues : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    this.customWeekdayValues = options.customWeekdayValues;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
     this.selectedDateClicked = options.selectedDateClicked;
 
     /* Initialize State */
-    this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
+    if (this.customWeekdayValues && this.customWeekdayValues.length === 7) {
+      this.weekdays = this.customWeekdayValues as Weekdays;
+    } else {
+      this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
+    }
     this.today = new Date();
     this.currentDate = new Date();
     this.pickerType = 'month';
@@ -210,18 +220,7 @@ export default class Calendar {
           <div class="calendar__days"></div>
           <div class="calendar__picker">
             <div class="calendar__picker-month">
-              <div class="calendar__picker-month-option" data-value="0">Jan</div>
-              <div class="calendar__picker-month-option" data-value="1">Feb</div>
-              <div class="calendar__picker-month-option" data-value="2">Mar</div>
-              <div class="calendar__picker-month-option" data-value="3">Apr</div>
-              <div class="calendar__picker-month-option" data-value="4">May</div>
-              <div class="calendar__picker-month-option" data-value="5">Jun</div>
-              <div class="calendar__picker-month-option" data-value="6">Jul</div>
-              <div class="calendar__picker-month-option" data-value="7">Aug</div>
-              <div class="calendar__picker-month-option" data-value="8">Sep</div>
-              <div class="calendar__picker-month-option" data-value="9">Oct</div>
-              <div class="calendar__picker-month-option" data-value="10">Nov</div>
-              <div class="calendar__picker-month-option" data-value="11">Dec</div>
+              ${this.customMonthValues.map((month, i) => `<div class="calendar__picker-month-option" data-value="${i}">${month}</div>`).join('')}
             </div>
             <div class="calendar__picker-year">
               <div class="calendar__picker-year-option" data-value="0"></div>

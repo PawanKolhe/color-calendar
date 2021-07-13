@@ -11,8 +11,7 @@ export function generateWeekdays() {
   let newHTML = '';
   for (let i = 0; i < 7; i++) {
     newHTML += `
-      <div class="calendar__weekday">${
-        this.weekdays[(i + this.startWeekday) % 7]
+      <div class="calendar__weekday">${this.weekdays[(i + this.startWeekday) % 7]
       }</div>
     `;
   }
