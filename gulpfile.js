@@ -1,13 +1,13 @@
 const gulp = require('gulp');
 const del = require('del');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const env = require('postcss-preset-env');
 
 gulp.task('clean', () => {
   return del([
-      'dist/css/',
+    'dist/css/',
   ]);
 });
 
@@ -23,8 +23,8 @@ gulp.task('postcss', function () {
     autoprefixer()
   ];
   return gulp.src('dist/css/*.css')
-      .pipe(postcss(plugins))
-      .pipe(gulp.dest('dist/css/'));
+    .pipe(postcss(plugins))
+    .pipe(gulp.dest('dist/css/'));
 });
 
 gulp.task('default', gulp.series(['clean', 'sass', 'postcss']));

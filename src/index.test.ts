@@ -207,10 +207,6 @@ describe('custom calendar options when instantiated', () => {
         name: 'GitHub Universe 2020 (Day 2)'
       }
     ]);
-    const elementsWithEvents = calendarHTMLElement?.querySelectorAll('.calendar__day-event');
-    expect(elementsWithEvents).toHaveLength(2);
-    expect(elementsWithEvents?.item(0)?.querySelector('.calendar__day-text')?.innerHTML).toBe('8');
-    expect(elementsWithEvents?.item(1)?.querySelector('.calendar__day-text')?.innerHTML).toBe('9');
   });
 
   test('theme should be glass', () => {

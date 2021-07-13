@@ -29,23 +29,25 @@ test('should add events', () => {
 test('should get today month events', () => {
   const myCalendar = new Calendar();
 
+  const todayYear = new Date().getFullYear();
+
   let todayMonth = (new Date().getMonth() + 1).toString();
-  if(parseInt(todayMonth, 10) < 10) {
+  if (parseInt(todayMonth, 10) < 10) {
     todayMonth = `0${todayMonth}`
   }
   let nextMonth = parseInt(todayMonth) + 1;
-  if(nextMonth > 12) {
+  if (nextMonth > 12) {
     nextMonth = 1;
   }
   const eventsData = [
     {
-      start: `2020-${todayMonth}-08T13:00:00`,
-      end: `2020-${todayMonth}-08T17:30:00`,
+      start: `${todayYear}-${todayMonth}-08T13:00:00`,
+      end: `${todayYear}-${todayMonth}-08T17:30:00`,
       name: 'Sample Event 1'
     },
     {
-      start: `2020-${nextMonth}-09T13:00:00`,
-      end: `2020-${nextMonth}-09T17:30:00`,
+      start: `${todayYear}-${nextMonth}-09T13:00:00`,
+      end: `${todayYear}-${nextMonth}-09T17:30:00`,
       name: 'Sample Event 2'
     }
   ];
@@ -53,8 +55,8 @@ test('should get today month events', () => {
 
   expect(myCalendar.getMonthEvents()).toEqual([
     {
-      start: `2020-${todayMonth}-08T13:00:00`,
-      end: `2020-${todayMonth}-08T17:30:00`,
+      start: `${todayYear}-${todayMonth}-08T13:00:00`,
+      end: `${todayYear}-${todayMonth}-08T17:30:00`,
       name: 'Sample Event 1'
     }
   ]);
