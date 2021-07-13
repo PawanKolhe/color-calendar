@@ -19,9 +19,10 @@ export interface CalendarOptions {
   borderRadius?: string;
   disableMonthYearPickers?: boolean;
   disableDayClick?: boolean;
-  disableMonthArrowClick? : boolean;
+  disableMonthArrowClick?: boolean;
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 }
 
 export interface EventData {
@@ -45,4 +46,4 @@ export type WeekdayDisplayType = "short" | "long-lower" | "long-upper";
 
 export type Weekdays = [string, string, string, string, string, string, string];
 
-export type StartWeekday =  0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type StartWeekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;

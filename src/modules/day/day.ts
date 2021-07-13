@@ -1,10 +1,10 @@
 import { Day, EventData, StartWeekday } from "../../types";
 
 export function setDate(date: Date) {
-  if(!date) {
+  if (!date) {
     return;
   }
-  if(date instanceof Date) {
+  if (date instanceof Date) {
     this.reset(date);
   } else {
     this.reset(new Date(date));
@@ -36,16 +36,16 @@ export function updateCalendar(isMonthChanged?: boolean) {
 }
 
 export function setOldSelectedNode() {
-  if(!this.oldSelectedNode) {
+  if (!this.oldSelectedNode) {
     let selectedNode: HTMLElement | undefined = undefined;
-    for(let i = 1; i < this.calendarDays!.childNodes.length; i+=2) {
+    for (let i = 1; i < this.calendarDays!.childNodes.length; i += 2) {
       let ele = this.calendarDays!.childNodes[i] as HTMLElement;
-      if(ele.classList && ele.classList.contains('calendar__day-active') && ele.innerText === this.currentDate.getDate().toString()){
+      if (ele.classList && ele.classList.contains('calendar__day-active') && ele.innerText === this.currentDate.getDate().toString()) {
         selectedNode = ele;
         break;
       }
     }
-    if(selectedNode) {
+    if (selectedNode) {
       this.oldSelectedNode = [selectedNode, parseInt(selectedNode.innerText)];
     }
   }
@@ -53,12 +53,12 @@ export function setOldSelectedNode() {
 
 /** Updates which element is to be selected when month changes */
 export function selectDayInitial(setDate?: boolean) {
-  if(setDate) {
+  if (setDate) {
     this.daysIn_CurrentMonth[this.currentDate.getDate() - 1].selected = true;
   } else {
     let isTodayMonth = this.today.getMonth() === this.currentDate.getMonth();
     let isTodayDay = this.today.getDate() === this.currentDate.getDate();
-    if(isTodayMonth && isTodayDay) {
+    if (isTodayMonth && isTodayDay) {
       this.daysIn_CurrentMonth[this.today.getDate() - 1].selected = true;
     } else {
       this.daysIn_CurrentMonth[0].selected = true;
@@ -75,14 +75,13 @@ export function handleCalendarDayClick(e: any) {
       e.target.classList.contains("calendar__day-text") ||
       e.target.classList.contains("calendar__day-box-today") ||
       e.target.classList.contains("calendar__day-bullet")
-    ) ||
-    e.target.parentElement.classList.contains("calendar__day-selected")
+    )
   ) {
     return;
   }
 
   // Check if Day click is disabled
-  if(this.disableDayClick) {
+  if (this.disableDayClick) {
     return;
   }
 
@@ -91,6 +90,14 @@ export function handleCalendarDayClick(e: any) {
     this.oldSelectedNode &&
     !this.oldSelectedNode[0]
   ) {
+    return;
+  }
+
+  // Invoke user provided callback
+  if (e.target.parentElement.classList.contains("calendar__day-selected")) {
+    if (this.selectedDateClicked) {
+      this.selectedDateClicked(this.currentDate, this.getDateEvents(this.currentDate));
+    }
     return;
   }
 
@@ -140,16 +147,16 @@ export function updateCurrentDate(monthOffset: number, newDay?: number, newMonth
       : this.currentDate.getMonth() + monthOffset,
     ((monthOffset !== 0) || !newDay) ? 1 : newDay
   );
-  
-  if(monthOffset !== 0 || (newMonth !== undefined && newMonth !== null) || newYear) {
+
+  if (monthOffset !== 0 || (newMonth !== undefined && newMonth !== null) || newYear) {
     this.updateCalendar(true);
     // Invoke user provided monthChanged callback
-    if(this.monthChanged) {
+    if (this.monthChanged) {
       this.monthChanged(this.currentDate, this.getMonthEvents());
     }
   }
-  // Invoke user provided dateChanged callback
-  if(this.dateChanged) {
+  // Invoke user provided callback
+  if (this.dateChanged) {
     this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
   }
 }
@@ -211,7 +218,7 @@ export function renderDays() {
   this.filteredEventsThisMonth.forEach((event: EventData) => {
     const start = new Date(event.start).getDate();
     const end = new Date(event.end).getDate();
-    for(let i = start; i <= end; i++) {
+    for (let i = start; i <= end; i++) {
       this.eventDayMap[i] = true;
     }
   });
@@ -229,8 +236,7 @@ export function renderDays() {
   // Prev Month (Light)
   for (let i = 0; i < dayOffset; i++) {
     newHTML += `
-      <div class="calendar__day calendar__day-other">${
-        this.numOfDays_PrevMonth + 1 - dayOffset + i
+      <div class="calendar__day calendar__day-other">${this.numOfDays_PrevMonth + 1 - dayOffset + i
       }</div>
     `;
     insertCount++;
@@ -242,8 +248,7 @@ export function renderDays() {
   this.daysIn_CurrentMonth.forEach((day: Day) => {
     let isTodayDate = isTodayMonth && day.day === this.today.getDate();
     newHTML += `
-      <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${
-      this.eventDayMap[day.day]
+      <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${this.eventDayMap[day.day]
         ? ' calendar__day-event'
         : ' calendar__day-no-event'
       }${day.selected ? ' calendar__day-selected' : ''}">
@@ -279,17 +284,14 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   let isTodayMonth = (this.today.getMonth() === this.currentDate.getMonth()) && isTodayYear;
   let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
   let div = document.createElement("div");
-  div.className += `calendar__day calendar__day-active${
-    isTodayDate ? " calendar__day-today" : ""
-  }${
-    this.eventDayMap[dayNum]
+  div.className += `calendar__day calendar__day-active${isTodayDate ? " calendar__day-today" : ""
+    }${this.eventDayMap[dayNum]
       ? " calendar__day-event"
       : " calendar__day-no-event"
-  }${
-    this.daysIn_CurrentMonth[dayNum - 1].selected
+    }${this.daysIn_CurrentMonth[dayNum - 1].selected
       ? " calendar__day-selected"
       : ""
-  }`;
+    }`;
   div.innerHTML = `
     <span class="calendar__day-text">${dayNum}</span>
     <div class="calendar__day-bullet"></div>
@@ -297,14 +299,14 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   `;
 
   // Insert newly created target day to DOM
-  if(!previousElement) {
+  if (!previousElement) {
     // Handle edge case when it is the first element in the calendar
     this.calendarDays.insertBefore(
       div,
       element
     );
   } else {
-    if(previousElement.parentElement) {
+    if (previousElement.parentElement) {
       previousElement.parentElement.insertBefore(
         div,
         previousElement.nextSibling

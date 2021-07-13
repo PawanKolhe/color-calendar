@@ -49,6 +49,7 @@ export default class Calendar {
   disableMonthArrowClick: boolean;
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
   /* State */
   weekdayDisplayTypeOptions = {
@@ -133,7 +134,7 @@ export default class Calendar {
   generateDays!: () => void;
   renderDays!: () => void;
   rerenderSelectedDay!: (element: HTMLElement, dayNum: number, storeOldSelected?: boolean) => void;
-  // Events
+  // Methods
   getEventsData!: () => any;
   setEventsData!: (events: EventData[]) => number;
   addEventsData!: (newEvents?: EventData[]) => number;
@@ -165,6 +166,7 @@ export default class Calendar {
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
+    this.selectedDateClicked = options.selectedDateClicked;
 
     /* Initialize State */
     this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
@@ -188,7 +190,7 @@ export default class Calendar {
 
     // Check if HTML element with given selector exists in DOM
     this.calendar = document.querySelector(this.id) as HTMLElement;
-    if(!this.calendar) {
+    if (!this.calendar) {
       throw new Error(`[COLOR-CALENDAR] Element with selector '${this.id}' not found`);
     }
 
@@ -266,7 +268,7 @@ export default class Calendar {
     });
 
     // Shifts month and year header UI to be left aligned
-    if(this.layoutModifiers.includes('month-left-align')) {
+    if (this.layoutModifiers.includes('month-left-align')) {
       this.calendarHeader.innerHTML = `
         <div class="calendar__monthyear">
           <span class="calendar__month"></span>&nbsp;
@@ -303,19 +305,19 @@ export default class Calendar {
     this.generatePickerYears();
     this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
     this.updateYearPickerTodaySelection();
-    this.generateWeekdays();
+    this.generateWeekdays();  // TODO: rename to generateAndRenderWeekdays
     this.generateDays();
     this.selectDayInitial(date ? true : false);
     this.renderDays();
-    this.setOldSelectedNode();
-    if(this.dateChanged) {
+    this.setOldSelectedNode();  // TODO: rename to setOldSelectedDay
+    if (this.dateChanged) {
       this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
     }
-    if(this.monthChanged) {
+    if (this.monthChanged) {
       this.monthChanged(this.currentDate, this.getMonthEvents());
     }
   }
-  
+
 }
 
 /* Methods */
@@ -359,7 +361,7 @@ Calendar.prototype.updateCurrentDate = day.updateCurrentDate;
 Calendar.prototype.generateDays = day.generateDays;
 Calendar.prototype.renderDays = day.renderDays;
 Calendar.prototype.rerenderSelectedDay = day.rerenderSelectedDay;
-// Events
+// Methods
 Calendar.prototype.getEventsData = events.getEventsData;
 Calendar.prototype.setEventsData = events.setEventsData;
 Calendar.prototype.addEventsData = events.addEventsData;
