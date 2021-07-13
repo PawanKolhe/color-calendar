@@ -47,7 +47,6 @@ export default class Calendar {
   disableMonthYearPickers: boolean;
   disableDayClick: boolean;
   disableMonthArrowClick: boolean;
-  updateDateOnMonthOrYearChange?: boolean;
   customMonthValues?: string[];
   customWeekdayValues?: string[];
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
@@ -167,7 +166,6 @@ export default class Calendar {
     this.disableMonthYearPickers = options.disableMonthYearPickers ?? false;
     this.disableDayClick = options.disableDayClick ?? false;
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
-    this.updateDateOnMonthOrYearChange = options.updateDateOnMonthOrYearChange ?? true;
     this.customMonthValues = (options.customMonthValues && options.customMonthValues.length === 12) ? options.customMonthValues : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     this.customWeekdayValues = options.customWeekdayValues;
     this.monthChanged = options.monthChanged;

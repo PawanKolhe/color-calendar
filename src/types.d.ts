@@ -20,7 +20,6 @@ export interface CalendarOptions {
   disableMonthYearPickers?: boolean;
   disableDayClick?: boolean;
   disableMonthArrowClick?: boolean;
-  updateDateOnMonthOrYearChange?: boolean;
   customMonthValues?: string[];
   customWeekdayValues?: string[];
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
