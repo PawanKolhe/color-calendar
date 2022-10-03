@@ -291,7 +291,7 @@ export default class Calendar {
     // Apply click listeners to HTML elements
     this.addEventListeners();
 
-    this.reset(new Date());
+    this.reset(this.currentDate);
   }
 
   reset(date: Date) {

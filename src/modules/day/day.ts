@@ -93,12 +93,16 @@ export function handleCalendarDayClick(e: any) {
     return;
   }
 
-  // Invoke user provided callback
+  // Invoke user provided callback  
   if (e.target.parentElement.classList.contains("calendar__day-selected")) {
     if (this.selectedDateClicked) {
-      this.selectedDateClicked(this.currentDate, this.getDateEvents(this.currentDate));
-    }
-    return;
+      this.selectedDateClicked(this.currentDate, this.getDateEvents(this.currentDate));      
+    }    
+    // return;
+  }
+  else {
+    //Remove old day selection
+    this.removeOldDaySelection();
   }
 
   // Find which day of the month is clicked
@@ -107,12 +111,9 @@ export function handleCalendarDayClick(e: any) {
   day = e.target.parentElement.innerText;
   dayNum = parseInt(day, 10);
 
-  //Remove old day selection
-  this.removeOldDaySelection();
-
   // Select clicked day
   if (day) {
-    this.updateCurrentDate(0, dayNum);
+    this.updateCurrentDate(0, dayNum);    
     Object.assign(this.daysIn_CurrentMonth[dayNum - 1], { selected: true });
     this.rerenderSelectedDay(e.target.parentElement, dayNum, true);
   }
@@ -139,7 +140,8 @@ export function removeOldDaySelection() {
  * @param {number} [newMonth] - Value of new month
  * @param {number} [newYear] - Value of new year
  */
-export function updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) {
+export function updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) {  
+  
   this.currentDate = new Date(
     newYear ? newYear : this.currentDate.getFullYear(),
     (newMonth !== undefined && newMonth !== null)

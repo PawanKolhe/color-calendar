@@ -10,10 +10,11 @@ import strip from '@rollup/plugin-strip';
 
 const config = [
   {
-    input: "src/index.ts",
+    input: "src/index.ts",    
     output: [
       {
         file: "dist/bundle.cjs.js",
+        sourcemap: true,
         format: "cjs",
       },
       {
@@ -28,7 +29,11 @@ const config = [
     ],
     plugins: [
       typescript(),
-      strip(),  // removes console.log
+      // strip({
+      //   debugger: false,
+      //   // functions: ['console.log', 'assert.*', 'debug', 'alert'],
+      //   sourceMap: true
+      // }),  // removes console.log
       commonjs({
         include: "node_modules/**",
       }),
@@ -36,8 +41,11 @@ const config = [
       babel({
         exclude: "node_modules/**",
         babelHelpers: "bundled",
+        sourcemap: true,
       }),
-      terser(), // minify javascript
+      terser({
+        // sourcemap: true
+      }), // minify javascript
       banner('color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>'),
     ],
   },
