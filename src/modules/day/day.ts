@@ -68,6 +68,7 @@ export function selectDayInitial(setDate?: boolean) {
 
 /** Invoked on calendar day click */
 export function handleCalendarDayClick(e: any) {
+  
   // Filter out unwanted click events
   if (
     !(
@@ -94,7 +95,7 @@ export function handleCalendarDayClick(e: any) {
   }
 
   // Invoke user provided callback  
-  if (e.target.parentElement.classList.contains("calendar__day-selected")) {
+  if (e.target.parentElement.classList.contains("calendar__day-selected") || e.target.parentElement.classList.contains("calendar__day__no__selected")) {
     if (this.selectedDateClicked) {
       this.selectedDateClicked(this.currentDate, this.getDateEvents(this.currentDate));
     }
@@ -140,8 +141,8 @@ export function removeOldDaySelection() {
  * @param {number} [newMonth] - Value of new month
  * @param {number} [newYear] - Value of new year
  */
-export function updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) {  
-  
+export function updateCurrentDate(monthOffset: number, newDay?: number, newMonth?: number, newYear?: number) {      
+
   this.currentDate = new Date(
     newYear ? newYear : this.currentDate.getFullYear(),
     (newMonth !== undefined && newMonth !== null)
@@ -242,9 +243,7 @@ export function renderDays() {
       }</div>
     `;
     insertCount++;
-  }
-
-  console.log('calendar__day-active');
+  }  
   
 
   // Current Month
@@ -256,7 +255,7 @@ export function renderDays() {
       <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${this.eventDayMap[day.day]
         ? ' calendar__day-event'
         : ' calendar__day-no-event'
-      }${day.selected ? ' calendar__day-selected' : ''}">
+      }${day.selected ? (this.selectInitialDate ? ' calendar__day-selected' : ' calendar__day__no__selected') : ''}">
         <span class="calendar__day-text">${day.day}</span>
         <div class="calendar__day-bullet"></div>
         <div class="calendar__day-box"></div>
@@ -282,7 +281,7 @@ export function renderDays() {
  */
 export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeOldSelected?: boolean) {
   // Get reference to previous day (day before target day)
-  let previousElement = element.previousElementSibling;
+  let previousElement = element.previousElementSibling;   
 
   // Create new target day element
   let isTodayYear = this.today.getFullYear() === this.currentDate.getFullYear();
@@ -304,7 +303,8 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   `;
 
   // Insert newly created target day to DOM
-  if (!previousElement) {
+  if (!previousElement) {  
+    
     // Handle edge case when it is the first element in the calendar
     this.calendarDays.insertBefore(
       div,
