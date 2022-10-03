@@ -40,7 +40,7 @@ export function setOldSelectedNode() {
     let selectedNode: HTMLElement | undefined = undefined;
     for (let i = 1; i < this.calendarDays!.childNodes.length; i += 2) {
       let ele = this.calendarDays!.childNodes[i] as HTMLElement;
-      if (ele.classList && ele.classList.contains('calendar__day-active') && ele.innerText === this.currentDate.getDate().toString()) {
+      if (ele.classList && ele.classList.contains('calendar__day-active') && ele.innerText.trim() === this.currentDate.getDate().toString()) {
         selectedNode = ele;
         break;
       }
@@ -96,12 +96,11 @@ export function handleCalendarDayClick(e: any) {
   // Invoke user provided callback  
   if (e.target.parentElement.classList.contains("calendar__day-selected")) {
     if (this.selectedDateClicked) {
-      this.selectedDateClicked(this.currentDate, this.getDateEvents(this.currentDate));      
-    }    
+      this.selectedDateClicked(this.currentDate, this.getDateEvents(this.currentDate));
+    }
     // return;
   }
   else {
-    //Remove old day selection
     this.removeOldDaySelection();
   }
 
@@ -128,7 +127,8 @@ export function removeOldDaySelection() {
       this.oldSelectedNode[0],
       this.oldSelectedNode[1]
     );
-  }
+    return true;
+  }  
 }
 
 /**
@@ -243,6 +243,9 @@ export function renderDays() {
     `;
     insertCount++;
   }
+
+  console.log('calendar__day-active');
+  
 
   // Current Month
   let isTodayYear = this.today.getFullYear() === this.currentDate.getFullYear();
