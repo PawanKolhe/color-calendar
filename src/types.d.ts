@@ -1,5 +1,6 @@
 export interface CalendarOptions {
   id?: string;
+  currentDate?: Date,
   calendarSize?: CalendarSize;
   layoutModifiers?: LayoutModifier[];
   eventsData?: EventData[];

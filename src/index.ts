@@ -179,7 +179,7 @@ export default class Calendar {
       this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     }
     this.today = new Date();
-    this.currentDate = new Date();
+    this.currentDate = options.currentDate || new Date();
     this.pickerType = 'month';
     this.eventDayMap = {};
     this.oldSelectedNode = null;
