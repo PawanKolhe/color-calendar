@@ -27,6 +27,9 @@ export default class Calendar {
 
   /* Options */
   id: string;
+  start?: Date;
+  end?: Date;
+  selectInitialDate?: boolean;
   calendarSize: CalendarSize;
   layoutModifiers: LayoutModifier[];
   eventsData: EventData[];
@@ -61,7 +64,7 @@ export default class Calendar {
   }
   weekdays: Weekdays;
   today: Date;
-  currentDate: Date;
+  currentDate: Date;  
   pickerType: string;
   eventDayMap: any;
   oldSelectedNode: [HTMLElement, number] | null;
@@ -146,6 +149,11 @@ export default class Calendar {
   constructor(options: CalendarOptions = {}) {
     /* Initialize Options */
     this.id = options.id ?? "#color-calendar";
+    this.selectInitialDate = options.selectInitialDate ?? true;
+    // TODO range:
+    this.start = options.start;
+    this.end = options.end;
+    
     this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
     this.layoutModifiers = options.layoutModifiers ?? [];
     this.eventsData = options.eventsData ?? [];
@@ -179,7 +187,7 @@ export default class Calendar {
       this.weekdays = this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions["short"];
     }
     this.today = new Date();
-    this.currentDate = new Date();
+    this.currentDate = options.currentDate || new Date();
     this.pickerType = 'month';
     this.eventDayMap = {};
     this.oldSelectedNode = null;
@@ -291,7 +299,7 @@ export default class Calendar {
     // Apply click listeners to HTML elements
     this.addEventListeners();
 
-    this.reset(new Date());
+    this.reset(this.currentDate);
   }
 
   reset(date: Date) {

@@ -7,6 +7,7 @@ export function setMonthDisplayType(monthDisplayType: MonthDisplayType) {
 
 /** Invoked on month or year click */
 export function handleMonthYearDisplayClick(e: any) {
+  
   // Filter out unwanted click events
   if (!(
     e.target.classList.contains("calendar__month") ||
