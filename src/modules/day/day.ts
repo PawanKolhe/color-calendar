@@ -284,6 +284,7 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   let isTodayMonth = (this.today.getMonth() === this.currentDate.getMonth()) && isTodayYear;
   let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
   let div = document.createElement("div");
+
   div.className += `calendar__day calendar__day-active${isTodayDate ? " calendar__day-today" : ""
     }${this.eventDayMap[dayNum]
       ? " calendar__day-event"
@@ -301,10 +302,10 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   // Insert newly created target day to DOM
   if (!previousElement) {
     // Handle edge case when it is the first element in the calendar
-    this.calendarDays.insertBefore(
-      div,
-      element
-    );
+    // this.calendarDays.insertBefore(
+    //   div,
+    //   element
+    // );
   } else {
     if (previousElement.parentElement) {
       previousElement.parentElement.insertBefore(

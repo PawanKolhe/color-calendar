@@ -293,6 +293,13 @@ export default class Calendar {
     this.addEventListeners();
 
     this.reset(new Date());
+
+    if (this.dateChanged) {
+      this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
+    }
+    if (this.monthChanged) {
+      this.monthChanged(this.currentDate, this.getMonthEvents());
+    }
   }
 
   reset(date: Date) {
@@ -308,12 +315,6 @@ export default class Calendar {
     this.selectDayInitial(date ? true : false);
     this.renderDays();
     this.setOldSelectedNode();  // TODO: rename to setOldSelectedDay
-    if (this.dateChanged) {
-      this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
-    }
-    if (this.monthChanged) {
-      this.monthChanged(this.currentDate, this.getMonthEvents());
-    }
   }
 
 }
