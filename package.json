@@ -1,6 +1,6 @@
 {
   "name": "@cherrol/color-calendar",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "description": "A customizable events calendar widget library",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
