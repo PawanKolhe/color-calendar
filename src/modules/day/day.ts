@@ -302,10 +302,10 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   // Insert newly created target day to DOM
   if (!previousElement) {
     // Handle edge case when it is the first element in the calendar
-    // this.calendarDays.insertBefore(
-    //   div,
-    //   element
-    // );
+    this.calendarDays.insertBefore(
+      div,
+      element
+    );
   } else {
     if (previousElement.parentElement) {
       previousElement.parentElement.insertBefore(
