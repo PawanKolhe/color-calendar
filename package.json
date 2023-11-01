@@ -1,6 +1,6 @@
 {
   "name": "@cherrol/color-calendar",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A customizable events calendar widget library",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
@@ -57,12 +57,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PawanKolhe/color-calendar.git"
+    "url": "https://github.com/cherrol/color-calendar"
   },
   "bugs": {
-    "url": "https://github.com/PawanKolhe/color-calendar/issues"
+    "url": "https://github.com/cherrol/color-calendar/issues"
   },
-  "homepage": "https://github.com/PawanKolhe/color-calendar",
+  "homepage": "https://github.com/cherrol/color-calendar",
   "files": [
     "/dist"
   ],
