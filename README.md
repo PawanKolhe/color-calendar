@@ -210,6 +210,7 @@ Default: `null`
     {
         start: '2020-08-17T06:00:00',
         end: '2020-08-18T20:30:00',
+        className: 'important_date',
         name: 'Blockchain 101'
       ...
     },
@@ -534,6 +535,7 @@ Set month display type.
 {
     start: string,    // ISO 8601 date and time format
     end: string,      // ISO 8601 date and time format
+    className?: string,   // string
     [key: string]: any,
 }
 ```

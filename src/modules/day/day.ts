@@ -219,7 +219,11 @@ export function renderDays() {
     const start = new Date(event.start).getDate();
     const end = new Date(event.end).getDate();
     for (let i = start; i <= end; i++) {
-      this.eventDayMap[i] = true;
+      if (this.eventDayMap[i]) {
+        this.eventDayMap[i].push(event);
+      } else {
+        this.eventDayMap[i] = [event];
+      }
     }
   });
 
@@ -246,12 +250,20 @@ export function renderDays() {
   let isTodayYear = this.today.getFullYear() === this.currentDate.getFullYear();
   let isTodayMonth = (this.today.getMonth() === this.currentDate.getMonth()) && isTodayYear;
   this.daysIn_CurrentMonth.forEach((day: Day) => {
+    let eventClass: string[] = [];
+    let currentDayEvents: [EventData] = this.eventDayMap[day.day] || [];
+
+    currentDayEvents.forEach((event: EventData) => {
+      const { className } = event;
+      if (className && !eventClass.find(item => className === item)) {
+        eventClass.push(className);
+      }
+    });
+
+    let dayClass = currentDayEvents && currentDayEvents.length > 0 ? [' calendar__day-event'] : [' calendar__day-no-event'];
     let isTodayDate = isTodayMonth && day.day === this.today.getDate();
     newHTML += `
-      <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${this.eventDayMap[day.day]
-        ? ' calendar__day-event'
-        : ' calendar__day-no-event'
-      }${day.selected ? ' calendar__day-selected' : ''}">
+      <div class="calendar__day calendar__day-active${isTodayDate ? ' calendar__day-today' : ''}${dayClass.join(' ')}${day.selected ? ' calendar__day-selected' : ''} ${eventClass.join('').trim()}">
         <span class="calendar__day-text">${day.day}</span>
         <div class="calendar__day-bullet"></div>
         <div class="calendar__day-box"></div>
@@ -284,15 +296,22 @@ export function rerenderSelectedDay(element: HTMLElement, dayNum: number, storeO
   let isTodayMonth = (this.today.getMonth() === this.currentDate.getMonth()) && isTodayYear;
   let isTodayDate = isTodayMonth && dayNum === this.today.getDate();
   let div = document.createElement("div");
+  let eventClass: string[] = [];
+  let currentDayEvents: [EventData] = this.eventDayMap[dayNum] || [];
+  let dayClass = currentDayEvents && currentDayEvents.length > 0 ? [' calendar__day-event'] : [' calendar__day-no-event'];
+
+  currentDayEvents.forEach((event: EventData) => {
+    const { className } = event;
+    if (className && !eventClass.find(item => className === item)) {
+      eventClass.push(className);
+    }
+  });
 
   div.className += `calendar__day calendar__day-active${isTodayDate ? " calendar__day-today" : ""
-    }${this.eventDayMap[dayNum]
-      ? " calendar__day-event"
-      : " calendar__day-no-event"
-    }${this.daysIn_CurrentMonth[dayNum - 1].selected
+    }${dayClass}${this.daysIn_CurrentMonth[dayNum - 1].selected
       ? " calendar__day-selected"
       : ""
-    }`;
+    } ${eventClass.join(' ').trim()}`;
   div.innerHTML = `
     <span class="calendar__day-text">${dayNum}</span>
     <div class="calendar__day-bullet"></div>

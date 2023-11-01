@@ -30,6 +30,7 @@ export interface CalendarOptions {
 export interface EventData {
   start: string,
   end: string,
+  className?: string,
   [key: string]: any,
 }
 
