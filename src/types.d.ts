@@ -1,5 +1,5 @@
 export interface CalendarOptions {
-  id?: string;
+  id?: string | HTMLElement;
   calendarSize?: CalendarSize;
   layoutModifiers?: LayoutModifier[];
   eventsData?: EventData[];
@@ -30,6 +30,7 @@ export interface CalendarOptions {
 export interface EventData {
   start: string,
   end: string,
+  className?: string,
   [key: string]: any,
 }
 

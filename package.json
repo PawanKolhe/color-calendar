@@ -1,6 +1,6 @@
 {
-  "name": "color-calendar",
-  "version": "1.0.7",
+  "name": "@cherrol/color-calendar",
+  "version": "1.0.13",
   "description": "A customizable events calendar widget library",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
@@ -10,7 +10,7 @@
     "start:js": "rollup -c -w",
     "start:css": "gulp watch",
     "prebuild": "rimraf dist",
-    "build": "npm run types && rollup -c && gulp",
+    "build": "cross-env mode=production && npm run types && rollup -c && gulp",
     "types": "tsc --declaration src/index.ts --declarationDir dist --emitDeclarationOnly",
     "clean": "rimraf dist",
     "test": "jest"
@@ -28,7 +28,8 @@
     "@types/jest": "^26.0.16",
     "autoprefixer": "^9.8.5",
     "babel-loader": "^8.1.0",
-    "cross-env": "^7.0.2",
+    "core-js": "^3.31.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^3.6.0",
     "cssnano": "^4.1.10",
     "del": "^5.1.0",
@@ -56,15 +57,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PawanKolhe/color-calendar.git"
+    "url": "https://github.com/cherrol/color-calendar"
   },
   "bugs": {
-    "url": "https://github.com/PawanKolhe/color-calendar/issues"
+    "url": "https://github.com/cherrol/color-calendar/issues"
   },
-  "homepage": "https://github.com/PawanKolhe/color-calendar",
+  "homepage": "https://github.com/cherrol/color-calendar",
   "files": [
     "/dist"
   ],
+  "engines": {
+    "node": "^14.0.0"
+  },
   "keywords": [
     "calendar",
     "event calendar",
