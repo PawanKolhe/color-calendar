@@ -1,21 +1,29 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Recommended",
+  "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2016",
-    "module": "ES2020",
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "strict": true,
-    "noImplicitThis": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowUmdGlobalAccess": true,
-    "removeComments": true
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "src"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Recommended"
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

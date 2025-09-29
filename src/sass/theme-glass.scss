@@ -1,5 +1,5 @@
-@import 'layouts/layout-default';
-@import 'layouts/month-left-align';
+@import "layouts/layout-default";
+@import "layouts/month-left-align";
 
 $theme: ".glass";
 
@@ -10,10 +10,10 @@ $theme: ".glass";
 }
 
 #{$calName}#{$theme} {
-  --cal-color-primary: #EC407A;
-  --cal-font-family-header: 'Open Sans', sans-serif;
-  --cal-font-family-weekdays: 'Open Sans', sans-serif;
-  --cal-font-family-body: 'Open Sans', sans-serif;
+  --cal-color-primary: #ec407a;
+  --cal-font-family-header: "Open Sans", sans-serif;
+  --cal-font-family-weekdays: "Open Sans", sans-serif;
+  --cal-font-family-body: "Open Sans", sans-serif;
   --cal-drop-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);
   --cal-border: none;
   --cal-border-radius: 0.5rem;
@@ -43,7 +43,7 @@ $theme: ".glass";
     border-radius: 50%;
 
     &::before {
-      content: '';
+      content: "";
       width: 0.5em;
       height: 0.5em;
       position: absolute;
@@ -57,7 +57,7 @@ $theme: ".glass";
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 50%;
       left: 50%;
@@ -182,10 +182,10 @@ $theme: ".glass";
         opacity: 1;
       }
     }
-  
+
     .calendar__day-bullet {
       background-color: white;
-  
+
       &:hover ~ .calendar__day-box {
         opacity: 1;
       }
@@ -222,7 +222,8 @@ $theme: ".glass";
       font-size: 1.2rem;
     }
 
-    .calendar__arrow-inner, .calendar__arrow-inner::after {
+    .calendar__arrow-inner,
+    .calendar__arrow-inner::after {
       width: 30px;
       height: 30px;
     }

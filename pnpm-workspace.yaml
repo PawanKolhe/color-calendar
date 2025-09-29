@@ -1,0 +1,5 @@
+ignoredBuiltDependencies:
+  - "@parcel/watcher"
+  - es5-ext
+  - esbuild
+  - node-sass

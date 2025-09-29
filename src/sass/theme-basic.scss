@@ -1,5 +1,5 @@
-@import 'layouts/layout-default';
-@import 'layouts/month-left-align';
+@import "layouts/layout-default";
+@import "layouts/month-left-align";
 
 $theme: ".basic";
 
@@ -42,7 +42,7 @@ $theme: ".basic";
     border-radius: 50%;
 
     &::before {
-      content: '';
+      content: "";
       width: 0.6em;
       height: 0.6em;
       position: absolute;
@@ -56,7 +56,7 @@ $theme: ".basic";
     }
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 50%;
       left: 50%;
@@ -181,10 +181,10 @@ $theme: ".basic";
         opacity: 1;
       }
     }
-  
+
     .calendar__day-bullet {
       background-color: white;
-  
+
       &:hover ~ .calendar__day-box {
         opacity: 1;
       }
@@ -195,7 +195,7 @@ $theme: ".basic";
 #{$calName}#{$theme} .calendar__picker {
   background-color: white;
   border-radius: var(--cal-border-radius);
-  
+
   &-month {
     &-today {
       box-shadow: inset 0px 0px 0px 1px var(--cal-color-primary);
@@ -221,7 +221,8 @@ $theme: ".basic";
       font-size: 1.2rem;
     }
 
-    .calendar__arrow-inner, .calendar__arrow-inner::after {
+    .calendar__arrow-inner,
+    .calendar__arrow-inner::after {
       width: 30px;
       height: 30px;
     }
@@ -242,7 +243,7 @@ $theme: ".basic";
 
     .calendar__picker {
       top: 55px;
-      
+
       .calendar__picker-month {
         &-option {
           padding: 10px 0;
