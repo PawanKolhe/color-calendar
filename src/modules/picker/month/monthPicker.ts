@@ -13,7 +13,10 @@ export function handleMonthPickerClick(this: Calendar, e: any) {
   this.togglePicker(false);
 }
 
-export function updateMonthPickerSelection(this: Calendar, newMonthValue: number) {
+export function updateMonthPickerSelection(
+  this: Calendar,
+  newMonthValue: number,
+) {
   if (newMonthValue < 0) {
     newMonthValue = 11;
   } else {
@@ -30,7 +33,9 @@ export function updateMonthPickerSelection(this: Calendar, newMonthValue: number
 export function removeMonthPickerSelection(this: Calendar) {
   // Remove old month selection by scanning for the selected month
   for (let i = 0; i < 12; i++) {
-    const el = this.pickerMonthContainer?.children[i] as HTMLElement | undefined;
+    const el = this.pickerMonthContainer?.children[i] as
+      | HTMLElement
+      | undefined;
     if (el?.classList.contains("calendar__picker-month-selected")) {
       el.classList.remove("calendar__picker-month-selected");
     }

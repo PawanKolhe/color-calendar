@@ -1,7 +1,10 @@
 import { MonthDisplayType } from "../../types";
 import type Calendar from "../../index";
 
-export function setMonthDisplayType(this: Calendar, monthDisplayType: MonthDisplayType) {
+export function setMonthDisplayType(
+  this: Calendar,
+  monthDisplayType: MonthDisplayType,
+) {
   this.monthDisplayType = monthDisplayType;
   this.updateMonthYear();
 }

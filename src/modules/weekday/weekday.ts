@@ -1,7 +1,10 @@
 import { WeekdayDisplayType } from "../../types";
 import type Calendar from "../../index";
 
-export function setWeekdayDisplayType(this: Calendar, weekdayDisplayType: WeekdayDisplayType) {
+export function setWeekdayDisplayType(
+  this: Calendar,
+  weekdayDisplayType: WeekdayDisplayType,
+) {
   this.weekdayDisplayType = weekdayDisplayType;
   this.weekdays =
     this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ??

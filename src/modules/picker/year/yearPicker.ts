@@ -22,9 +22,9 @@ export function updateYearPickerSelection(
 ) {
   if (newYearIndex === undefined) {
     for (let i = 0; i < 12; i++) {
-      let yearPickerChildren = this.pickerYearContainer?.children[
-        i
-      ] as HTMLElement | undefined;
+      let yearPickerChildren = this.pickerYearContainer?.children[i] as
+        | HTMLElement
+        | undefined;
       if (!yearPickerChildren) continue;
       let elementYear = parseInt(yearPickerChildren.innerHTML);
       if (elementYear === newYearValue && yearPickerChildren.dataset["value"]) {
