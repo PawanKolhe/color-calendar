@@ -1,69 +1,90 @@
-export function handleYearPickerClick(e: any) {
+import type Calendar from "../../../index";
+
+export function handleYearPickerClick(this: Calendar, e: any) {
   // Filter out unwanted click events
-  if (!(e.target.classList.contains("calendar__picker-year-option"))) {
+  if (!e.target.classList.contains("calendar__picker-year-option")) {
     return;
   }
 
   this.yearPickerOffset += this.yearPickerOffsetTemporary;
 
   const newYearValue = parseInt(e.target.innerText);
-  const newYearIndex = parseInt(e.target.dataset.value);
+  const newYearIndex = parseInt(e.target.dataset["value"]);
   this.updateYearPickerSelection(newYearValue, newYearIndex);
   this.updateCurrentDate(0, undefined, undefined, newYearValue);
   this.togglePicker(false);
 }
 
-export function updateYearPickerSelection(newYearValue: number, newYearIndex?: number) {
-  if(newYearIndex === undefined) {
-    for(let i = 0; i < 12; i++) {
-      let yearPickerChildren = this.pickerYearContainer!.children[i] as HTMLElement;
-      let elementYear = parseInt(yearPickerChildren.innerHTML)
-      if(elementYear === newYearValue && yearPickerChildren.dataset.value) {
-        newYearIndex = parseInt(yearPickerChildren.dataset.value);
+export function updateYearPickerSelection(
+  this: Calendar,
+  newYearValue: number,
+  newYearIndex?: number,
+) {
+  if (newYearIndex === undefined) {
+    for (let i = 0; i < 12; i++) {
+      let yearPickerChildren = this.pickerYearContainer?.children[
+        i
+      ] as HTMLElement | undefined;
+      if (!yearPickerChildren) continue;
+      let elementYear = parseInt(yearPickerChildren.innerHTML);
+      if (elementYear === newYearValue && yearPickerChildren.dataset["value"]) {
+        newYearIndex = parseInt(yearPickerChildren.dataset["value"]!);
         break;
       }
     }
 
-    if(newYearIndex === undefined) {
+    if (newYearIndex === undefined) {
       return;
     }
   }
 
   this.removeYearPickerSelection();
-  this.pickerYearContainer!.children[newYearIndex].classList.add('calendar__picker-year-selected');
+  const child = this.pickerYearContainer?.children[newYearIndex] as
+    | HTMLElement
+    | undefined;
+  child?.classList.add("calendar__picker-year-selected");
 }
 
-export function updateYearPickerTodaySelection() {
+export function updateYearPickerTodaySelection(this: Calendar) {
   // Add today year marker
-  if(parseInt(this.pickerYearContainer!.children[4].innerHTML) === this.today.getFullYear()) {
-    this.pickerYearContainer!.children[4].classList.add('calendar__picker-year-today');
+  const mid = this.pickerYearContainer?.children[4] as HTMLElement | undefined;
+  if (mid && parseInt(mid.innerHTML) === this.today.getFullYear()) {
+    mid.classList.add("calendar__picker-year-today");
   } else {
-    this.pickerYearContainer!.children[4].classList.remove('calendar__picker-year-today');
+    mid?.classList.remove("calendar__picker-year-today");
   }
 }
 
-export function removeYearPickerSelection() {
+export function removeYearPickerSelection(this: Calendar) {
   // Remove old year selection by scanning for the selected year
-  for(let i = 0; i < 12; i++) {
-    if(this.pickerYearContainer!.children[i].classList.contains('calendar__picker-year-selected')) {
-      this.pickerYearContainer!.children[i].classList.remove('calendar__picker-year-selected');
+  for (let i = 0; i < 12; i++) {
+    const el = this.pickerYearContainer?.children[i] as HTMLElement | undefined;
+    if (el?.classList.contains("calendar__picker-year-selected")) {
+      el.classList.remove("calendar__picker-year-selected");
     }
   }
 }
 
-export function generatePickerYears() {
-  const currentYear = this.today.getFullYear() + this.yearPickerOffset + this.yearPickerOffsetTemporary;
+export function generatePickerYears(this: Calendar) {
+  const currentYear =
+    this.today.getFullYear() +
+    this.yearPickerOffset +
+    this.yearPickerOffsetTemporary;
   let count = 0;
-  for(let i = currentYear - 4; i <= currentYear + 7; i++) {
-    let element = this.pickerYearContainer!.children[count] as HTMLElement;
-    element.innerText = i.toString();
+  for (let i = currentYear - 4; i <= currentYear + 7; i++) {
+    let element = this.pickerYearContainer?.children[count] as
+      | HTMLElement
+      | undefined;
+    if (element) {
+      element.innerText = i.toString();
+    }
     count++;
   }
 
   this.updateYearPickerTodaySelection();
 }
 
-export function handleYearChevronLeftClick() {
+export function handleYearChevronLeftClick(this: Calendar) {
   this.yearPickerOffsetTemporary -= 12;
   this.generatePickerYears();
   this.removeYearPickerSelection();
@@ -71,7 +92,7 @@ export function handleYearChevronLeftClick() {
   this.updateYearPickerTodaySelection();
 }
 
-export function handleYearChevronRightClick() {
+export function handleYearChevronRightClick(this: Calendar) {
   this.yearPickerOffsetTemporary += 12;
   this.generatePickerYears();
   this.removeYearPickerSelection();

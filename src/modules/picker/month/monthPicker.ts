@@ -1,6 +1,8 @@
-export function handleMonthPickerClick(e: any) {
+import type Calendar from "../../../index";
+
+export function handleMonthPickerClick(this: Calendar, e: any) {
   // Filter out unwanted click events
-  if (!(e.target.classList.contains("calendar__picker-month-option"))) {
+  if (!e.target.classList.contains("calendar__picker-month-option")) {
     return;
   }
 
@@ -11,7 +13,7 @@ export function handleMonthPickerClick(e: any) {
   this.togglePicker(false);
 }
 
-export function updateMonthPickerSelection(newMonthValue: number) {
+export function updateMonthPickerSelection(this: Calendar, newMonthValue: number) {
   if (newMonthValue < 0) {
     newMonthValue = 11;
   } else {
@@ -19,14 +21,18 @@ export function updateMonthPickerSelection(newMonthValue: number) {
   }
 
   this.removeMonthPickerSelection();
-  this.pickerMonthContainer!.children[newMonthValue].classList.add('calendar__picker-month-selected');
+  const child = this.pickerMonthContainer?.children[newMonthValue] as
+    | HTMLElement
+    | undefined;
+  child?.classList.add("calendar__picker-month-selected");
 }
 
-export function removeMonthPickerSelection() {
+export function removeMonthPickerSelection(this: Calendar) {
   // Remove old month selection by scanning for the selected month
   for (let i = 0; i < 12; i++) {
-    if (this.pickerMonthContainer!.children[i].classList.contains('calendar__picker-month-selected')) {
-      this.pickerMonthContainer!.children[i].classList.remove('calendar__picker-month-selected');
+    const el = this.pickerMonthContainer?.children[i] as HTMLElement | undefined;
+    if (el?.classList.contains("calendar__picker-month-selected")) {
+      el.classList.remove("calendar__picker-month-selected");
     }
   }
 }

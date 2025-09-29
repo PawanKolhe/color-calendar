@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxlint/main/website/static/config.schema.json",
+  "files": ["src/**/*.{ts,tsx,js,jsx}"],
+  "rules": {
+    "recommended": true,
+    "typescript": true,
+    "react": true,
+    "react-hooks": true,
+    "jsx-a11y": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "ignore": ["dist", "node_modules"]
+}

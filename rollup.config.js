@@ -1,12 +1,10 @@
-const path = require('path');
-
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import banner from 'rollup-plugin-banner';
-import typescript from '@rollup/plugin-typescript';
-import strip from '@rollup/plugin-strip';
+import banner from "rollup-plugin-banner";
+import typescript from "@rollup/plugin-typescript";
+import strip from "@rollup/plugin-strip";
 
 const config = [
   {
@@ -28,7 +26,7 @@ const config = [
     ],
     plugins: [
       typescript(),
-      strip(),  // removes console.log
+      strip(), // removes console.log
       commonjs({
         include: "node_modules/**",
       }),
@@ -38,7 +36,7 @@ const config = [
         babelHelpers: "bundled",
       }),
       terser(), // minify javascript
-      banner('color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>'),
+      banner("color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>"),
     ],
   },
 ];

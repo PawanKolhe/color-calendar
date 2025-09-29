@@ -1,24 +1,25 @@
 import { EventData } from "../../types";
+import type Calendar from "../../index";
 
-export function getEventsData() {
+export function getEventsData(this: Calendar) {
   return JSON.parse(JSON.stringify(this.eventsData));
 }
 
 /** Set new events data array */
-export function setEventsData(events: EventData[]) {
+export function setEventsData(this: Calendar, events: EventData[]) {
   this.eventsData = JSON.parse(JSON.stringify(events));
   this.setDate(this.currentDate);
   return this.eventsData.length;
 }
 
 /** Add events to existing events data array */
-export function addEventsData(newEvents: EventData[] = []) {
+export function addEventsData(this: Calendar, newEvents: EventData[] = []) {
   const eventAddedCount = this.eventsData.push(...newEvents);
   this.setDate(this.currentDate);
   return eventAddedCount;
 }
 
-export function getDateEvents(date: Date) {
+export function getDateEvents(this: Calendar, date: Date) {
   let filteredEventsThisDate = this.filteredEventsThisMonth.filter(
     (event: EventData) => {
       const start = new Date(event.start).getDate();
@@ -28,11 +29,11 @@ export function getDateEvents(date: Date) {
       } else {
         return false;
       }
-    }
+    },
   );
   return filteredEventsThisDate;
 }
 
-export function getMonthEvents() {
+export function getMonthEvents(this: Calendar) {
   return this.filteredEventsThisMonth;
 }

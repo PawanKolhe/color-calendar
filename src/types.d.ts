@@ -22,20 +22,26 @@ export interface CalendarOptions {
   disableMonthArrowClick?: boolean;
   customMonthValues?: string[];
   customWeekdayValues?: string[];
-  monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
+  monthChanged?: (
+    currentDate?: Date,
+    filteredMonthEvents?: EventData[],
+  ) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
-  selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  selectedDateClicked?: (
+    currentDate?: Date,
+    filteredDateEvents?: EventData[],
+  ) => void;
 }
 
 export interface EventData {
-  start: string,
-  end: string,
-  [key: string]: any,
+  start: string;
+  end: string;
+  [key: string]: any;
 }
 
 export interface Day {
-  day: number,
-  selected?: boolean,
+  day: number;
+  selected?: boolean;
 }
 
 export type CalendarSize = "small" | "large";
