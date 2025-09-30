@@ -21,13 +21,11 @@ export function addEventsData(this: Calendar, newEvents: EventData[] = []) {
 
 export function getDateEvents(this: Calendar, date: Date) {
   const filteredEventsThisDate = this.filteredEventsThisMonth.filter((event: EventData) => {
-    const start = new Date(event.start).getDate();
-    const end = new Date(event.end).getDate();
-    if (date.getDate() >= start && date.getDate() <= end) {
-      return true;
-    } else {
-      return false;
-    }
+    const eventStart = new Date(event.start);
+    const eventEnd = new Date(event.end);
+
+    // Check if the given date falls within the event range
+    return date >= eventStart && date <= eventEnd;
   });
   return filteredEventsThisDate;
 }
