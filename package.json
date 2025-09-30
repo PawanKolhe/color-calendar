@@ -25,7 +25,8 @@
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "storybook": "pnpm run build && storybook dev",
-    "build-storybook": "storybook build",
+    "chromatic": "cross-env npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "build-storybook": "pnpm run build && storybook build",
     "prepare": "husky"
   },
   "author": "Pawan Kolhe (https://pawankolhe.com/)",
@@ -46,6 +47,8 @@
     "@storybook/html-vite": "9.1.9",
     "@tsconfig/recommended": "^1.0.10",
     "autoprefixer": "^10.4.21",
+    "chromatic": "^13.3.0",
+    "cross-env": "^10.1.0",
     "del": "^8.0.1",
     "gulp": "^5.0.1",
     "gulp-postcss": "^10.0.0",
