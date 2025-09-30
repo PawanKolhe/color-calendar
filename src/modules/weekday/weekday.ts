@@ -1,14 +1,10 @@
-import { WeekdayDisplayType, Weekdays } from "../../types";
 import type Calendar from "../../index";
+import type { WeekdayDisplayType, Weekdays } from "../../types";
 
-export function setWeekdayDisplayType(
-  this: Calendar,
-  weekdayDisplayType: WeekdayDisplayType
-) {
+export function setWeekdayDisplayType(this: Calendar, weekdayDisplayType: WeekdayDisplayType) {
   this.weekdayDisplayType = weekdayDisplayType;
   this.weekdays =
-    this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ??
-    this.weekdayDisplayTypeOptions["short"];
+    this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ?? this.weekdayDisplayTypeOptions.short;
   this.generateAndRenderWeekdays();
 }
 
@@ -21,7 +17,7 @@ export function generateAndRenderWeekdays(this: Calendar) {
     } else {
       this.weekdays =
         this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ??
-        this.weekdayDisplayTypeOptions["short"];
+        this.weekdayDisplayTypeOptions.short;
     }
   }
 

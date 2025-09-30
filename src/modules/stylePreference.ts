@@ -2,7 +2,7 @@ import type Calendar from "../index";
 
 /** Configure calendar style preferences */
 export function configureStylePreferences(this: Calendar) {
-  let root = this.calendarRoot;
+  const root = this.calendarRoot;
   if (this.primaryColor) {
     root.style.setProperty("--cal-color-primary", this.primaryColor);
   }
@@ -10,10 +10,7 @@ export function configureStylePreferences(this: Calendar) {
     root.style.setProperty("--cal-font-family-header", this.fontFamilyHeader);
   }
   if (this.fontFamilyWeekdays) {
-    root.style.setProperty(
-      "--cal-font-family-weekdays",
-      this.fontFamilyWeekdays
-    );
+    root.style.setProperty("--cal-font-family-weekdays", this.fontFamilyWeekdays);
   }
   if (this.fontFamilyBody) {
     root.style.setProperty("--cal-font-family-body", this.fontFamilyBody);
@@ -31,10 +28,7 @@ export function configureStylePreferences(this: Calendar) {
     root.style.setProperty("--cal-header-color", this.headerColor);
   }
   if (this.headerBackgroundColor) {
-    root.style.setProperty(
-      "--cal-header-background-color",
-      this.headerBackgroundColor
-    );
+    root.style.setProperty("--cal-header-background-color", this.headerBackgroundColor);
   }
   if (this.weekdaysColor) {
     root.style.setProperty("--cal-weekdays-color", this.weekdaysColor);

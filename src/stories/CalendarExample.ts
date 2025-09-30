@@ -1,4 +1,4 @@
-import Calendar, { CalendarOptions, EventData } from "../index";
+import Calendar, { type CalendarOptions, type EventData } from "../index";
 
 export interface CalendarProps extends CalendarOptions {
   /** Sample events data for demonstration */
@@ -20,56 +20,56 @@ const generateSampleEvents = (): EventData[] => {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(3, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(3, daysInMonth)).padStart(2, "0")}`,
       title: "Team Meeting",
-      color: "#ff6b6b"
+      color: "#ff6b6b",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(7, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(7, daysInMonth)).padStart(2, "0")}`,
       title: "Project Kickoff",
-      color: "#4ecdc4"
+      color: "#4ecdc4",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(10, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(10, daysInMonth)).padStart(2, "0")}`,
       title: "Client Review",
-      color: "#45b7d1"
+      color: "#45b7d1",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(15, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(15, daysInMonth)).padStart(2, "0")}`,
       title: "Deadline",
-      color: "#96ceb4"
+      color: "#96ceb4",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(18, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(20, daysInMonth)).padStart(2, "0")}`,
       title: "Conference",
-      color: "#feca57"
+      color: "#feca57",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(22, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(22, daysInMonth)).padStart(2, "0")}`,
       title: "Team Lunch",
-      color: "#ff9ff3"
+      color: "#ff9ff3",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(25, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(25, daysInMonth)).padStart(2, "0")}`,
       title: "Workshop",
-      color: "#54a0ff"
+      color: "#54a0ff",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(28, daysInMonth)).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(Math.min(30, daysInMonth)).padStart(2, "0")}`,
       title: "Training Session",
-      color: "#5f27cd"
+      color: "#5f27cd",
     },
     {
       start: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(daysInMonth).padStart(2, "0")}`,
       end: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(daysInMonth).padStart(2, "0")}`,
       title: "Monthly Review",
-      color: "#00d2d3"
-    }
+      color: "#00d2d3",
+    },
   ];
 
   return events;
@@ -107,16 +107,16 @@ export const createCalendar = (props: CalendarProps) => {
     dropShadow: props.dropShadow,
     border: props.border,
     borderRadius: props.borderRadius,
-    disableMonthYearPickers: props.disableMonthYearPickers || false,
-    disableDayClick: props.disableDayClick || false,
-    disableMonthArrowClick: props.disableMonthArrowClick || false,
+    disableMonthYearPickers: props.disableMonthYearPickers,
+    disableDayClick: props.disableDayClick,
+    disableMonthArrowClick: props.disableMonthArrowClick,
     customMonthValues: props.customMonthValues,
     customWeekdayValues: props.customWeekdayValues,
     eventsData: props.sampleEvents ? sampleEvents : props.eventsData || [],
     monthChanged: props.monthChanged,
     dateChanged: props.dateChanged,
     selectedDateClicked: props.selectedDateClicked,
-    layoutModifiers: props.layoutModifiers || []
+    layoutModifiers: props.layoutModifiers || [],
   };
 
   // Use requestAnimationFrame for reliable DOM timing

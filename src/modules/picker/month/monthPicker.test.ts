@@ -1,4 +1,4 @@
-import { test, expect, beforeEach } from "vitest";
+import { beforeEach, expect, test } from "vitest";
 import Calendar from "../../../index";
 import { resetDOM } from "../../../testHelper";
 

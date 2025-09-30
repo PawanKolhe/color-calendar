@@ -1,5 +1,5 @@
-import { EventData } from "../../types";
 import type Calendar from "../../index";
+import type { EventData } from "../../types";
 
 export function getEventsData(this: Calendar) {
   return JSON.parse(JSON.stringify(this.eventsData));
@@ -20,17 +20,15 @@ export function addEventsData(this: Calendar, newEvents: EventData[] = []) {
 }
 
 export function getDateEvents(this: Calendar, date: Date) {
-  let filteredEventsThisDate = this.filteredEventsThisMonth.filter(
-    (event: EventData) => {
-      const start = new Date(event.start).getDate();
-      const end = new Date(event.end).getDate();
-      if (date.getDate() >= start && date.getDate() <= end) {
-        return true;
-      } else {
-        return false;
-      }
+  const filteredEventsThisDate = this.filteredEventsThisMonth.filter((event: EventData) => {
+    const start = new Date(event.start).getDate();
+    const end = new Date(event.end).getDate();
+    if (date.getDate() >= start && date.getDate() <= end) {
+      return true;
+    } else {
+      return false;
     }
-  );
+  });
   return filteredEventsThisDate;
 }
 

@@ -3,100 +3,100 @@ import type { Meta, StoryObj } from "@storybook/html-vite";
 import { fn } from "storybook/test";
 
 import type { CalendarProps } from "./CalendarExample";
-import { createCalendar } from "./CalendarExample";
+import { createCalendar, sampleEvents } from "./CalendarExample";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Components/Calendar",
   tags: ["autodocs"],
-  render: args => {
+  render: (args) => {
     return createCalendar(args);
   },
   argTypes: {
     calendarSize: {
       control: { type: "select" },
       options: ["small", "large"],
-      description: "Size of the calendar"
+      description: "Size of the calendar",
     },
     theme: {
       control: { type: "select" },
       options: ["basic", "glass"],
-      description: "Theme style for the calendar"
+      description: "Theme style for the calendar",
     },
     primaryColor: {
       control: "color",
-      description: "Primary color for the calendar"
+      description: "Primary color for the calendar",
     },
     headerColor: {
       control: "color",
-      description: "Color of the header text"
+      description: "Color of the header text",
     },
     headerBackgroundColor: {
       control: "color",
-      description: "Background color of the header"
+      description: "Background color of the header",
     },
     weekdaysColor: {
       control: "color",
-      description: "Color of the weekday labels"
+      description: "Color of the weekday labels",
     },
     weekdayDisplayType: {
       control: { type: "select" },
       options: ["short", "long-lower", "long-upper"],
-      description: "Display format for weekdays"
+      description: "Display format for weekdays",
     },
     monthDisplayType: {
       control: { type: "select" },
       options: ["short", "long"],
-      description: "Display format for month names"
+      description: "Display format for month names",
     },
     startWeekday: {
       control: { type: "select" },
       options: [0, 1, 2, 3, 4, 5, 6],
-      description: "First day of the week (0=Sunday, 1=Monday, etc.)"
+      description: "First day of the week (0=Sunday, 1=Monday, etc.)",
     },
     fontFamilyHeader: {
       control: "text",
-      description: "Font family for header text"
+      description: "Font family for header text",
     },
     fontFamilyWeekdays: {
       control: "text",
-      description: "Font family for weekday labels"
+      description: "Font family for weekday labels",
     },
     fontFamilyBody: {
       control: "text",
-      description: "Font family for day numbers"
+      description: "Font family for day numbers",
     },
     dropShadow: {
       control: "text",
-      description: "CSS drop-shadow for the calendar"
+      description: "CSS drop-shadow for the calendar",
     },
     border: {
       control: "text",
-      description: "CSS border for the calendar"
+      description: "CSS border for the calendar",
     },
     borderRadius: {
       control: "text",
-      description: "CSS border-radius for the calendar"
+      description: "CSS border-radius for the calendar",
     },
     disableMonthYearPickers: {
       control: "boolean",
-      description: "Disable month/year picker functionality"
+      description: "Disable month/year picker functionality",
     },
     disableDayClick: {
       control: "boolean",
-      description: "Disable day click functionality"
+      description: "Disable day click functionality",
     },
     disableMonthArrowClick: {
       control: "boolean",
-      description: "Disable month navigation arrows"
+      description: "Disable month navigation arrows",
     },
     sampleEvents: {
       control: "boolean",
-      description: "Show sample events data"
+      description: "Show sample events data",
     },
     monthChanged: { action: "monthChanged" },
     dateChanged: { action: "dateChanged" },
-    selectedDateClicked: { action: "selectedDateClicked" }
+    selectedDateClicked: { action: "selectedDateClicked" },
   },
   args: {
     calendarSize: "large",
@@ -104,11 +104,11 @@ const meta = {
     weekdayDisplayType: "long-lower",
     monthDisplayType: "long",
     startWeekday: 0,
-    sampleEvents: true as any,
+    eventsData: sampleEvents,
     monthChanged: fn(),
     dateChanged: fn(),
-    selectedDateClicked: fn()
-  }
+    selectedDateClicked: fn(),
+  },
 } satisfies Meta<CalendarProps>;
 
 export default meta;
@@ -118,30 +118,30 @@ type Story = StoryObj<CalendarProps>;
 export const Default: Story = {
   args: {
     calendarSize: "large",
-    theme: "basic"
-  }
+    theme: "basic",
+  },
 };
 
 export const Small: Story = {
   args: {
     calendarSize: "small",
-    theme: "basic"
-  }
+    theme: "basic",
+  },
 };
 
 export const GlassTheme: Story = {
   args: {
     calendarSize: "large",
-    theme: "glass"
-  }
+    theme: "glass",
+  },
 };
 
 export const WithEvents: Story = {
   args: {
     calendarSize: "large",
     theme: "basic",
-    sampleEvents: true as any
-  }
+    eventsData: sampleEvents,
+  },
 };
 
 export const MondayStart: Story = {
@@ -149,40 +149,40 @@ export const MondayStart: Story = {
     calendarSize: "large",
     theme: "basic",
     startWeekday: 1,
-    weekdayDisplayType: "long-lower"
-  }
+    weekdayDisplayType: "long-lower",
+  },
 };
 
 export const ShortWeekdays: Story = {
   args: {
     calendarSize: "large",
     theme: "basic",
-    weekdayDisplayType: "short"
-  }
+    weekdayDisplayType: "short",
+  },
 };
 
 export const ShortMonths: Story = {
   args: {
     calendarSize: "large",
     theme: "basic",
-    monthDisplayType: "short"
-  }
+    monthDisplayType: "short",
+  },
 };
 
 export const DisabledPickers: Story = {
   args: {
     calendarSize: "large",
     theme: "basic",
-    disableMonthYearPickers: true
-  }
+    disableMonthYearPickers: true,
+  },
 };
 
 export const DisabledDayClick: Story = {
   args: {
     calendarSize: "large",
     theme: "basic",
-    disableDayClick: true
-  }
+    disableDayClick: true,
+  },
 };
 
 export const CustomFonts: Story = {
@@ -191,8 +191,8 @@ export const CustomFonts: Story = {
     theme: "basic",
     fontFamilyHeader: "Georgia, serif",
     fontFamilyWeekdays: "Arial, sans-serif",
-    fontFamilyBody: "Courier New, monospace"
-  }
+    fontFamilyBody: "Courier New, monospace",
+  },
 };
 
 export const CustomStyling: Story = {
@@ -201,8 +201,8 @@ export const CustomStyling: Story = {
     theme: "basic",
     dropShadow: "0 4px 8px rgba(0,0,0,0.3)",
     border: "2px solid #e0e0e0",
-    borderRadius: "12px"
-  }
+    borderRadius: "12px",
+  },
 };
 
 // Stories showcasing different color themes and configurations from the image
@@ -215,8 +215,8 @@ export const SkyBlueTheme: Story = {
     weekdayDisplayType: "long-upper",
     monthDisplayType: "long",
     headerBackgroundColor: "#04AFDF",
-    sampleEvents: true as any
-  }
+    eventsData: sampleEvents,
+  },
 };
 
 export const GlassLeftAlignTheme: Story = {
@@ -227,8 +227,8 @@ export const GlassLeftAlignTheme: Story = {
     monthDisplayType: "long",
     calendarSize: "small",
     layoutModifiers: ["month-left-align"],
-    sampleEvents: true as any
-  }
+    eventsData: sampleEvents,
+  },
 };
 
 export const BlackYellowTheme: Story = {
@@ -240,6 +240,6 @@ export const BlackYellowTheme: Story = {
     weekdayDisplayType: "long-upper",
     monthDisplayType: "long",
     headerBackgroundColor: "#000000",
-    sampleEvents: true as any
-  }
+    eventsData: sampleEvents,
+  },
 };

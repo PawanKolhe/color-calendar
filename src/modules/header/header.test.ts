@@ -1,4 +1,4 @@
-import { test, expect, beforeEach } from "vitest";
+import { beforeEach, expect, test } from "vitest";
 import Calendar from "../../index";
 
 import { MONTH_NAMES_SHORT, resetDOM } from "../../testHelper";
@@ -13,9 +13,7 @@ test("go to next month on next month button click", () => {
   const todayMonthIndex = new Date().getMonth();
   myCalendar.nextButton.click();
   const calendarMonth = myCalendar.monthDisplay.innerHTML;
-  const calendarMonthIndex = MONTH_NAMES_SHORT.findIndex(
-    month => calendarMonth === month
-  );
+  const calendarMonthIndex = MONTH_NAMES_SHORT.indexOf(calendarMonth);
 
   expect(calendarMonthIndex).toBe((todayMonthIndex + 1) % 12);
 });
@@ -26,9 +24,7 @@ test("go to previous month on previous month button click", () => {
   const todayMonthIndex = new Date().getMonth();
   myCalendar.prevButton.click();
   const calendarMonth = myCalendar.monthDisplay.innerHTML;
-  const calendarMonthIndex = MONTH_NAMES_SHORT.findIndex(
-    month => calendarMonth === month
-  );
+  const calendarMonthIndex = MONTH_NAMES_SHORT.indexOf(calendarMonth);
 
   expect(calendarMonthIndex).toBe((todayMonthIndex - 1) % 12);
 });

@@ -30,11 +30,8 @@ jobs:
       - name: Type check
         run: pnpm run type-check
 
-      - name: Format check
-        run: pnpm run format:check
-
-      - name: Lint
-        run: pnpm run lint
+      - name: Check formatting and linting
+        run: pnpm run check
 
       - name: Run tests
         run: pnpm run test:ci

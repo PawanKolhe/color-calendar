@@ -1,22 +1,17 @@
-import { MonthDisplayType } from "../../types";
 import type Calendar from "../../index";
+import type { MonthDisplayType } from "../../types";
 
-export function setMonthDisplayType(
-  this: Calendar,
-  monthDisplayType: MonthDisplayType
-) {
+export function setMonthDisplayType(this: Calendar, monthDisplayType: MonthDisplayType) {
   this.monthDisplayType = monthDisplayType;
   this.updateMonthYear();
 }
 
 /** Invoked on month or year click */
-export function handleMonthYearDisplayClick(this: Calendar, e: any) {
+export function handleMonthYearDisplayClick(this: Calendar, e: MouseEvent) {
   // Filter out unwanted click events
+  const target = e.target as HTMLElement;
   if (
-    !(
-      e.target.classList.contains("calendar__month") ||
-      e.target.classList.contains("calendar__year")
-    )
+    !(target.classList.contains("calendar__month") || target.classList.contains("calendar__year"))
   ) {
     return;
   }
@@ -26,21 +21,21 @@ export function handleMonthYearDisplayClick(this: Calendar, e: any) {
   }
 
   const oldPickerType = this.pickerType;
-  const classList = e.target.classList;
+  const classList = target.classList;
 
   // Set picker type
   if (classList.contains("calendar__month")) {
     this.pickerType = "month";
-    this.monthDisplay!.style.opacity = "1";
-    this.yearDisplay!.style.opacity = "0.7";
-    this.pickerMonthContainer!.style.display = "grid";
-    this.pickerYearContainer!.style.display = "none";
+    if (this.monthDisplay) this.monthDisplay.style.opacity = "1";
+    if (this.yearDisplay) this.yearDisplay.style.opacity = "0.7";
+    if (this.pickerMonthContainer) this.pickerMonthContainer.style.display = "grid";
+    if (this.pickerYearContainer) this.pickerYearContainer.style.display = "none";
   } else if (classList.contains("calendar__year")) {
     this.pickerType = "year";
-    this.monthDisplay!.style.opacity = "0.7";
-    this.yearDisplay!.style.opacity = "1";
-    this.pickerMonthContainer!.style.display = "none";
-    this.pickerYearContainer!.style.display = "grid";
+    if (this.monthDisplay) this.monthDisplay.style.opacity = "0.7";
+    if (this.yearDisplay) this.yearDisplay.style.opacity = "1";
+    if (this.pickerMonthContainer) this.pickerMonthContainer.style.display = "none";
+    if (this.pickerYearContainer) this.pickerYearContainer.style.display = "grid";
   }
 
   if (oldPickerType === this.pickerType) {
@@ -60,8 +55,7 @@ export function handlePrevMonthButtonClick(this: Calendar) {
 
   const newMonthValue = this.currentDate.getMonth() - 1;
   if (
-    this.currentDate.getFullYear() <=
-      this.today.getFullYear() + this.yearPickerOffset - 4 &&
+    this.currentDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 &&
     newMonthValue < 0
   ) {
     this.yearPickerOffset -= 12;
@@ -83,8 +77,7 @@ export function handleNextMonthButtonClick(this: Calendar) {
 
   const newMonthValue = this.currentDate.getMonth() + 1;
   if (
-    this.currentDate.getFullYear() >=
-      this.today.getFullYear() + this.yearPickerOffset + 7 &&
+    this.currentDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 &&
     newMonthValue > 11
   ) {
     this.yearPickerOffset += 12;
@@ -102,12 +95,17 @@ export function handleNextMonthButtonClick(this: Calendar) {
 export function updateMonthYear(this: Calendar) {
   this.oldSelectedNode = null;
   if (this.customMonthValues) {
-    this.monthDisplay!.innerHTML =
-      this.customMonthValues[this.currentDate.getMonth()] ?? "";
+    if (this.monthDisplay) {
+      this.monthDisplay.innerHTML = this.customMonthValues[this.currentDate.getMonth()] ?? "";
+    }
   } else {
-    this.monthDisplay!.innerHTML = new Intl.DateTimeFormat("default", {
-      month: this.monthDisplayType
-    }).format(this.currentDate);
+    if (this.monthDisplay) {
+      this.monthDisplay.innerHTML = new Intl.DateTimeFormat("default", {
+        month: this.monthDisplayType,
+      }).format(this.currentDate);
+    }
   }
-  this.yearDisplay!.innerHTML = this.currentDate.getFullYear().toString();
+  if (this.yearDisplay) {
+    this.yearDisplay.innerHTML = this.currentDate.getFullYear().toString();
+  }
 }

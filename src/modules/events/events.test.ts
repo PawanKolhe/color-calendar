@@ -1,4 +1,4 @@
-import { test, expect, beforeEach } from "vitest";
+import { beforeEach, expect, test } from "vitest";
 import Calendar from "../../index";
 
 import { resetDOM } from "../../testHelper";
@@ -14,13 +14,13 @@ test("should add events", () => {
     {
       start: "2020-12-08T13:00:00",
       end: "2020-12-08T17:30:00",
-      name: "GitHub Universe 2020 (Day 1)"
+      name: "GitHub Universe 2020 (Day 1)",
     },
     {
       start: "2020-12-09T13:00:00",
       end: "2020-12-09T17:30:00",
-      name: "GitHub Universe 2020 (Day 2)"
-    }
+      name: "GitHub Universe 2020 (Day 2)",
+    },
   ];
   myCalendar.addEventsData(eventsData);
 
@@ -36,7 +36,7 @@ test("should get today month events", () => {
   if (parseInt(todayMonth, 10) < 10) {
     todayMonth = `0${todayMonth}`;
   }
-  let nextMonth = parseInt(todayMonth) + 1;
+  let nextMonth = parseInt(todayMonth, 10) + 1;
   if (nextMonth > 12) {
     nextMonth = 1;
   }
@@ -44,13 +44,13 @@ test("should get today month events", () => {
     {
       start: `${todayYear}-${todayMonth}-08T13:00:00`,
       end: `${todayYear}-${todayMonth}-08T17:30:00`,
-      name: "Sample Event 1"
+      name: "Sample Event 1",
     },
     {
       start: `${todayYear}-${nextMonth}-09T13:00:00`,
       end: `${todayYear}-${nextMonth}-09T17:30:00`,
-      name: "Sample Event 2"
-    }
+      name: "Sample Event 2",
+    },
   ];
   myCalendar.addEventsData(eventsData);
 
@@ -58,7 +58,7 @@ test("should get today month events", () => {
     {
       start: `${todayYear}-${todayMonth}-08T13:00:00`,
       end: `${todayYear}-${todayMonth}-08T17:30:00`,
-      name: "Sample Event 1"
-    }
+      name: "Sample Event 1",
+    },
   ]);
 });
