@@ -27,10 +27,7 @@ const config = [
     ],
     plugins: [
       typescript({
-        tsconfig: "tsconfig.json",
-        declaration: true,
-        declarationDir: "dist",
-        declarationMap: false
+        tsconfig: "tsconfig.build.json"
       }),
       strip(), // removes console.log
       commonjs({

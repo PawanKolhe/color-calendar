@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "dist",
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": [
+    "src/index.ts",
+    "src/types.d.ts",
+    "src/modules/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.test.ts",
+    "**/testHelper.ts"
+  ]
+}
