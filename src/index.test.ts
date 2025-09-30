@@ -120,9 +120,9 @@ describe("default calendar options when instantiated", () => {
     expect(calendarHTMLElement?.style.getPropertyValue("--cal-border")).toBe("");
   });
 
-  test("borderRadius should be undefined", () => {
-    expect(myCalendar.borderRadius).toBeUndefined();
-    expect(calendarHTMLElement?.style.getPropertyValue("--cal-border-radius")).toBe("");
+  test("borderRadius should be 0.5rem", () => {
+    expect(myCalendar.borderRadius).toBe("0.5rem");
+    expect(calendarHTMLElement?.style.getPropertyValue("--cal-border-radius")).toBe("0.5rem");
   });
 
   test("disableMonthYearPickers should be false", () => {

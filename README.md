@@ -260,7 +260,7 @@ Color of weekdays text. _Only works on some themes._
 ### `weekdayDisplayType`
 
 Type: `String`  
-Default: `short`  
+Default: `long-lower`  
 Options: [WeekdayDisplayType](#type-weekday-display-type) (`short` | `long-lower` | `long-upper`)
 
 Select how weekdays will be displayed. E.g. M, Mon, or MON.

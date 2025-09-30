@@ -35,7 +35,7 @@ export default class Calendar {
   headerColor?: string;
   headerBackgroundColor?: string;
   weekdaysColor?: string;
-  weekdayDisplayType: WeekdayDisplayType = "short";
+  weekdayDisplayType: WeekdayDisplayType = "long-lower";
   monthDisplayType: MonthDisplayType;
   startWeekday: StartWeekday = 0;
   fontFamilyHeader?: string;
@@ -43,7 +43,7 @@ export default class Calendar {
   fontFamilyBody?: string;
   dropShadow?: string;
   border?: string;
-  borderRadius?: string;
+  borderRadius: string = "0.5rem";
   disableMonthYearPickers: boolean;
   disableDayClick: boolean;
   disableMonthArrowClick: boolean;
@@ -175,7 +175,7 @@ export default class Calendar {
     this.headerColor = options.headerColor;
     this.headerBackgroundColor = options.headerBackgroundColor;
     this.weekdaysColor = options.weekdaysColor;
-    this.weekdayDisplayType = (options.weekdayDisplayType ?? "short") as WeekdayDisplayType;
+    this.weekdayDisplayType = (options.weekdayDisplayType ?? "long-lower") as WeekdayDisplayType;
     this.monthDisplayType = (options.monthDisplayType ?? "long") as MonthDisplayType;
     this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thu), 5 (Fri), 6 (Sat)
     this.fontFamilyHeader = options.fontFamilyHeader;
