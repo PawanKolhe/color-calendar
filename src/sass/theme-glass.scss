@@ -139,8 +139,6 @@ $theme: ".glass";
   }
 
   .calendar__day-bullet {
-    background-color: var(--cal-color-primary);
-
     &:hover ~ .calendar__day-box {
       opacity: 0.1;
     }
@@ -169,6 +167,10 @@ $theme: ".glass";
       background-color: var(--cal-color-primary);
       opacity: 1;
       box-shadow: 0 3px 15px -5px var(--cal-color-primary);
+    }
+
+    .calendar__day-bullet {
+      background-color: white !important;
     }
 
     .calendar__day-text {

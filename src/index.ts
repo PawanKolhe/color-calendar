@@ -12,6 +12,7 @@ import type {
   CalendarOptions,
   CalendarSize,
   Day,
+  EventBulletMode,
   EventData,
   LayoutModifier,
   MonthDisplayType,
@@ -26,7 +27,7 @@ export default class Calendar {
   readonly DAYS_TO_DISPLAY = 42;
 
   /* Options */
-  id: string;
+  id: string | (() => HTMLElement | null);
   calendarSize: CalendarSize;
   layoutModifiers: LayoutModifier[];
   eventsData: EventData[];
@@ -49,6 +50,7 @@ export default class Calendar {
   disableMonthArrowClick: boolean;
   customMonthValues?: string[];
   customWeekdayValues?: string[];
+  eventBulletMode: EventBulletMode = "multiple";
 
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
 
@@ -83,7 +85,7 @@ export default class Calendar {
   yearPickerOffsetTemporary: number;
 
   /* Elements */
-  calendar: HTMLElement;
+  calendar: HTMLElement | null;
   calendarRoot: HTMLElement;
   calendarHeader: HTMLElement;
   calendarWeekdays: HTMLElement;
@@ -189,6 +191,7 @@ export default class Calendar {
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
     this.customMonthValues = options.customMonthValues;
     this.customWeekdayValues = options.customWeekdayValues;
+    this.eventBulletMode = options.eventBulletMode ?? "multiple";
     this.monthChanged = options.monthChanged;
     this.dateChanged = options.dateChanged;
     this.selectedDateClicked = options.selectedDateClicked;
@@ -221,15 +224,16 @@ export default class Calendar {
     this.yearPickerOffsetTemporary = 0;
 
     // Check if HTML element with given selector exists in DOM
-    this.calendar = document.querySelector(this.id) as HTMLElement;
+    this.calendar = this.resolveId();
 
     if (!this.calendar) {
-      throw new Error(`[COLOR-CALENDAR] Element with selector '${this.id}' not found`);
+      const idDescription = typeof this.id === "function" ? "function" : `'${this.id}'`;
+      throw new Error(`[COLOR-CALENDAR] Element with selector ${idDescription} not found`);
     }
 
     // Initialize initial HTML layout
 
-    this.calendar.innerHTML = `
+    this.getCalendar().innerHTML = `
       <div class="${this.CAL_NAME} ${this.theme} color-calendar--${this.calendarSize}">
         <div class="calendar__header">
           <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
@@ -273,30 +277,30 @@ export default class Calendar {
 
     // Store HTML element references
 
-    this.calendarRoot = document.querySelector(`${this.id} .${this.CAL_NAME}`) as HTMLElement;
+    this.calendarRoot = this.getCalendar().querySelector(`.${this.CAL_NAME}`) as HTMLElement;
 
-    this.calendarHeader = document.querySelector(`${this.id} .calendar__header`) as HTMLElement;
+    this.calendarHeader = this.getCalendar().querySelector(`.calendar__header`) as HTMLElement;
 
-    this.calendarWeekdays = document.querySelector(`${this.id} .calendar__weekdays`) as HTMLElement;
+    this.calendarWeekdays = this.getCalendar().querySelector(`.calendar__weekdays`) as HTMLElement;
 
-    this.calendarDays = document.querySelector(`${this.id} .calendar__days`) as HTMLElement;
+    this.calendarDays = this.getCalendar().querySelector(`.calendar__days`) as HTMLElement;
 
-    this.pickerContainer = document.querySelector(`${this.id} .calendar__picker`) as HTMLElement;
+    this.pickerContainer = this.getCalendar().querySelector(`.calendar__picker`) as HTMLElement;
 
-    this.pickerMonthContainer = document.querySelector(
-      `${this.id} .calendar__picker-month`
+    this.pickerMonthContainer = this.getCalendar().querySelector(
+      `.calendar__picker-month`
     ) as HTMLElement;
 
-    this.pickerYearContainer = document.querySelector(
-      `${this.id} .calendar__picker-year`
+    this.pickerYearContainer = this.getCalendar().querySelector(
+      `.calendar__picker-year`
     ) as HTMLElement;
 
-    this.yearPickerChevronLeft = document.querySelector(
-      `${this.id} .calendar__picker-year-arrow-left`
+    this.yearPickerChevronLeft = this.getCalendar().querySelector(
+      `.calendar__picker-year-arrow-left`
     ) as HTMLElement;
 
-    this.yearPickerChevronRight = document.querySelector(
-      `${this.id} .calendar__picker-year-arrow-right`
+    this.yearPickerChevronRight = this.getCalendar().querySelector(
+      `.calendar__picker-year-arrow-right`
     ) as HTMLElement;
 
     // Mark today's month in month picker
@@ -321,20 +325,18 @@ export default class Calendar {
       `;
     }
 
-    this.monthyearDisplay = document.querySelector(
-      `${this.id} .calendar__monthyear`
+    this.monthyearDisplay = this.getCalendar().querySelector(`.calendar__monthyear`) as HTMLElement;
+
+    this.monthDisplay = this.getCalendar().querySelector(`.calendar__month`) as HTMLElement;
+
+    this.yearDisplay = this.getCalendar().querySelector(`.calendar__year`) as HTMLElement;
+
+    this.prevButton = this.getCalendar().querySelector(
+      `.calendar__arrow-prev .calendar__arrow-inner`
     ) as HTMLElement;
 
-    this.monthDisplay = document.querySelector(`${this.id} .calendar__month`) as HTMLElement;
-
-    this.yearDisplay = document.querySelector(`${this.id} .calendar__year`) as HTMLElement;
-
-    this.prevButton = document.querySelector(
-      `${this.id} .calendar__arrow-prev .calendar__arrow-inner`
-    ) as HTMLElement;
-
-    this.nextButton = document.querySelector(
-      `${this.id} .calendar__arrow-next .calendar__arrow-inner`
+    this.nextButton = this.getCalendar().querySelector(
+      `.calendar__arrow-next .calendar__arrow-inner`
     ) as HTMLElement;
 
     // Set initial picker styles
@@ -347,6 +349,30 @@ export default class Calendar {
     this.addEventListeners();
 
     this.reset(new Date());
+  }
+
+  /**
+   * Resolves the id to an HTMLElement, handling both string selectors and function-based id
+   * @returns HTMLElement or null if not found
+   */
+  private resolveId(): HTMLElement | null {
+    if (typeof this.id === "function") {
+      return this.id();
+    } else {
+      return document.querySelector(this.id) as HTMLElement;
+    }
+  }
+
+  /**
+   * Gets the calendar element, ensuring it's not null
+   * @returns HTMLElement
+   * @throws Error if calendar is null
+   */
+  private getCalendar(): HTMLElement {
+    if (!this.calendar) {
+      throw new Error("[COLOR-CALENDAR] Calendar element is null");
+    }
+    return this.calendar;
   }
 
   reset(date: Date) {

@@ -3,6 +3,8 @@ import Calendar, { type CalendarOptions, type EventData } from "../index";
 export interface CalendarProps extends CalendarOptions {
   /** Sample events data for demonstration */
   sampleEvents?: EventData[];
+  /** Initial date to set the calendar to */
+  initialDate?: Date;
 }
 
 /** Dynamically generate sample events for the current month */
@@ -112,6 +114,7 @@ export const createCalendar = (props: CalendarProps) => {
     disableMonthArrowClick: props.disableMonthArrowClick,
     customMonthValues: props.customMonthValues,
     customWeekdayValues: props.customWeekdayValues,
+    eventBulletMode: props.eventBulletMode,
     eventsData: props.sampleEvents ? sampleEvents : props.eventsData || [],
     monthChanged: props.monthChanged,
     dateChanged: props.dateChanged,
@@ -123,13 +126,21 @@ export const createCalendar = (props: CalendarProps) => {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       try {
-        new Calendar(calendarOptions);
+        const calendar = new Calendar(calendarOptions);
+
+        // Set initial date if provided
+        if (props.initialDate) {
+          calendar.setDate(props.initialDate);
+        }
       } catch (error) {
         console.error("Calendar initialization error:", error);
         // Fallback retry
         setTimeout(() => {
           try {
-            new Calendar(calendarOptions);
+            const calendar = new Calendar(calendarOptions);
+            if (props.initialDate) {
+              calendar.setDate(props.initialDate);
+            }
           } catch (retryError) {
             console.error("Calendar initialization retry error:", retryError);
           }

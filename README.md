@@ -17,7 +17,7 @@
 </p>
 
 <p>
-    A customizable events calendar component library. Checkout <a href="https://v84yk.csb.app/">Demo 1</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 2.</a>
+    Add a colorful, interactive events calendar to your site in seconds. Try it: <a href="https://master--68dc1b2449e62022d61d079f.chromatic.com">Storybook</a> | <a href="https://codesandbox.io/s/color-calendar-bnwdu">CodeSandbox</a>
 </p>
 
 <!-- # Color Calendar
@@ -53,7 +53,8 @@
 ## 🚀 Features
 
 - Zero dependencies
-- Add events to calendar
+- Add events to calendar with **individual event colors**
+  - **Configurable event bullet modes** - show multiple bullets or single bullet
 - Perform some action on calendar date change
 - Month and year picker built-in
 - Themes available
@@ -158,6 +159,66 @@ new Calendar({
 
 [Example](https://codesandbox.io/s/color-calendar-bnwdu)
 
+#### Function-Based ID
+
+```javascript
+// Using a function that returns an HTMLElement
+new Calendar({
+  id: () => document.getElementById("my-calendar"),
+  calendarSize: "large"
+});
+
+// Dynamic element creation
+new Calendar({
+  id: () => {
+    let container = document.getElementById("calendar-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "calendar-container";
+      container.style.padding = "20px";
+      document.body.appendChild(container);
+    }
+    return container;
+  },
+  calendarSize: "large"
+});
+```
+
+#### Event Colors and Bullet Modes
+
+```javascript
+new Calendar({
+  id: "#calendar",
+  eventBulletMode: "multiple", // or "single"
+  eventsData: [
+    {
+      start: '2024-09-15T00:00:00',
+      end: '2024-09-20T23:59:59',
+      name: 'Red Event',
+      color: '#ff0000'
+    },
+    {
+      start: '2024-09-15T00:00:00',
+      end: '2024-09-15T23:59:59',
+      name: 'Blue Event',
+      color: '#0000ff'
+    },
+    {
+      start: '2024-09-24T00:00:00',
+      end: '2024-10-05T23:59:59',
+      name: 'Cross-Month Event',
+      color: '#00ff00'
+    }
+  ]
+});
+```
+
+**Key Features:**
+- **Individual Event Colors**: Each event can have its own color
+- **Cross-Month Support**: Events spanning multiple months display correctly
+- **White Bullets on Selection**: Selected dates show white bullets for better contrast
+- **Configurable Bullet Modes**: Choose between multiple bullets or single bullet per day
+
 <a id="usage-react"></a>
 
 ### React
@@ -176,10 +237,35 @@ new Calendar({
 
 ### `id`
 
-Type: `String`  
+Type: `String | Function`  
 Default: `#color-calendar`
 
 Selector referencing HTMLElement where the calendar instance will bind to.
+
+**String**: CSS selector string (e.g., `"#my-calendar"`, `".calendar-container"`)
+
+**Function**: Function that returns an HTMLElement or null
+```javascript
+// Function-based id example
+const calendar = new ColorCalendar({
+  id: () => document.getElementById("my-calendar"),
+  // ... other options
+});
+
+// Dynamic element creation
+const calendar = new ColorCalendar({
+  id: () => {
+    let container = document.getElementById("calendar-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "calendar-container";
+      document.body.appendChild(container);
+    }
+    return container;
+  },
+  // ... other options
+});
+```
 
 ### `calendarSize`
 
@@ -366,6 +452,38 @@ Set custom display values for Weekdays.
 ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 ```
 
+### `eventBulletMode`
+
+Type: `String`  
+Default: `multiple`  
+Options: `multiple` | `single`
+
+Controls how event bullets are displayed when multiple events exist on the same day.
+
+- `multiple`: Shows one bullet per event, positioned side by side (maximum 5 bullets to prevent overflow)
+- `single`: Shows only one bullet per day, using the first event's color
+
+```javascript
+new Calendar({
+  id: "#calendar",
+  eventBulletMode: "single", // or "multiple"
+  eventsData: [
+    {
+      start: '2024-09-15T00:00:00',
+      end: '2024-09-15T23:59:59',
+      name: 'Red Event',
+      color: '#ff0000'
+    },
+    {
+      start: '2024-09-15T00:00:00',
+      end: '2024-09-15T23:59:59',
+      name: 'Blue Event',
+      color: '#0000ff'
+    }
+  ]
+});
+```
+
 <a id="events"></a>
 
 ## 🖱 Events
@@ -531,9 +649,16 @@ Set month display type.
 {
     start: string,    // ISO 8601 date and time format
     end: string,      // ISO 8601 date and time format
+    color?: string,   // Optional color for event bullet (hex, rgb, hsl)
     [key: string]: any,
 }
 ```
+
+**Properties:**
+- `start` (required): Event start date in ISO 8601 format
+- `end` (required): Event end date in ISO 8601 format  
+- `color` (optional): Color for the event bullet. Accepts any valid CSS color value (hex, rgb, hsl, etc.). Falls back to `primaryColor` if not specified.
+- Additional properties: Any other properties can be added and will be preserved
 
 <a id="type-weekday-display-type"></a>
 
@@ -571,6 +696,17 @@ January February March ...
 ### `LayoutModifier`
 
 `"month-align-left"`
+
+<a id="type-event-bullet-mode"></a>
+
+### `EventBulletMode`
+
+`"multiple"` | `"single"`
+
+Controls how event bullets are displayed when multiple events exist on the same day.
+
+- `"multiple"`: Shows one bullet per event, positioned side by side
+- `"single"`: Shows only one bullet per day, using the first event's color
 
 <a id="themes"></a>
 

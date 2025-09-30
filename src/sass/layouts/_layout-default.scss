@@ -134,17 +134,17 @@ $calName: ".color-calendar";
   }
 
   .calendar__day-event {
-    /* Event Bullet */
+    /* Event Bullets */
     .calendar__day-bullet {
       position: absolute;
       top: 80%;
       border-radius: 50%;
       width: 4px;
       height: 4px;
-      left: 50%;
       transform: translateX(-50%);
       overflow: hidden;
       cursor: pointer;
+      z-index: 1;
     }
   }
 

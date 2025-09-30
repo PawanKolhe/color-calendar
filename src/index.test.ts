@@ -421,3 +421,65 @@ describe("custom calendar options when instantiated", () => {
 
   test.todo("dateChanged should be executed");
 });
+
+describe("function-based id parameter", () => {
+  test("should work with function that returns HTMLElement", () => {
+    const mockElement = document.createElement("div");
+    mockElement.id = "test-calendar";
+    document.body.appendChild(mockElement);
+
+    const idFunction = () => mockElement;
+    const myCalendar = new Calendar({ id: idFunction });
+
+    expect(myCalendar.calendar).toBe(mockElement);
+    expect(myCalendar.calendar).not.toBeNull();
+  });
+
+  test("should work with function that returns null", () => {
+    const idFunction = () => null;
+
+    expect(() => {
+      new Calendar({ id: idFunction });
+    }).toThrow("[COLOR-CALENDAR] Element with selector function not found");
+  });
+
+  test("should work with function that returns different element each time", () => {
+    const element1 = document.createElement("div");
+    element1.id = "calendar-1";
+    const element2 = document.createElement("div");
+    element2.id = "calendar-2";
+    document.body.appendChild(element1);
+    document.body.appendChild(element2);
+
+    let callCount = 0;
+    const idFunction = () => {
+      callCount++;
+      return callCount === 1 ? element1 : element2;
+    };
+
+    const myCalendar = new Calendar({ id: idFunction });
+    expect(myCalendar.calendar).toBe(element1);
+    expect(callCount).toBe(1);
+  });
+
+  test("should maintain backward compatibility with string id", () => {
+    const mockElement = document.createElement("div");
+    mockElement.id = "string-calendar";
+    document.body.appendChild(mockElement);
+
+    const myCalendar = new Calendar({ id: "#string-calendar" });
+
+    expect(myCalendar.calendar).toBe(mockElement);
+    expect(myCalendar.calendar).not.toBeNull();
+  });
+
+  test("should handle function that throws error", () => {
+    const idFunction = () => {
+      throw new Error("Function error");
+    };
+
+    expect(() => {
+      new Calendar({ id: idFunction });
+    }).toThrow("Function error");
+  });
+});

@@ -238,21 +238,64 @@ export function renderDays(this: Calendar) {
   const currentYear = this.currentDate.getFullYear();
   const currentMonth = this.currentDate.getMonth();
   this.filteredEventsThisMonth = this.eventsData.filter((event: EventData) => {
-    const eventDate = new Date(event.start);
-    if (eventDate.getFullYear() === currentYear && eventDate.getMonth() === currentMonth) {
+    const eventStart = new Date(event.start);
+    const eventEnd = new Date(event.end);
+
+    // Check if event overlaps with current month
+    const eventStartYear = eventStart.getFullYear();
+    const eventStartMonth = eventStart.getMonth();
+    const eventEndYear = eventEnd.getFullYear();
+    const eventEndMonth = eventEnd.getMonth();
+
+    // Event starts in current month
+    if (eventStartYear === currentYear && eventStartMonth === currentMonth) {
       return true;
-    } else {
-      return false;
     }
+
+    // Event ends in current month
+    if (eventEndYear === currentYear && eventEndMonth === currentMonth) {
+      return true;
+    }
+
+    // Event spans across current month (starts before and ends after)
+    if (
+      eventStartYear < currentYear ||
+      (eventStartYear === currentYear && eventStartMonth < currentMonth)
+    ) {
+      if (
+        eventEndYear > currentYear ||
+        (eventEndYear === currentYear && eventEndMonth > currentMonth)
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   });
 
   // Create object of all days that have events - for creating event bullets
   this.eventDayMap = new Map();
   this.filteredEventsThisMonth.forEach((event: EventData) => {
-    const start = new Date(event.start).getDate();
-    const end = new Date(event.end).getDate();
-    for (let i = start; i <= end; i++) {
-      this.eventDayMap.set(i.toString(), [event]);
+    const eventStart = new Date(event.start);
+    const eventEnd = new Date(event.end);
+
+    // Calculate the range of days to show for this event in the current month
+    const currentMonthStart = new Date(currentYear, currentMonth, 1);
+    const currentMonthEnd = new Date(currentYear, currentMonth + 1, 0);
+
+    // Determine the actual start and end days to display
+    const displayStart = eventStart >= currentMonthStart ? eventStart.getDate() : 1;
+    const displayEnd = eventEnd <= currentMonthEnd ? eventEnd.getDate() : currentMonthEnd.getDate();
+
+    for (let i = displayStart; i <= displayEnd; i++) {
+      const dayKey = i.toString();
+      if (!this.eventDayMap.has(dayKey)) {
+        this.eventDayMap.set(dayKey, []);
+      }
+      const dayEvents = this.eventDayMap.get(dayKey);
+      if (dayEvents) {
+        dayEvents.push(event);
+      }
     }
   });
 
@@ -281,14 +324,37 @@ export function renderDays(this: Calendar) {
   const isTodayMonth = this.today.getMonth() === this.currentDate.getMonth() && isTodayYear;
   this.daysIn_CurrentMonth.forEach((day: Day) => {
     const isTodayDate = isTodayMonth && day.day === this.today.getDate();
+    const dayEvents = this.eventDayMap.get(day.day.toString()) || [];
+
+    // Generate bullets for each event with their specific colors
+    let eventBullets = "";
+    if (this.eventBulletMode === "multiple") {
+      // Multiple bullets mode - show one bullet per event (max 5 to avoid overflow)
+      const maxBullets = Math.min(dayEvents.length, 5);
+      eventBullets = dayEvents
+        .slice(0, maxBullets)
+        .map((event, index) => {
+          const eventColor = event["color"] || this.primaryColor || "var(--cal-color-primary)";
+          return `<div class="calendar__day-bullet" style="background-color: ${eventColor}; left: calc(50% + ${index * 6 - (maxBullets - 1) * 3}px);"></div>`;
+        })
+        .join("");
+    } else {
+      // Single bullet mode - show one bullet using the first event's color or primary color
+      if (dayEvents.length > 0) {
+        const firstEvent = dayEvents[0];
+        if (firstEvent) {
+          const eventColor = firstEvent["color"] || this.primaryColor || "var(--cal-color-primary)";
+          eventBullets = `<div class="calendar__day-bullet" style="background-color: ${eventColor}; left: 50%;"></div>`;
+        }
+      }
+    }
+
     newHTML += `
       <div class="calendar__day calendar__day-active${isTodayDate ? " calendar__day-today" : ""}${
-        this.eventDayMap.has(day.day.toString())
-          ? " calendar__day-event"
-          : " calendar__day-no-event"
+        dayEvents.length > 0 ? " calendar__day-event" : " calendar__day-no-event"
       }${day.selected ? " calendar__day-selected" : ""}">
         <span class="calendar__day-text">${day.day}</span>
-        <div class="calendar__day-bullet"></div>
+        ${eventBullets}
         <div class="calendar__day-box"></div>
       </div>
     `;
@@ -323,13 +389,38 @@ export function rerenderSelectedDay(
   const isTodayYear = this.today.getFullYear() === this.currentDate.getFullYear();
   const isTodayMonth = this.today.getMonth() === this.currentDate.getMonth() && isTodayYear;
   const isTodayDate = isTodayMonth && dayNum === this.today.getDate();
+  const dayEvents = this.eventDayMap.get(dayNum.toString()) || [];
+
+  // Generate bullets for each event with their specific colors
+  let eventBullets = "";
+  if (this.eventBulletMode === "multiple") {
+    // Multiple bullets mode - show one bullet per event (max 5 to avoid overflow)
+    const maxBullets = Math.min(dayEvents.length, 5);
+    eventBullets = dayEvents
+      .slice(0, maxBullets)
+      .map((event, index) => {
+        const eventColor = event["color"] || this.primaryColor || "#007bff";
+        return `<div class="calendar__day-bullet" style="background-color: ${eventColor}; left: calc(50% + ${index * 6 - (maxBullets - 1) * 3}px);"></div>`;
+      })
+      .join("");
+  } else {
+    // Single bullet mode - show one bullet using the first event's color or primary color
+    if (dayEvents.length > 0) {
+      const firstEvent = dayEvents[0];
+      if (firstEvent) {
+        const eventColor = firstEvent["color"] || this.primaryColor || "#007bff";
+        eventBullets = `<div class="calendar__day-bullet" style="background-color: ${eventColor}; left: 50%;"></div>`;
+      }
+    }
+  }
+
   const div = document.createElement("div");
   div.className += `calendar__day calendar__day-active${isTodayDate ? " calendar__day-today" : ""}${
-    this.eventDayMap.has(dayNum.toString()) ? " calendar__day-event" : " calendar__day-no-event"
+    dayEvents.length > 0 ? " calendar__day-event" : " calendar__day-no-event"
   }${this.daysIn_CurrentMonth[dayNum - 1]?.selected ? " calendar__day-selected" : ""}`;
   div.innerHTML = `
     <span class="calendar__day-text">${dayNum}</span>
-    <div class="calendar__day-bullet"></div>
+    ${eventBullets}
     <div class="calendar__day-box"></div>
   `;
 

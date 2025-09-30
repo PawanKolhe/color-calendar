@@ -1,5 +1,5 @@
 export interface CalendarOptions {
-  id?: string;
+  id?: string | (() => HTMLElement | null);
   calendarSize?: CalendarSize;
   layoutModifiers?: LayoutModifier[];
   eventsData?: EventData[];
@@ -22,6 +22,7 @@ export interface CalendarOptions {
   disableMonthArrowClick?: boolean;
   customMonthValues?: string[];
   customWeekdayValues?: string[];
+  eventBulletMode?: EventBulletMode;
   monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
   selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
@@ -30,6 +31,7 @@ export interface CalendarOptions {
 export interface EventData {
   start: string;
   end: string;
+  color?: string;
   [key: string]: string | number | boolean | undefined;
 }
 
@@ -49,3 +51,5 @@ export type WeekdayDisplayType = "short" | "long-lower" | "long-upper";
 export type Weekdays = [string, string, string, string, string, string, string];
 
 export type StartWeekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export type EventBulletMode = "multiple" | "single";
