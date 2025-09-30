@@ -1,10 +1,11 @@
 import babel from "@rollup/plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import { terser } from "rollup-plugin-terser";
-import banner from "rollup-plugin-banner";
+import terser from "@rollup/plugin-terser";
+import banner2 from "rollup-plugin-banner2";
 import typescript from "@rollup/plugin-typescript";
 import strip from "@rollup/plugin-strip";
+import pkg from './package.json' with { type: 'json' };
 
 const config = [
   {
@@ -25,7 +26,12 @@ const config = [
       },
     ],
     plugins: [
-      typescript(),
+      typescript({
+        tsconfig: "tsconfig.json",
+        declaration: true,
+        declarationDir: "dist",
+        declarationMap: false
+      }),
       strip(), // removes console.log
       commonjs({
         include: "node_modules/**",
@@ -36,7 +42,9 @@ const config = [
         babelHelpers: "bundled",
       }),
       terser(), // minify javascript
-      banner("color-calendar\nv<%= pkg.version %>\nby <%= pkg.author %>"),
+      banner2(() => {
+        return `/* color-calendar v${pkg.version} by ${pkg.author} */\n\n`;
+      }),
     ],
   },
 ];

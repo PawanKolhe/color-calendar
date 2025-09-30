@@ -1,32 +1,41 @@
-const gulp = require("gulp");
-const del = require("del");
-const sass = require("gulp-sass")(require("sass"));
-const postcss = require("gulp-postcss");
-const autoprefixer = require("autoprefixer");
-const env = require("postcss-preset-env");
+import gulp from "gulp";
+import { deleteAsync as del } from "del";
+import sass from "gulp-sass";
+import * as dartSass from "sass";
+import postcss from "gulp-postcss";
+import autoprefixer from "autoprefixer";
+import env from "postcss-preset-env";
+
+const sassCompiler = sass(dartSass);
 
 gulp.task("clean", () => {
   return del(["dist/css/"]);
 });
 
-gulp.task("sass", function () {
+gulp.task("sass", () => {
   return gulp
     .src("src/sass/**/*.scss")
-    .pipe(sass().on("error", sass.logError))
+    .pipe(sassCompiler().on("error", sassCompiler.logError))
     .pipe(gulp.dest("dist/css/"));
 });
 
-gulp.task("postcss", function () {
-  var plugins = [env(), autoprefixer()];
+gulp.task("postcss", () => {
+  const plugins = [env(), autoprefixer()];
   return gulp
     .src("dist/css/*.css")
     .pipe(postcss(plugins))
     .pipe(gulp.dest("dist/css/"));
 });
 
-gulp.task("default", gulp.series(["clean", "sass", "postcss"]));
+gulp.task("copy-types", () => {
+  return gulp
+    .src("src/types.d.ts")
+    .pipe(gulp.dest("dist/"));
+});
 
-gulp.task("watch", function () {
+gulp.task("default", gulp.series(["clean", "sass", "postcss", "copy-types"]));
+
+gulp.task("watch", () => {
   return gulp.watch(
     "src/sass/*.scss",
     { ignoreInitial: false },

@@ -1,15 +1,10 @@
-@import "layouts/layout-default";
-@import "layouts/month-left-align";
+@use "layouts/layout-default" as layout;
+@use "layouts/month-left-align" as month-left;
 
 $theme: ".glass";
 
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-#{$calName}#{$theme} {
+#{layout.$calName}#{$theme} {
   --cal-color-primary: #ec407a;
   --cal-font-family-header: "Open Sans", sans-serif;
   --cal-font-family-weekdays: "Open Sans", sans-serif;
@@ -28,17 +23,17 @@ $theme: ".glass";
   border: var(--cal-border);
 }
 
-#{$calName}#{$theme} .calendar__header {
+#{layout.$calName}#{$theme} .calendar__header {
   padding: 20px 14px 20px 14px;
   color: var(--cal-header-color);
 }
 
-#{$calName}#{$theme} .calendar__monthyear {
+#{layout.$calName}#{$theme} .calendar__monthyear {
   font-weight: 700;
   color: var(--cal-header-color);
 }
 
-#{$calName}#{$theme} .calendar__arrow {
+#{layout.$calName}#{$theme} .calendar__arrow {
   &-inner {
     border-radius: 50%;
 
@@ -81,7 +76,7 @@ $theme: ".glass";
 
   &-prev {
     position: relative;
-    @include flex-center;
+    @include layout.flex-center;
 
     .calendar__arrow-inner::before {
       margin-left: 0.25em;
@@ -91,7 +86,7 @@ $theme: ".glass";
 
   &-next {
     position: relative;
-    @include flex-center;
+    @include layout.flex-center;
 
     .calendar__arrow-inner::before {
       margin-right: 0.25em;
@@ -100,13 +95,13 @@ $theme: ".glass";
   }
 }
 
-#{$calName}#{$theme} .calendar__body {
+#{layout.$calName}#{$theme} .calendar__body {
   padding: 18px 14px;
   border-radius: var(--cal-border-radius);
   background-color: white;
 }
 
-#{$calName}#{$theme} .calendar__weekdays {
+#{layout.$calName}#{$theme} .calendar__weekdays {
   display: grid;
   grid-template-columns: repeat(7, minmax(20px, 55px));
   margin-bottom: 5px;
@@ -117,7 +112,7 @@ $theme: ".glass";
   }
 }
 
-#{$calName}#{$theme} .calendar__days {
+#{layout.$calName}#{$theme} .calendar__days {
   .calendar__day-other {
     color: #323232;
     opacity: 0.2;
@@ -193,7 +188,7 @@ $theme: ".glass";
   }
 }
 
-#{$calName}#{$theme} .calendar__picker {
+#{layout.$calName}#{$theme} .calendar__picker {
   background-color: white;
   border-radius: var(--cal-border-radius);
 
@@ -211,7 +206,7 @@ $theme: ".glass";
 }
 
 // COMPACT MODE
-#{$calName}#{$theme}.color-calendar--small {
+#{layout.$calName}#{$theme}.color-calendar--small {
   font-size: 0.8rem;
 
   .calendar__header {

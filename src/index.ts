@@ -18,7 +18,7 @@ import {
   WeekdayDisplayType,
   Weekdays,
   StartWeekday,
-} from "./types.d";
+} from "./types";
 
 export default class Calendar {
   /* Constants */
@@ -467,3 +467,16 @@ Calendar.prototype.setEventsData = events.setEventsData;
 Calendar.prototype.addEventsData = events.addEventsData;
 Calendar.prototype.getDateEvents = events.getDateEvents;
 Calendar.prototype.getMonthEvents = events.getMonthEvents;
+
+// Re-export types
+export type {
+  CalendarSize,
+  LayoutModifier,
+  CalendarOptions,
+  EventData,
+  Day,
+  MonthDisplayType,
+  WeekdayDisplayType,
+  Weekdays,
+  StartWeekday,
+};
