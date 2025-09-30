@@ -100,7 +100,7 @@ export function updateMonthYear(this: Calendar) {
     }
   } else {
     if (this.monthDisplay) {
-      this.monthDisplay.innerHTML = new Intl.DateTimeFormat("default", {
+      this.monthDisplay.innerHTML = new Intl.DateTimeFormat("en-US", {
         month: this.monthDisplayType,
       }).format(this.currentDate);
     }

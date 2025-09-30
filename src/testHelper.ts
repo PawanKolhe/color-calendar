@@ -17,7 +17,7 @@ export const MONTH_NAMES_SHORT = [
   "Jun",
   "Jul",
   "Aug",
-  "Sept",
+  "Sep",
   "Oct",
   "Nov",
   "Dec",
