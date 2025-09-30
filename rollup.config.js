@@ -5,7 +5,7 @@ import terser from "@rollup/plugin-terser";
 import banner2 from "rollup-plugin-banner2";
 import typescript from "@rollup/plugin-typescript";
 import strip from "@rollup/plugin-strip";
-import pkg from './package.json' with { type: 'json' };
+import pkg from "./package.json" with { type: "json" };
 
 const config = [
   {
@@ -27,7 +27,7 @@ const config = [
     ],
     plugins: [
       typescript({
-        tsconfig: "tsconfig.build.json"
+        tsconfig: "tsconfig.build.json",
       }),
       strip(), // removes console.log
       commonjs({

@@ -28,9 +28,7 @@ gulp.task("postcss", () => {
 });
 
 gulp.task("copy-types", () => {
-  return gulp
-    .src("src/types.d.ts")
-    .pipe(gulp.dest("dist/"));
+  return gulp.src("src/types.d.ts").pipe(gulp.dest("dist/"));
 });
 
 gulp.task("default", gulp.series(["clean", "sass", "postcss", "copy-types"]));
