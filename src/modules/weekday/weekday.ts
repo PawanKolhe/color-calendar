@@ -1,26 +1,42 @@
-import { WeekdayDisplayType } from "../../types";
+import { WeekdayDisplayType, Weekdays } from "../../types";
 import type Calendar from "../../index";
 
 export function setWeekdayDisplayType(
   this: Calendar,
-  weekdayDisplayType: WeekdayDisplayType,
+  weekdayDisplayType: WeekdayDisplayType
 ) {
   this.weekdayDisplayType = weekdayDisplayType;
   this.weekdays =
     this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ??
     this.weekdayDisplayTypeOptions["short"];
-  this.generateWeekdays();
+  this.generateAndRenderWeekdays();
 }
 
 /** Update Weekdays HTML */
-export function generateWeekdays(this: Calendar) {
+export function generateAndRenderWeekdays(this: Calendar) {
+  // Ensure weekdays are always properly initialized
+  if (!this.weekdays || this.weekdays.length !== 7) {
+    if (this.customWeekdayValues && this.customWeekdayValues.length === 7) {
+      this.weekdays = this.customWeekdayValues as Weekdays;
+    } else {
+      this.weekdays =
+        this.weekdayDisplayTypeOptions[this.weekdayDisplayType] ??
+        this.weekdayDisplayTypeOptions["short"];
+    }
+  }
+
+  if (!this.calendarWeekdays) {
+    return;
+  }
+
   let newHTML = "";
   for (let i = 0; i < 7; i++) {
+    const weekdayIndex = (i + this.startWeekday) % 7;
+    const weekdayValue = this.weekdays[weekdayIndex];
     newHTML += `
-      <div class="calendar__weekday">${
-        this.weekdays[(i + this.startWeekday) % 7]
-      }</div>
+      <div class="calendar__weekday">${weekdayValue}</div>
     `;
   }
+
   this.calendarWeekdays.innerHTML = newHTML;
 }

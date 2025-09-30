@@ -1,3 +1,12 @@
 {
-  "plugins": ["@prettier/plugin-oxc"]
+  "plugins": ["@prettier/plugin-oxc"],
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "semi": true,
+  "bracketSpacing": true,
+  "singleQuote": false,
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "bracketSameLine": false,
+  "singleAttributePerLine": false
 }

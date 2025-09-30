@@ -27,16 +27,12 @@ gulp.task("postcss", () => {
     .pipe(gulp.dest("dist/css/"));
 });
 
-gulp.task("copy-types", () => {
-  return gulp.src("src/types.d.ts").pipe(gulp.dest("dist/"));
-});
-
-gulp.task("default", gulp.series(["clean", "sass", "postcss", "copy-types"]));
+gulp.task("default", gulp.series(["clean", "sass", "postcss"]));
 
 gulp.task("watch", () => {
   return gulp.watch(
     "src/sass/*.scss",
     { ignoreInitial: false },
-    gulp.series(["clean", "sass", "postcss"]),
+    gulp.series(["clean", "sass", "postcss"])
   );
 });

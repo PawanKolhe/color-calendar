@@ -17,7 +17,7 @@ import {
   MonthDisplayType,
   WeekdayDisplayType,
   Weekdays,
-  StartWeekday,
+  StartWeekday
 } from "./types";
 
 export default class Calendar {
@@ -35,9 +35,9 @@ export default class Calendar {
   headerColor?: string;
   headerBackgroundColor?: string;
   weekdaysColor?: string;
-  weekdayDisplayType: WeekdayDisplayType;
+  weekdayDisplayType: WeekdayDisplayType = "short";
   monthDisplayType: MonthDisplayType;
-  startWeekday: StartWeekday;
+  startWeekday: StartWeekday = 0;
   fontFamilyHeader?: string;
   fontFamilyWeekdays?: string;
   fontFamilyBody?: string;
@@ -52,21 +52,37 @@ export default class Calendar {
 
   monthChanged?: (
     currentDate?: Date,
-    filteredMonthEvents?: EventData[],
+    filteredMonthEvents?: EventData[]
   ) => void;
 
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
   selectedDateClicked?: (
     currentDate?: Date,
-    filteredDateEvents?: EventData[],
+    filteredDateEvents?: EventData[]
   ) => void;
 
   /* State */
   weekdayDisplayTypeOptions = {
-    short: ["S", "M", "T", "W", "T", "F", "S"] as Weekdays,
-    "long-lower": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as Weekdays,
-    "long-upper": ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"] as Weekdays,
+    short: ["S", "M", "T", "W", "T", "F", "S"] satisfies Weekdays,
+    "long-lower": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ] satisfies Weekdays,
+    "long-upper": [
+      "SUN",
+      "MON",
+      "TUE",
+      "WED",
+      "THU",
+      "FRI",
+      "SAT"
+    ] satisfies Weekdays
   };
 
   weekdays: Weekdays;
@@ -124,7 +140,7 @@ export default class Calendar {
   declare handleYearPickerClick: (e: any) => void;
   declare updateYearPickerSelection: (
     newYearValue: number,
-    newYearIndex?: number,
+    newYearIndex?: number
   ) => void;
   declare updateYearPickerTodaySelection: () => void;
   declare removeYearPickerSelection: () => void;
@@ -141,9 +157,9 @@ export default class Calendar {
 
   // Weekday
   declare setWeekdayDisplayType: (
-    weekdayDisplayType: WeekdayDisplayType,
+    weekdayDisplayType: WeekdayDisplayType
   ) => void;
-  declare generateWeekdays: () => void;
+  declare generateAndRenderWeekdays: () => void;
 
   // Day
   declare setDate: (date: Date) => void;
@@ -158,14 +174,14 @@ export default class Calendar {
     monthOffset: number,
     newDay?: number,
     newMonth?: number,
-    newYear?: number,
+    newYear?: number
   ) => void;
   declare generateDays: () => void;
   declare renderDays: () => void;
   declare rerenderSelectedDay: (
     element: HTMLElement,
     dayNum: number,
-    storeOldSelected?: boolean,
+    storeOldSelected?: boolean
   ) => void;
 
   // Methods
@@ -187,7 +203,7 @@ export default class Calendar {
     this.headerBackgroundColor = options.headerBackgroundColor;
     this.weekdaysColor = options.weekdaysColor;
     this.weekdayDisplayType = (options.weekdayDisplayType ??
-      "long-lower") as WeekdayDisplayType;
+      "short") as WeekdayDisplayType;
     this.monthDisplayType = (options.monthDisplayType ??
       "long") as MonthDisplayType;
     this.startWeekday = options.startWeekday ?? 0; // 0 (Sun), 1 (Mon), 2 (Tues), 3 (Wed), 4 (Thu), 5 (Fri), 6 (Sat)
@@ -196,7 +212,7 @@ export default class Calendar {
     this.fontFamilyBody = options.fontFamilyBody;
     this.dropShadow = options.dropShadow;
     this.border = options.border;
-    this.borderRadius = options.borderRadius;
+    this.borderRadius = options.borderRadius ?? "0.5rem";
     this.disableMonthYearPickers = options.disableMonthYearPickers ?? false;
     this.disableDayClick = options.disableDayClick ?? false;
     this.disableMonthArrowClick = options.disableMonthArrowClick ?? false;
@@ -238,7 +254,7 @@ export default class Calendar {
 
     if (!this.calendar) {
       throw new Error(
-        `[COLOR-CALENDAR] Element with selector '${this.id}' not found`,
+        `[COLOR-CALENDAR] Element with selector '${this.id}' not found`
       );
     }
 
@@ -289,48 +305,48 @@ export default class Calendar {
     // Store HTML element references
 
     this.calendarRoot = document.querySelector(
-      `${this.id} .${this.CAL_NAME}`,
+      `${this.id} .${this.CAL_NAME}`
     ) as HTMLElement;
 
     this.calendarHeader = document.querySelector(
-      `${this.id} .calendar__header`,
+      `${this.id} .calendar__header`
     ) as HTMLElement;
 
     this.calendarWeekdays = document.querySelector(
-      `${this.id} .calendar__weekdays`,
+      `${this.id} .calendar__weekdays`
     ) as HTMLElement;
 
     this.calendarDays = document.querySelector(
-      `${this.id} .calendar__days`,
+      `${this.id} .calendar__days`
     ) as HTMLElement;
 
     this.pickerContainer = document.querySelector(
-      `${this.id} .calendar__picker`,
+      `${this.id} .calendar__picker`
     ) as HTMLElement;
 
     this.pickerMonthContainer = document.querySelector(
-      `${this.id} .calendar__picker-month`,
+      `${this.id} .calendar__picker-month`
     ) as HTMLElement;
 
     this.pickerYearContainer = document.querySelector(
-      `${this.id} .calendar__picker-year`,
+      `${this.id} .calendar__picker-year`
     ) as HTMLElement;
 
     this.yearPickerChevronLeft = document.querySelector(
-      `${this.id} .calendar__picker-year-arrow-left`,
+      `${this.id} .calendar__picker-year-arrow-left`
     ) as HTMLElement;
 
     this.yearPickerChevronRight = document.querySelector(
-      `${this.id} .calendar__picker-year-arrow-right`,
+      `${this.id} .calendar__picker-year-arrow-right`
     ) as HTMLElement;
 
     // Mark today's month in month picker
     this.pickerMonthContainer?.children[this.today.getMonth()]?.classList.add(
-      "calendar__picker-month-today",
+      "calendar__picker-month-today"
     );
 
     // Apply Layout Modifiers
-    this.layoutModifiers.forEach((item) => {
+    this.layoutModifiers.forEach(item => {
       this.calendarRoot.classList.add(item);
     });
 
@@ -347,23 +363,23 @@ export default class Calendar {
     }
 
     this.monthyearDisplay = document.querySelector(
-      `${this.id} .calendar__monthyear`,
+      `${this.id} .calendar__monthyear`
     ) as HTMLElement;
 
     this.monthDisplay = document.querySelector(
-      `${this.id} .calendar__month`,
+      `${this.id} .calendar__month`
     ) as HTMLElement;
 
     this.yearDisplay = document.querySelector(
-      `${this.id} .calendar__year`,
+      `${this.id} .calendar__year`
     ) as HTMLElement;
 
     this.prevButton = document.querySelector(
-      `${this.id} .calendar__arrow-prev .calendar__arrow-inner`,
+      `${this.id} .calendar__arrow-prev .calendar__arrow-inner`
     ) as HTMLElement;
 
     this.nextButton = document.querySelector(
-      `${this.id} .calendar__arrow-next .calendar__arrow-inner`,
+      `${this.id} .calendar__arrow-next .calendar__arrow-inner`
     ) as HTMLElement;
 
     // Set initial picker styles
@@ -386,11 +402,11 @@ export default class Calendar {
     this.generatePickerYears();
     this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
     this.updateYearPickerTodaySelection();
-    this.generateWeekdays(); // TODO: rename to generateAndRenderWeekdays
+    this.generateAndRenderWeekdays();
     this.generateDays();
     this.selectDayInitial(date ? true : false);
     this.renderDays();
-    this.setOldSelectedNode(); // TODO: rename to setOldSelectedDay
+    this.setOldSelectedNode();
 
     if (this.dateChanged) {
       this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
@@ -445,7 +461,8 @@ Calendar.prototype.updateMonthYear = header.updateMonthYear;
 
 // Weekday
 Calendar.prototype.setWeekdayDisplayType = weekday.setWeekdayDisplayType;
-Calendar.prototype.generateWeekdays = weekday.generateWeekdays;
+Calendar.prototype.generateAndRenderWeekdays =
+  weekday.generateAndRenderWeekdays;
 
 // Day
 Calendar.prototype.setDate = day.setDate;
@@ -478,5 +495,5 @@ export type {
   MonthDisplayType,
   WeekdayDisplayType,
   Weekdays,
-  StartWeekday,
+  StartWeekday
 };

@@ -20,7 +20,7 @@ export const MONTH_NAMES_SHORT = [
   "Sept",
   "Oct",
   "Nov",
-  "Dec",
+  "Dec"
 ];
 
 export const MONTH_NAMES_LONG = [
@@ -35,5 +35,5 @@ export const MONTH_NAMES_LONG = [
   "September",
   "October",
   "November",
-  "December",
+  "December"
 ];

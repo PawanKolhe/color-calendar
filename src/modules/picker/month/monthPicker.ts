@@ -15,7 +15,7 @@ export function handleMonthPickerClick(this: Calendar, e: any) {
 
 export function updateMonthPickerSelection(
   this: Calendar,
-  newMonthValue: number,
+  newMonthValue: number
 ) {
   if (newMonthValue < 0) {
     newMonthValue = 11;

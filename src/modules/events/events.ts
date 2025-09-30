@@ -29,7 +29,7 @@ export function getDateEvents(this: Calendar, date: Date) {
       } else {
         return false;
       }
-    },
+    }
   );
   return filteredEventsThisDate;
 }

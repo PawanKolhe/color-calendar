@@ -24,12 +24,12 @@ export interface CalendarOptions {
   customWeekdayValues?: string[];
   monthChanged?: (
     currentDate?: Date,
-    filteredMonthEvents?: EventData[],
+    filteredMonthEvents?: EventData[]
   ) => void;
   dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
   selectedDateClicked?: (
     currentDate?: Date,
-    filteredDateEvents?: EventData[],
+    filteredDateEvents?: EventData[]
   ) => void;
 }
 

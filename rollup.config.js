@@ -13,37 +13,37 @@ const config = [
     output: [
       {
         file: "dist/bundle.cjs.js",
-        format: "cjs",
+        format: "cjs"
       },
       {
         file: "dist/bundle.esm.js",
-        format: "esm",
+        format: "esm"
       },
       {
         name: "Calendar",
         file: "dist/bundle.js",
-        format: "umd",
-      },
+        format: "umd"
+      }
     ],
     plugins: [
       typescript({
-        tsconfig: "tsconfig.build.json",
+        tsconfig: "tsconfig.build.json"
       }),
       strip(), // removes console.log
       commonjs({
-        include: "node_modules/**",
+        include: "node_modules/**"
       }),
       resolve(),
       babel({
         exclude: "node_modules/**",
-        babelHelpers: "bundled",
+        babelHelpers: "bundled"
       }),
       terser(), // minify javascript
       banner2(() => {
         return `/* color-calendar v${pkg.version} by ${pkg.author} */\n\n`;
-      }),
-    ],
-  },
+      })
+    ]
+  }
 ];
 
 export default config;

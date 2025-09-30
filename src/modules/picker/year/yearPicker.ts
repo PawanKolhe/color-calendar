@@ -18,7 +18,7 @@ export function handleYearPickerClick(this: Calendar, e: any) {
 export function updateYearPickerSelection(
   this: Calendar,
   newYearValue: number,
-  newYearIndex?: number,
+  newYearIndex?: number
 ) {
   if (newYearIndex === undefined) {
     for (let i = 0; i < 12; i++) {

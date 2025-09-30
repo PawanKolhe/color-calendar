@@ -13,14 +13,11 @@
     <a href="https://www.jsdelivr.com/package/npm/color-calendar">
         <img src="https://data.jsdelivr.com/v1/package/npm/color-calendar/badge" alt="jsdelivr" />
     </a>
-    <img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2FPawanKolhe%2Fcolor-calendar" alt="Hits">
     <img src="https://img.shields.io/npm/l/color-calendar?style=flat-square" alt="license" />
 </p>
 
-[![CircleCI](https://circleci.com/gh/PawanKolhe/color-calendar.svg?style=svg)](https://circleci.com/gh/PawanKolhe/color-calendar)
-
 <p>
-    A customizable events calendar component library. Checkout <a href="https://online-tech-confs.herokuapp.com/">Demo 1</a>, <a href="https://v84yk.csb.app/">Demo 2</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 3.</a>
+    A customizable events calendar component library. Checkout <a href="https://v84yk.csb.app/">Demo 1</a> and <a href="https://codesandbox.io/s/color-calendar-bnwdu">Demo 2.</a>
 </p>
 
 <!-- # Color Calendar
@@ -149,7 +146,7 @@ _Or_ you can pass in **options**.
 ```javascript
 new Calendar({
   id: "#color-calendar",
-  calendarSize: "small",
+  calendarSize: "small"
 });
 ```
 
@@ -203,7 +200,7 @@ Modifiers to alter the layout of the calendar.
 ### `eventsData`
 
 Type: [`EventData`](#type-event-data)[]  
-Default: `null`
+Default: `[]`
 
 ```javascript
 [

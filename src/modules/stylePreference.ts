@@ -12,7 +12,7 @@ export function configureStylePreferences(this: Calendar) {
   if (this.fontFamilyWeekdays) {
     root.style.setProperty(
       "--cal-font-family-weekdays",
-      this.fontFamilyWeekdays,
+      this.fontFamilyWeekdays
     );
   }
   if (this.fontFamilyBody) {
@@ -33,7 +33,7 @@ export function configureStylePreferences(this: Calendar) {
   if (this.headerBackgroundColor) {
     root.style.setProperty(
       "--cal-header-background-color",
-      this.headerBackgroundColor,
+      this.headerBackgroundColor
     );
   }
   if (this.weekdaysColor) {

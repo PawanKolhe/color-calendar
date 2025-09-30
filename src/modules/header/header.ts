@@ -3,7 +3,7 @@ import type Calendar from "../../index";
 
 export function setMonthDisplayType(
   this: Calendar,
-  monthDisplayType: MonthDisplayType,
+  monthDisplayType: MonthDisplayType
 ) {
   this.monthDisplayType = monthDisplayType;
   this.updateMonthYear();
@@ -106,7 +106,7 @@ export function updateMonthYear(this: Calendar) {
       this.customMonthValues[this.currentDate.getMonth()] ?? "";
   } else {
     this.monthDisplay!.innerHTML = new Intl.DateTimeFormat("default", {
-      month: this.monthDisplayType,
+      month: this.monthDisplayType
     }).format(this.currentDate);
   }
   this.yearDisplay!.innerHTML = this.currentDate.getFullYear().toString();

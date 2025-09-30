@@ -11,7 +11,7 @@ test("correct month selected as today month", () => {
 
   const todayMonthIndex = new Date().getMonth().toString();
   const selectedMonthElement = myCalendar.pickerMonthContainer.querySelector(
-    ".calendar__picker-month-today",
+    ".calendar__picker-month-today"
   ) as HTMLElement;
   const selectedMonthIndex = selectedMonthElement.getAttribute("data-value");
 

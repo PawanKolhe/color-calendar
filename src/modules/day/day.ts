@@ -108,7 +108,7 @@ export function handleCalendarDayClick(this: Calendar, e: any) {
     if (this.selectedDateClicked) {
       this.selectedDateClicked(
         this.currentDate,
-        this.getDateEvents(this.currentDate),
+        this.getDateEvents(this.currentDate)
       );
     }
     return;
@@ -138,7 +138,7 @@ export function removeOldDaySelection(this: Calendar) {
     const idx = this.oldSelectedNode[1] - 1;
     if (this.daysIn_CurrentMonth[idx]) {
       Object.assign(this.daysIn_CurrentMonth[idx]!, {
-        selected: false,
+        selected: false
       });
     }
     this.rerenderSelectedDay(this.oldSelectedNode[0], this.oldSelectedNode[1]);
@@ -159,14 +159,14 @@ export function updateCurrentDate(
   monthOffset: number,
   newDay?: number,
   newMonth?: number,
-  newYear?: number,
+  newYear?: number
 ) {
   this.currentDate = new Date(
     newYear ? newYear : this.currentDate.getFullYear(),
     newMonth !== undefined && newMonth !== null
       ? newMonth
       : this.currentDate.getMonth() + monthOffset,
-    monthOffset !== 0 || !newDay ? 1 : newDay,
+    monthOffset !== 0 || !newDay ? 1 : newDay
   );
 
   if (
@@ -193,7 +193,7 @@ export function generateDays(this: Calendar) {
   this.numOfDays_PrevMonth = new Date(
     this.currentDate.getFullYear(),
     this.currentDate.getMonth(),
-    0,
+    0
   ).getDate();
   // for (let i = 0; i < this.numOfDays_PrevMonth; i++) {
   //   this.daysIn_PrevMonth.push({ day: i + 1, selected: false });
@@ -203,12 +203,12 @@ export function generateDays(this: Calendar) {
   this.firstDay_CurrentMonth = new Date(
     this.currentDate.getFullYear(),
     this.currentDate.getMonth(),
-    1,
+    1
   ).getDay() as StartWeekday;
   this.numOfDays_CurrentMonth = new Date(
     this.currentDate.getFullYear(),
     this.currentDate.getMonth() + 1,
-    0,
+    0
   ).getDate();
   for (let i = 0; i < this.numOfDays_CurrentMonth; i++) {
     this.daysIn_CurrentMonth.push({ day: i + 1, selected: false });
@@ -310,7 +310,7 @@ export function rerenderSelectedDay(
   this: Calendar,
   element: HTMLElement,
   dayNum: number,
-  storeOldSelected?: boolean,
+  storeOldSelected?: boolean
 ) {
   // Get reference to previous day (day before target day)
   let previousElement = element.previousElementSibling;
@@ -346,7 +346,7 @@ export function rerenderSelectedDay(
     if (previousElement.parentElement) {
       previousElement.parentElement.insertBefore(
         div,
-        previousElement.nextSibling,
+        previousElement.nextSibling
       );
     } else {
       console.log("Previous element does not have parent");
