@@ -8,14 +8,14 @@ export function getEventsData(this: Calendar) {
 /** Set new events data array */
 export function setEventsData(this: Calendar, events: EventData[]) {
   this.eventsData = JSON.parse(JSON.stringify(events));
-  this.setDate(this.currentDate);
+  this.setSelectedDate(this.selectedDate);
   return this.eventsData.length;
 }
 
 /** Add events to existing events data array */
 export function addEventsData(this: Calendar, newEvents: EventData[] = []) {
   const eventAddedCount = this.eventsData.push(...newEvents);
-  this.setDate(this.currentDate);
+  this.setSelectedDate(this.selectedDate);
   return eventAddedCount;
 }
 

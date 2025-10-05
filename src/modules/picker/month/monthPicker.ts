@@ -10,7 +10,7 @@ export function handleMonthPickerClick(this: Calendar, e: MouseEvent) {
   const newMonthValue = parseInt(target.dataset["value"] || "0", 10);
 
   this.updateMonthPickerSelection(newMonthValue);
-  this.updateCurrentDate(0, undefined, newMonthValue);
+  this.updateCurrentDate(0, newMonthValue);
   this.togglePicker(false);
 }
 
@@ -23,7 +23,34 @@ export function updateMonthPickerSelection(this: Calendar, newMonthValue: number
 
   this.removeMonthPickerSelection();
   const child = this.pickerMonthContainer?.children[newMonthValue] as HTMLElement | undefined;
-  child?.classList.add("calendar__picker-month-selected");
+  if (child) {
+    child.className = `${child.className} calendar__picker-month-selected`;
+    child.setAttribute("aria-selected", "true");
+    child.setAttribute("tabindex", "0");
+    // Focus the selected month option
+    child.focus();
+  }
+}
+
+export function updateMonthPickerTodaySelection(this: Calendar) {
+  // Remove today marker from all months
+  for (let i = 0; i < 12; i++) {
+    const monthElement = this.pickerMonthContainer?.children[i] as HTMLElement | undefined;
+    if (monthElement) {
+      const newClassName = monthElement.className.replace(" calendar__picker-month-today", "");
+      monthElement.className = newClassName;
+    }
+  }
+
+  // Add today marker only if we're viewing the current year
+  if (this.currentViewDate.getFullYear() === this.today.getFullYear()) {
+    const todayMonthElement = this.pickerMonthContainer?.children[this.today.getMonth()] as
+      | HTMLElement
+      | undefined;
+    if (todayMonthElement) {
+      todayMonthElement.className = `${todayMonthElement.className} calendar__picker-month-today`;
+    }
+  }
 }
 
 export function removeMonthPickerSelection(this: Calendar) {
@@ -31,7 +58,10 @@ export function removeMonthPickerSelection(this: Calendar) {
   for (let i = 0; i < 12; i++) {
     const el = this.pickerMonthContainer?.children[i] as HTMLElement | undefined;
     if (el?.classList.contains("calendar__picker-month-selected")) {
-      el.classList.remove("calendar__picker-month-selected");
+      const newClassName = el.className.replace(" calendar__picker-month-selected", "");
+      el.className = newClassName;
+      el.setAttribute("aria-selected", "false");
+      el.setAttribute("tabindex", "-1");
     }
   }
 }

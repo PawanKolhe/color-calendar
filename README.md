@@ -52,18 +52,41 @@
 
 ## 🚀 Features
 
-- Zero dependencies
-- Add events to calendar with **individual event colors**
-  - **Configurable event bullet modes** - show multiple bullets or single bullet
-- Perform some action on calendar date change
-- Month and year picker built-in
-- Themes available
-- Fully customizable using CSS variables, passing options parameters while creating calendar, or overriding CSS.
+- 🏎️ **Zero Dependencies**: Lightweight and fast
+- 🎉 **Event Support**: Add events to calendar with individual event colors
+- 🔵 **Configurable Event Bullet Modes**: Show multiple bullets or single bullet per day
+- 📅 **Month and Year Picker**: Built-in navigation controls
+- 🎨 **Multiple Themes**: Choose from various color schemes and design styles
+- 🛠️ **Fully Customizable**: Using CSS variables, options parameters, or CSS overrides
+- 📱 **Responsive Design**: Works seamlessly across desktop and mobile devices
+- ♿ **Accessibility**: Built with WCAG guidelines in mind
 - [Request more features](#feature-request)...
 
 <a id="getting-started"></a>
 
 ## 📦 Getting Started
+
+### NPM
+
+> _You might need to use a module bundler such as webpack, rollup, parcel, etc._
+
+#### Installation
+
+```bash
+npm i color-calendar
+```
+
+#### Import
+
+```javascript
+import Calendar from "color-calendar";
+```
+
+#### CSS
+
+```javascript
+import "color-calendar/dist/css/theme-<THEME-NAME>.css";
+```
 
 ### CDN
 
@@ -104,30 +127,6 @@ Get fonts from [Google Fonts](https://fonts.google.com/)
 
 Check what fonts the [theme](#themes) needs or pass your own fonts in [options](#options-fonts).
 
-### NPM
-
-> _You might need to use a module bundler such as webpack, rollup, parcel, etc._
-
-#### Installation
-
-```bash
-npm i color-calendar
-```
-
-#### Import
-
-```javascript
-import Calendar from "color-calendar";
-```
-
-#### CSS
-
-```javascript
-import "color-calendar/dist/css/theme-<THEME-NAME>.css";
-```
-
-Then add fonts.
-
 <a id="usage"></a>
 
 ## 🔨 Usage
@@ -146,8 +145,9 @@ _Or_ you can pass in **options**.
 
 ```javascript
 new Calendar({
-  id: "#color-calendar",
-  calendarSize: "small"
+  container: "#color-calendar",
+  calendarSize: "small",
+  initialSelectedDate: new Date(2024, 5, 15) // June 15, 2024
 });
 ```
 
@@ -164,23 +164,22 @@ new Calendar({
 ```javascript
 // Using a function that returns an HTMLElement
 new Calendar({
-  id: () => document.getElementById("my-calendar"),
-  calendarSize: "large"
+  container: () => document.getElementById("my-calendar")
 });
 
 // Dynamic element creation
 new Calendar({
-  id: () => {
-    let container = document.getElementById("calendar-container");
-    if (!container) {
-      container = document.createElement("div");
-      container.id = "calendar-container";
-      container.style.padding = "20px";
-      document.body.appendChild(container);
-    }
+  container: () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
     return container;
-  },
-  calendarSize: "large"
+  }
+});
+
+// Using HTMLElement directly
+const myElement = document.getElementById("my-calendar");
+new Calendar({
+  container: myElement
 });
 ```
 
@@ -188,7 +187,7 @@ new Calendar({
 
 ```javascript
 new Calendar({
-  id: "#calendar",
+  container: "#calendar",
   eventBulletMode: "multiple", // or "single"
   eventsData: [
     {
@@ -216,7 +215,6 @@ new Calendar({
 **Key Features:**
 - **Individual Event Colors**: Each event can have its own color
 - **Cross-Month Support**: Events spanning multiple months display correctly
-- **White Bullets on Selection**: Selected dates show white bullets for better contrast
 - **Configurable Bullet Modes**: Choose between multiple bullets or single bullet per day
 
 <a id="usage-react"></a>
@@ -235,26 +233,28 @@ new Calendar({
 
 ## ⚙️ Options
 
-### `id`
+### `container`
 
-Type: `String | Function`  
+Type: `String | HTMLElement | Function`  
 Default: `#color-calendar`
 
 Selector referencing HTMLElement where the calendar instance will bind to.
 
 **String**: CSS selector string (e.g., `"#my-calendar"`, `".calendar-container"`)
 
+**HTMLElement**: Direct reference to an HTMLElement
+
 **Function**: Function that returns an HTMLElement or null
 ```javascript
-// Function-based id example
+// Function-based container example
 const calendar = new ColorCalendar({
-  id: () => document.getElementById("my-calendar"),
+  container: () => document.getElementById("my-calendar"),
   // ... other options
 });
 
 // Dynamic element creation
 const calendar = new ColorCalendar({
-  id: () => {
+  container: () => {
     let container = document.getElementById("calendar-container");
     if (!container) {
       container = document.createElement("div");
@@ -264,6 +264,27 @@ const calendar = new ColorCalendar({
     return container;
   },
   // ... other options
+});
+
+// Using HTMLElement directly
+const myElement = document.getElementById("my-calendar");
+const calendar = new ColorCalendar({
+  container: myElement,
+  // ... other options
+});
+```
+
+### `initialSelectedDate`  
+
+Type: `Date`  
+Default: `undefined` (uses current date)  
+
+Sets the initial selected date when the calendar is first rendered. The calendar will open with this date selected and the view will be set to the month containing this date.
+
+```javascript
+new Calendar({
+  container: "#calendar",
+  initialSelectedDate: new Date(2024, 5, 15) // June 15, 2024
 });
 ```
 
@@ -293,7 +314,8 @@ Default: `[]`
     {
         start: '2020-08-17T06:00:00',
         end: '2020-08-18T20:30:00',
-        name: 'Blockchain 101'
+        name: 'Blockchain 101',
+        color: '#ff0000'
       ...
     },
     ...
@@ -465,7 +487,7 @@ Controls how event bullets are displayed when multiple events exist on the same 
 
 ```javascript
 new Calendar({
-  id: "#calendar",
+  container: "#calendar",
   eventBulletMode: "single", // or "multiple"
   eventsData: [
     {
@@ -488,7 +510,7 @@ new Calendar({
 
 ## 🖱 Events
 
-### `dateChanged`
+### `onSelectedDateChange`
 
 Type: `Function`  
 Props:
@@ -503,7 +525,7 @@ Props:
 ```typescript
 const options = {
     ...
-    dateChanged: (currentDate?: Date, filteredDateEvents?: EventData[]) => {
+    onSelectedDateChange: (currentDate?: Date, filteredDateEvents?: EventData[]) => {
         // do something
     };
     ...
@@ -512,7 +534,7 @@ const options = {
 
 Emitted when the selected date is changed.
 
-### `selectedDateClicked`
+### `onSelectedDateClick`
 
 Type: `Function`  
 Props:
@@ -526,7 +548,7 @@ Props:
 
 Emitted when the selected date is clicked.
 
-### `monthChanged`
+### `onMonthChange`
 
 Type: `Function`  
 Props:
@@ -554,7 +576,7 @@ let myCal = new Calendar();
 myCal.reset();
 ```
 
-### `setDate()`
+### `setSelectedDate()`
 
 Props:
 | Props | Type | Required | Description |
@@ -565,7 +587,7 @@ Set new selected date.
 
 ```javascript
 // Example
-myCal.setDate(new Date());
+myCal.setSelectedDate(new Date());
 ```
 
 ### `getSelectedDate()`

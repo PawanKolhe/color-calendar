@@ -6,6 +6,15 @@ $calName: ".color-calendar";
   justify-content: center;
 }
 
+// Global accessible focus styling
+#{$calName} {
+  // Ensure focus is visible for all interactive elements
+  *:focus-visible {
+    outline: 2px solid var(--cal-color-primary, #007bff);
+    outline-offset: 2px;
+  }
+}
+
 #{$calName} {
   position: relative;
   display: inline-flex;
@@ -35,9 +44,41 @@ $calName: ".color-calendar";
 
   .calendar__month {
     cursor: pointer;
+    // Reset button styles
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+    
+    // Accessible focus styling
+    &:focus-visible {
+      outline: 2px solid var(--cal-color-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
   }
   .calendar__year {
     cursor: pointer;
+    // Reset button styles
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+    
+    // Accessible focus styling
+    &:focus-visible {
+      outline: 2px solid var(--cal-color-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
   }
 }
 
@@ -54,6 +95,23 @@ $calName: ".color-calendar";
   -webkit-tap-highlight-color: transparent;
   z-index: 101;
   @include flex-center;
+  
+  // Reset button styles
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  
+  // Accessible focus styling - apply to inner element instead
+  &:focus-visible .calendar__arrow-inner {
+    outline: 2px solid var(--cal-color-primary);
+    outline-offset: -2px;
+    border-radius: 50%;
+  }
 
   &-inner {
     width: 35px;
@@ -111,6 +169,13 @@ $calName: ".color-calendar";
     position: relative;
     z-index: 101;
     @include flex-center;
+    
+    // Accessible focus styling for calendar days
+    &:focus-visible {
+      outline: 2px solid var(--cal-color-primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
   }
 
   .calendar__day-text {
@@ -175,6 +240,13 @@ $calName: ".color-calendar";
   opacity: 0;
   transition: all 0.3s ease;
   font-family: var(--cal-font-family-body);
+  
+  // Accessible focus styling for picker dialog
+  &:focus-visible {
+    outline: 2px solid var(--cal-color-primary);
+    outline-offset: 2px;
+    border-radius: var(--cal-border-radius);
+  }
 
   .calendar__picker-month {
     width: 100%;
@@ -194,6 +266,21 @@ $calName: ".color-calendar";
       border-radius: var(--cal-border-radius);
       align-self: center;
       cursor: pointer;
+      // Reset button styles
+      background: none;
+      border: none;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      outline: none;
+      
+      // Accessible focus styling
+      &:focus-visible {
+        outline: 2px solid var(--cal-color-primary);
+        outline-offset: 2px;
+        border-radius: var(--cal-border-radius);
+      }
 
       &::after {
         content: "";
@@ -245,6 +332,21 @@ $calName: ".color-calendar";
       border-radius: var(--cal-border-radius);
       align-self: center;
       cursor: pointer;
+      // Reset button styles
+      background: none;
+      border: none;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      outline: none;
+      
+      // Accessible focus styling
+      &:focus-visible {
+        outline: 2px solid var(--cal-color-primary);
+        outline-offset: 2px;
+        border-radius: var(--cal-border-radius);
+      }
 
       &::after {
         content: "";
@@ -283,6 +385,23 @@ $calName: ".color-calendar";
       border-radius: var(--cal-border-radius);
       cursor: pointer;
       transition: all 0.3s ease;
+      // Reset button styles
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      cursor: pointer;
+      outline: none;
+      
+      // Accessible focus styling
+      &:focus-visible {
+        outline: 2px solid var(--cal-color-primary);
+        outline-offset: 2px;
+        border-radius: var(--cal-border-radius);
+      }
 
       &-left {
         top: 0;

@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["src/**/*", "*.ts", "*.js", "*.json", "*.css"],
+    "includes": ["src/**/*", "*.ts", "*.js", "*.json", "*.css", "**/*.ts"],
     "experimentalScannerIgnores": [
       "node_modules/**",
       "dist/**",
@@ -15,7 +15,8 @@
       "coverage/**",
       "*.min.js",
       "*.bundle.js",
-      "pnpm-lock.yaml"
+      "pnpm-lock.yaml",
+      ".github/**"
     ]
   },
   "formatter": {

@@ -1,5 +1,5 @@
 export interface CalendarOptions {
-  id?: string | (() => HTMLElement | null);
+  container?: string | HTMLElement | (() => HTMLElement | null);
   calendarSize?: CalendarSize;
   layoutModifiers?: LayoutModifier[];
   eventsData?: EventData[];
@@ -23,9 +23,10 @@ export interface CalendarOptions {
   customMonthValues?: string[];
   customWeekdayValues?: string[];
   eventBulletMode?: EventBulletMode;
-  monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
-  dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
-  selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  initialSelectedDate?: Date;
+  onMonthChange?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
+  onSelectedDateChange?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  onSelectedDateClick?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 }
 
 export interface EventData {
