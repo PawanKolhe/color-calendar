@@ -1,0 +1,134 @@
+<div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+  <img 
+    src="./screenshots/poster.png" 
+    alt="Color Calendar poster" 
+    style={{ 
+      maxWidth: '100%', 
+      height: 'auto',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+    }} 
+  />
+</div>
+
+## Overview
+
+Color Calendar is a fast, customizable, and colorful calendar widget for your web app. Add events, customize to your brand, and integrate in seconds—no more boring date pickers!
+
+## Features
+
+- 🚀 **Zero Dependencies**: Lightweight and fast
+- 🎉 **Event Support**: Add events to calendar with individual event colors
+- 🔵 **Configurable Event Bullet Modes**: Show multiple bullets or single bullet per day
+- 📅 **Month and Year Picker**: Built-in navigation controls
+- 🎨 **Multiple Themes**: Choose from various color schemes and design styles
+- 🛠️ **Fully Customizable**: Using CSS variables, options parameters, or CSS overrides
+- 📱 **Responsive Design**: Works seamlessly across desktop and mobile devices
+- ♿ **Accessibility**: Built with WCAG guidelines in mind
+
+## Getting Started
+
+### NPM Installation
+
+```bash
+npm i color-calendar
+```
+
+```javascript
+import Calendar from "color-calendar";
+import "color-calendar/dist/css/theme-basic.css";
+```
+
+### CDN Installation
+
+#### JavaScript
+```html
+<script src="https://cdn.jsdelivr.net/npm/color-calendar/dist/bundle.js"></script>
+```
+
+#### CSS
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-basic.css"
+/>
+<!-- or -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-glass.css"
+/>
+```
+
+#### Fonts
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
+```
+
+Check what fonts the [theme](https://www.npmjs.com/package/color-calendar?activeTab=readme#themes) needs or pass your own fonts in [options](https://www.npmjs.com/package/color-calendar?activeTab=readme#options-fonts).
+
+## Usage
+
+### Basic Usage
+
+```javascript
+// Simple initialization
+new Calendar();
+
+// With options
+new Calendar({
+  id: "#color-calendar",
+  calendarSize: "small"
+});
+```
+
+```html
+<div id="color-calendar"></div>
+```
+
+### Event Colors and Bullet Modes
+
+```javascript
+new Calendar({
+  id: "#calendar",
+  eventBulletMode: "multiple", // or "single"
+  eventsData: [
+    {
+      start: '2024-09-15T00:00:00',
+      end: '2024-09-20T23:59:59',
+      name: 'Red Event',
+      color: '#ff0000'
+    },
+    {
+      start: '2024-09-15T00:00:00',
+      end: '2024-09-15T23:59:59',
+      name: 'Blue Event',
+      color: '#0000ff'
+    }
+  ]
+});
+```
+
+### React Integration
+
+[React Example](https://codesandbox.io/s/color-calendar-react-y0cyf?file=/src/CalendarComponent.jsx)
+
+### Vue Integration
+
+[Vue Example](https://codesandbox.io/s/color-calendar-vue-byo6e?file=/src/components/ColorCalendar.vue)
+
+## Links
+
+For more information, a detailed documentation, visit our [GitHub repository](https://github.com/PawanKolhe/color-calendar).
+
+- 📦 [NPM Package](https://www.npmjs.com/package/color-calendar)
+- 🐛 [Report Issues](https://github.com/PawanKolhe/color-calendar/issues)
+- ⭐ [Request Features](https://github.com/PawanKolhe/color-calendar/issues)
+- 📋 [Release Notes](https://github.com/PawanKolhe/color-calendar/releases)
+- 📜 [MIT License](https://github.com/PawanKolhe/color-calendar/blob/master/LICENSE)
+
+---
+
+Explore the stories below to see different calendar configurations, themes, and use cases. Each story demonstrates specific features and customization options.

@@ -1,4 +1,15 @@
-import { addEventListeners } from "./modules/addEventListeners";
+import {
+  addEventListeners,
+  focusDay,
+  handleCalendarClick,
+  handleCalendarDaysKeyboardNavigation,
+  handleKeyboardNavigation,
+  handleMonthPickerKeyboardNavigation,
+  handlePickerKeyboardNavigation,
+  handleYearPickerKeyboardNavigation,
+  navigateToDay,
+  selectDayFromKeyboard,
+} from "./modules/addEventListeners";
 import * as day from "./modules/day/day";
 import * as events from "./modules/events/events";
 import * as header from "./modules/header/header";
@@ -27,7 +38,7 @@ export default class Calendar {
   readonly DAYS_TO_DISPLAY = 42;
 
   /* Options */
-  id: string | (() => HTMLElement | null);
+  container: string | HTMLElement | (() => HTMLElement | null);
   calendarSize: CalendarSize;
   layoutModifiers: LayoutModifier[];
   eventsData: EventData[];
@@ -52,11 +63,11 @@ export default class Calendar {
   customWeekdayValues?: string[];
   eventBulletMode: EventBulletMode = "multiple";
 
-  monthChanged?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
+  onMonthChange?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
 
-  dateChanged?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  onSelectedDateChange?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
-  selectedDateClicked?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
+  onSelectedDateClick?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
 
   /* State */
   weekdayDisplayTypeOptions = {
@@ -67,7 +78,8 @@ export default class Calendar {
 
   weekdays: Weekdays;
   today: Date;
-  currentDate: Date;
+  selectedDate: Date;
+  currentViewDate: Date;
   pickerType: string;
   eventDayMap: Map<string, EventData[]>;
   oldSelectedNode: [HTMLElement, number] | null;
@@ -104,16 +116,37 @@ export default class Calendar {
   /* Methods */
   // Event Listeners
   declare addEventListeners: () => void;
+  declare handleCalendarClick: (e: MouseEvent) => void;
+  declare handleKeyboardNavigation: (e: KeyboardEvent) => void;
+  declare handleCalendarDaysKeyboardNavigation: (e: KeyboardEvent) => void;
+  declare navigateToDay: (currentDay: HTMLElement, e: KeyboardEvent) => void;
+  declare selectDayFromKeyboard: (dayElement: HTMLElement) => void;
+  declare focusDay: (dayElement: HTMLElement) => void;
+  declare handlePickerKeyboardNavigation: (e: KeyboardEvent) => void;
+  declare handleMonthPickerKeyboardNavigation: (e: KeyboardEvent) => void;
+  declare handleYearPickerKeyboardNavigation: (e: KeyboardEvent) => void;
 
   // Style Preference
   declare configureStylePreferences: () => void;
 
   // Picker
   declare togglePicker: (shouldOpen?: boolean) => void;
+  declare openPicker: () => void;
+  declare closePicker: () => void;
+  declare openYearPicker: () => void;
+  declare openMonthPicker: () => void;
+  declare makeMonthPickerOptionsFocusable: () => void;
+  declare makeYearPickerOptionsFocusable: () => void;
+  declare makeAllPickerOptionsUnfocusable: () => void;
+  declare makeAllCalendarDaysUnfocusable: () => void;
+  declare restoreCalendarDaysFocusability: () => void;
+  declare focusSelectedYearOption: () => void;
+  declare focusSelectedMonthOption: () => void;
 
   // Picker - Month
   declare handleMonthPickerClick: (e: MouseEvent) => void;
   declare updateMonthPickerSelection: (newMonthValue: number) => void;
+  declare updateMonthPickerTodaySelection: () => void;
   declare removeMonthPickerSelection: () => void;
 
   // Picker - Year
@@ -137,20 +170,18 @@ export default class Calendar {
   declare generateAndRenderWeekdays: () => void;
 
   // Day
-  declare setDate: (date: Date) => void;
+  declare setSelectedDate: (date: Date) => void;
   declare getSelectedDate: () => Date;
   declare clearCalendarDays: () => void;
   declare updateCalendar: (isMonthChanged?: boolean) => void;
   declare setOldSelectedNode: () => void;
   declare selectDayInitial: (setDate?: boolean) => void;
+  declare ensureFirstDayFocusable: () => void;
+  declare makeFirstDayFocusable: () => void;
   declare handleCalendarDayClick: (e: MouseEvent) => void;
   declare removeOldDaySelection: () => void;
-  declare updateCurrentDate: (
-    monthOffset: number,
-    newDay?: number,
-    newMonth?: number,
-    newYear?: number
-  ) => void;
+  declare updateSelectedDate: (newDay: number) => void;
+  declare updateCurrentDate: (monthOffset: number, newMonth?: number, newYear?: number) => void;
   declare generateDays: () => void;
   declare renderDays: () => void;
   declare rerenderSelectedDay: (
@@ -168,7 +199,7 @@ export default class Calendar {
 
   constructor(options: CalendarOptions = {}) {
     /* Initialize Options */
-    this.id = options.id ?? "#color-calendar";
+    this.container = options.container ?? "#color-calendar";
     this.calendarSize = (options.calendarSize ?? "large") as CalendarSize;
     this.layoutModifiers = options.layoutModifiers ?? [];
     this.eventsData = options.eventsData ?? [];
@@ -192,9 +223,9 @@ export default class Calendar {
     this.customMonthValues = options.customMonthValues;
     this.customWeekdayValues = options.customWeekdayValues;
     this.eventBulletMode = options.eventBulletMode ?? "multiple";
-    this.monthChanged = options.monthChanged;
-    this.dateChanged = options.dateChanged;
-    this.selectedDateClicked = options.selectedDateClicked;
+    this.onMonthChange = options.onMonthChange;
+    this.onSelectedDateChange = options.onSelectedDateChange;
+    this.onSelectedDateClick = options.onSelectedDateClick;
 
     /* Initialize State */
     if (this.customWeekdayValues && this.customWeekdayValues.length === 7) {
@@ -206,7 +237,12 @@ export default class Calendar {
     }
 
     this.today = new Date();
-    this.currentDate = new Date();
+    this.selectedDate = options.initialSelectedDate
+      ? new Date(options.initialSelectedDate)
+      : new Date();
+    this.currentViewDate = options.initialSelectedDate
+      ? new Date(options.initialSelectedDate)
+      : new Date();
     this.pickerType = "month";
     this.eventDayMap = new Map();
     this.oldSelectedNode = null;
@@ -224,54 +260,63 @@ export default class Calendar {
     this.yearPickerOffsetTemporary = 0;
 
     // Check if HTML element with given selector exists in DOM
-    this.calendar = this.resolveId();
+    this.calendar = this.resolveContainer();
 
     if (!this.calendar) {
-      const idDescription = typeof this.id === "function" ? "function" : `'${this.id}'`;
-      throw new Error(`[COLOR-CALENDAR] Element with selector ${idDescription} not found`);
+      const containerDescription =
+        typeof this.container === "function"
+          ? "function"
+          : this.container instanceof HTMLElement
+            ? "HTMLElement"
+            : `'${this.container}'`;
+      throw new Error(`[COLOR-CALENDAR] Element with container ${containerDescription} not found`);
     }
 
     // Initialize initial HTML layout
 
     this.getCalendar().innerHTML = `
-      <div class="${this.CAL_NAME} ${this.theme} color-calendar--${this.calendarSize}">
-        <div class="calendar__header">
-          <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
+      <div class="${this.CAL_NAME} ${this.theme} color-calendar--${this.calendarSize}" role="application" aria-label="Calendar">
+        <header class="calendar__header">
+          <button class="calendar__arrow calendar__arrow-prev" aria-label="Previous month">
+            <span class="calendar__arrow-inner"></span>
+          </button>
           <div class="calendar__monthyear">
-            <span class="calendar__month"></span>&nbsp;
-            <span class="calendar__year"></span>
+            <button class="calendar__month" aria-label="Select month" aria-expanded="false"></button>&nbsp;
+            <button class="calendar__year" aria-label="Select year" aria-expanded="false"></button>
           </div>
-          <div class="calendar__arrow calendar__arrow-next"><div class="calendar__arrow-inner"></div></div>
-        </div>
-        <div class="calendar__body">
-          <div class="calendar__weekdays"></div>
-          <div class="calendar__days"></div>
-          <div class="calendar__picker">
-            <div class="calendar__picker-month">
-              ${(this.customMonthValues ?? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]).map((month, i) => `<div class="calendar__picker-month-option" data-value="${i}">${month}</div>`).join("")}
+          <button class="calendar__arrow calendar__arrow-next" aria-label="Next month">
+            <span class="calendar__arrow-inner"></span>
+          </button>
+        </header>
+        <main class="calendar__body">
+          <div class="calendar__weekdays" role="row" aria-label="Weekday headers"></div>
+          <div class="calendar__days" role="grid" aria-label="Calendar days"></div>
+          <div class="calendar__picker" role="dialog" aria-label="Month and year picker" aria-hidden="true">
+            <div class="calendar__picker-month" role="listbox" aria-label="Month selection">
+              ${(this.customMonthValues ?? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]).map((month, i) => `<button class="calendar__picker-month-option" data-value="${i}" role="option" tabindex="-1">${month}</button>`).join("")}
             </div>
-            <div class="calendar__picker-year">
-              <div class="calendar__picker-year-option" data-value="0"></div>
-              <div class="calendar__picker-year-option" data-value="1"></div>
-              <div class="calendar__picker-year-option" data-value="2"></div>
-              <div class="calendar__picker-year-option" data-value="3"></div>
-              <div class="calendar__picker-year-option" data-value="4"></div>
-              <div class="calendar__picker-year-option" data-value="5"></div>
-              <div class="calendar__picker-year-option" data-value="6"></div>
-              <div class="calendar__picker-year-option" data-value="7"></div>
-              <div class="calendar__picker-year-option" data-value="8"></div>
-              <div class="calendar__picker-year-option" data-value="9"></div>
-              <div class="calendar__picker-year-option" data-value="10"></div>
-              <div class="calendar__picker-year-option" data-value="11"></div>
-              <div class="calendar__picker-year-arrow calendar__picker-year-arrow-left">
-                <div class="chevron-thin chevron-thin-left"></div>
-              </div>
-              <div class="calendar__picker-year-arrow calendar__picker-year-arrow-right">
-                <div class="chevron-thin chevron-thin-right"></div>
-              </div>
+            <div class="calendar__picker-year" role="listbox" aria-label="Year selection">
+              <button class="calendar__picker-year-option" data-value="0" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="1" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="2" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="3" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="4" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="5" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="6" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="7" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="8" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="9" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="10" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-option" data-value="11" role="option" tabindex="-1"></button>
+              <button class="calendar__picker-year-arrow calendar__picker-year-arrow-left" aria-label="Previous year range" tabindex="-1">
+                <span class="chevron-thin chevron-thin-left"></span>
+              </button>
+              <button class="calendar__picker-year-arrow calendar__picker-year-arrow-right" aria-label="Next year range" tabindex="-1">
+                <span class="chevron-thin chevron-thin-right"></span>
+              </button>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     `;
 
@@ -303,10 +348,8 @@ export default class Calendar {
       `.calendar__picker-year-arrow-right`
     ) as HTMLElement;
 
-    // Mark today's month in month picker
-    this.pickerMonthContainer?.children[this.today.getMonth()]?.classList.add(
-      "calendar__picker-month-today"
-    );
+    // Mark today's month in month picker (only if viewing current year)
+    this.updateMonthPickerTodaySelection();
 
     // Apply Layout Modifiers
     this.layoutModifiers.forEach((item) => {
@@ -317,11 +360,15 @@ export default class Calendar {
     if (this.layoutModifiers.includes("month-left-align")) {
       this.calendarHeader.innerHTML = `
         <div class="calendar__monthyear">
-          <span class="calendar__month"></span>&nbsp;
-          <span class="calendar__year"></span>
+          <button class="calendar__month" aria-label="Select month" aria-expanded="false"></button>&nbsp;
+          <button class="calendar__year" aria-label="Select year" aria-expanded="false"></button>
         </div>
-        <div class="calendar__arrow calendar__arrow-prev"><div class="calendar__arrow-inner"></div></div>
-        <div class="calendar__arrow calendar__arrow-next"><div class="calendar__arrow-inner"></div></div>
+        <button class="calendar__arrow calendar__arrow-prev" aria-label="Previous month">
+          <span class="calendar__arrow-inner"></span>
+        </button>
+        <button class="calendar__arrow calendar__arrow-next" aria-label="Next month">
+          <span class="calendar__arrow-inner"></span>
+        </button>
       `;
     }
 
@@ -348,18 +395,20 @@ export default class Calendar {
     // Apply click listeners to HTML elements
     this.addEventListeners();
 
-    this.reset(new Date());
+    this.reset(options.initialSelectedDate ? new Date(options.initialSelectedDate) : new Date());
   }
 
   /**
-   * Resolves the id to an HTMLElement, handling both string selectors and function-based id
+   * Resolves the container to an HTMLElement, handling string selectors, HTMLElement, and function-based container
    * @returns HTMLElement or null if not found
    */
-  private resolveId(): HTMLElement | null {
-    if (typeof this.id === "function") {
-      return this.id();
+  private resolveContainer(): HTMLElement | null {
+    if (typeof this.container === "function") {
+      return this.container();
+    } else if (this.container instanceof HTMLElement) {
+      return this.container;
     } else {
-      return document.querySelector(this.id) as HTMLElement;
+      return document.querySelector(this.container) as HTMLElement;
     }
   }
 
@@ -376,12 +425,14 @@ export default class Calendar {
   }
 
   reset(date: Date) {
-    this.currentDate = date ? date : new Date();
+    this.selectedDate = date ? date : new Date();
+    this.currentViewDate = new Date(this.selectedDate);
     this.clearCalendarDays();
     this.updateMonthYear();
-    this.updateMonthPickerSelection(this.currentDate.getMonth());
+    this.updateMonthPickerSelection(this.currentViewDate.getMonth());
+    this.updateMonthPickerTodaySelection();
     this.generatePickerYears();
-    this.updateYearPickerSelection(this.currentDate.getFullYear(), 4);
+    this.updateYearPickerSelection(this.currentViewDate.getFullYear(), 4);
     this.updateYearPickerTodaySelection();
     this.generateAndRenderWeekdays();
     this.generateDays();
@@ -389,12 +440,12 @@ export default class Calendar {
     this.renderDays();
     this.setOldSelectedNode();
 
-    if (this.dateChanged) {
-      this.dateChanged(this.currentDate, this.getDateEvents(this.currentDate));
+    if (this.onSelectedDateChange) {
+      this.onSelectedDateChange(this.selectedDate, this.getDateEvents(this.selectedDate));
     }
 
-    if (this.monthChanged) {
-      this.monthChanged(this.currentDate, this.getMonthEvents());
+    if (this.onMonthChange) {
+      this.onMonthChange(this.currentViewDate, this.getMonthEvents());
     }
   }
 }
@@ -402,16 +453,37 @@ export default class Calendar {
 /* Methods */
 // Add Event Listeners
 Calendar.prototype.addEventListeners = addEventListeners;
+Calendar.prototype.handleCalendarClick = handleCalendarClick;
+Calendar.prototype.handleKeyboardNavigation = handleKeyboardNavigation;
+Calendar.prototype.handleCalendarDaysKeyboardNavigation = handleCalendarDaysKeyboardNavigation;
+Calendar.prototype.navigateToDay = navigateToDay;
+Calendar.prototype.selectDayFromKeyboard = selectDayFromKeyboard;
+Calendar.prototype.focusDay = focusDay;
+Calendar.prototype.handlePickerKeyboardNavigation = handlePickerKeyboardNavigation;
+Calendar.prototype.handleMonthPickerKeyboardNavigation = handleMonthPickerKeyboardNavigation;
+Calendar.prototype.handleYearPickerKeyboardNavigation = handleYearPickerKeyboardNavigation;
 
 // Style Preference
 Calendar.prototype.configureStylePreferences = configureStylePreferences;
 
 // Picker
 Calendar.prototype.togglePicker = picker.togglePicker;
+Calendar.prototype.openPicker = picker.openPicker;
+Calendar.prototype.closePicker = picker.closePicker;
+Calendar.prototype.openYearPicker = picker.openYearPicker;
+Calendar.prototype.openMonthPicker = picker.openMonthPicker;
+Calendar.prototype.makeMonthPickerOptionsFocusable = picker.makeMonthPickerOptionsFocusable;
+Calendar.prototype.makeYearPickerOptionsFocusable = picker.makeYearPickerOptionsFocusable;
+Calendar.prototype.makeAllPickerOptionsUnfocusable = picker.makeAllPickerOptionsUnfocusable;
+Calendar.prototype.makeAllCalendarDaysUnfocusable = picker.makeAllCalendarDaysUnfocusable;
+Calendar.prototype.restoreCalendarDaysFocusability = picker.restoreCalendarDaysFocusability;
+Calendar.prototype.focusSelectedYearOption = picker.focusSelectedYearOption;
+Calendar.prototype.focusSelectedMonthOption = picker.focusSelectedMonthOption;
 
 // Picker - Month
 Calendar.prototype.handleMonthPickerClick = monthPicker.handleMonthPickerClick;
 Calendar.prototype.updateMonthPickerSelection = monthPicker.updateMonthPickerSelection;
+Calendar.prototype.updateMonthPickerTodaySelection = monthPicker.updateMonthPickerTodaySelection;
 Calendar.prototype.removeMonthPickerSelection = monthPicker.removeMonthPickerSelection;
 
 // Picker - Year
@@ -435,14 +507,17 @@ Calendar.prototype.setWeekdayDisplayType = weekday.setWeekdayDisplayType;
 Calendar.prototype.generateAndRenderWeekdays = weekday.generateAndRenderWeekdays;
 
 // Day
-Calendar.prototype.setDate = day.setDate;
+Calendar.prototype.setSelectedDate = day.setSelectedDate;
 Calendar.prototype.getSelectedDate = day.getSelectedDate;
 Calendar.prototype.clearCalendarDays = day.clearCalendarDays;
 Calendar.prototype.updateCalendar = day.updateCalendar;
 Calendar.prototype.setOldSelectedNode = day.setOldSelectedNode;
 Calendar.prototype.selectDayInitial = day.selectDayInitial;
+Calendar.prototype.ensureFirstDayFocusable = day.ensureFirstDayFocusable;
+Calendar.prototype.makeFirstDayFocusable = day.makeFirstDayFocusable;
 Calendar.prototype.handleCalendarDayClick = day.handleCalendarDayClick;
 Calendar.prototype.removeOldDaySelection = day.removeOldDaySelection;
+Calendar.prototype.updateSelectedDate = day.updateSelectedDate;
 Calendar.prototype.updateCurrentDate = day.updateCurrentDate;
 Calendar.prototype.generateDays = day.generateDays;
 Calendar.prototype.renderDays = day.renderDays;

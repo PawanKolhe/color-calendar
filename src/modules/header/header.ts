@@ -41,9 +41,23 @@ export function handleMonthYearDisplayClick(this: Calendar, e: MouseEvent) {
   if (oldPickerType === this.pickerType) {
     // Toggle picker
     this.togglePicker();
+    // Update aria-expanded state
+    const isOpen = this.pickerContainer.style.visibility !== "hidden";
+    if (this.monthDisplay) {
+      this.monthDisplay.setAttribute("aria-expanded", isOpen.toString());
+    }
+    if (this.yearDisplay) {
+      this.yearDisplay.setAttribute("aria-expanded", isOpen.toString());
+    }
   } else {
     // Open picker
     this.togglePicker(true);
+    if (this.monthDisplay) {
+      this.monthDisplay.setAttribute("aria-expanded", "true");
+    }
+    if (this.yearDisplay) {
+      this.yearDisplay.setAttribute("aria-expanded", "true");
+    }
   }
 }
 
@@ -53,20 +67,27 @@ export function handlePrevMonthButtonClick(this: Calendar) {
     return;
   }
 
-  const newMonthValue = this.currentDate.getMonth() - 1;
+  // Check if picker is currently open
+  const isPickerOpen = this.pickerContainer.style.visibility !== "hidden";
+
+  const newMonthValue = this.currentViewDate.getMonth() - 1;
   if (
-    this.currentDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 &&
+    this.currentViewDate.getFullYear() <= this.today.getFullYear() + this.yearPickerOffset - 4 &&
     newMonthValue < 0
   ) {
     this.yearPickerOffset -= 12;
     this.generatePickerYears();
   }
   if (newMonthValue < 0) {
-    this.updateYearPickerSelection(this.currentDate.getFullYear() - 1);
+    this.updateYearPickerSelection(this.currentViewDate.getFullYear() - 1);
   }
   this.updateMonthPickerSelection(newMonthValue);
   this.updateCurrentDate(-1);
-  this.togglePicker(false);
+
+  // Only close picker if it wasn't already open
+  if (!isPickerOpen) {
+    this.togglePicker(false);
+  }
 }
 
 export function handleNextMonthButtonClick(this: Calendar) {
@@ -75,20 +96,27 @@ export function handleNextMonthButtonClick(this: Calendar) {
     return;
   }
 
-  const newMonthValue = this.currentDate.getMonth() + 1;
+  // Check if picker is currently open
+  const isPickerOpen = this.pickerContainer.style.visibility !== "hidden";
+
+  const newMonthValue = this.currentViewDate.getMonth() + 1;
   if (
-    this.currentDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 &&
+    this.currentViewDate.getFullYear() >= this.today.getFullYear() + this.yearPickerOffset + 7 &&
     newMonthValue > 11
   ) {
     this.yearPickerOffset += 12;
     this.generatePickerYears();
   }
   if (newMonthValue > 11) {
-    this.updateYearPickerSelection(this.currentDate.getFullYear() + 1);
+    this.updateYearPickerSelection(this.currentViewDate.getFullYear() + 1);
   }
   this.updateMonthPickerSelection(newMonthValue);
   this.updateCurrentDate(1);
-  this.togglePicker(false);
+
+  // Only close picker if it wasn't already open
+  if (!isPickerOpen) {
+    this.togglePicker(false);
+  }
 }
 
 /** Update Month and Year HTML */
@@ -96,16 +124,17 @@ export function updateMonthYear(this: Calendar) {
   this.oldSelectedNode = null;
   if (this.customMonthValues) {
     if (this.monthDisplay) {
-      this.monthDisplay.innerHTML = this.customMonthValues[this.currentDate.getMonth()] ?? "";
+      this.monthDisplay.innerHTML = this.customMonthValues[this.currentViewDate.getMonth()] ?? "";
     }
   } else {
     if (this.monthDisplay) {
-      this.monthDisplay.innerHTML = new Intl.DateTimeFormat("en-US", {
+      const monthText = new Intl.DateTimeFormat("en-US", {
         month: this.monthDisplayType,
-      }).format(this.currentDate);
+      }).format(this.currentViewDate);
+      this.monthDisplay.innerHTML = monthText;
     }
   }
   if (this.yearDisplay) {
-    this.yearDisplay.innerHTML = this.currentDate.getFullYear().toString();
+    this.yearDisplay.innerHTML = this.currentViewDate.getFullYear().toString();
   }
 }

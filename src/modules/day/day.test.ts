@@ -32,7 +32,7 @@ test("should render multiple event bullets in multiple mode", () => {
   });
 
   // Set to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1));
+  myCalendar.setSelectedDate(new Date(2024, 8, 1));
 
   // Get the calendar element
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -83,7 +83,7 @@ test("should render single event bullet in single mode", () => {
   });
 
   // Set to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1));
+  myCalendar.setSelectedDate(new Date(2024, 8, 1));
 
   // Get the calendar element
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -123,10 +123,10 @@ test("should render white bullets on selected dates", () => {
   });
 
   // Set to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1));
+  myCalendar.setSelectedDate(new Date(2024, 8, 1));
 
   // Select September 15
-  myCalendar.setDate(new Date(2024, 8, 15));
+  myCalendar.setSelectedDate(new Date(2024, 8, 15));
 
   // Get the calendar element
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -163,7 +163,7 @@ test("should handle events without colors using primary color", () => {
   });
 
   // Set to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1));
+  myCalendar.setSelectedDate(new Date(2024, 8, 1));
 
   // Get the calendar element
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -196,7 +196,7 @@ test("should handle cross-month events correctly in day rendering", () => {
   });
 
   // Set to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1));
+  myCalendar.setSelectedDate(new Date(2024, 8, 1));
 
   // Get the calendar element
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -214,7 +214,7 @@ test("should handle cross-month events correctly in day rendering", () => {
   expect(sept24Bullet?.style.backgroundColor).toBe("rgb(255, 107, 107)"); // #ff6b6b
 
   // Navigate to October 2024
-  myCalendar.setDate(new Date(2024, 9, 1));
+  myCalendar.setSelectedDate(new Date(2024, 9, 1));
 
   // Find the day element for October 5 (should also have the event)
   const octDayElements = calendarElement?.querySelectorAll(".calendar__day-active");
@@ -279,7 +279,7 @@ test("should limit bullets to maximum of 5 per date to avoid overflow", () => {
   });
 
   // Set to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1));
+  myCalendar.setSelectedDate(new Date(2024, 8, 1));
 
   // Get the calendar element
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -306,4 +306,86 @@ test("should limit bullets to maximum of 5 per date to avoid overflow", () => {
   expect(bullet3?.style.backgroundColor).toBe("rgb(0, 0, 255)"); // #0000ff (Event 3)
   expect(bullet4?.style.backgroundColor).toBe("rgb(255, 255, 0)"); // #ffff00 (Event 4)
   expect(bullet5?.style.backgroundColor).toBe("rgb(255, 0, 255)"); // #ff00ff (Event 5)
+});
+
+test("should separate date selection from month navigation", () => {
+  let onSelectedDateChangeCalled = 0;
+  let onMonthChangeCalled = 0;
+
+  const myCalendar = new Calendar({
+    onSelectedDateChange: () => {
+      onSelectedDateChangeCalled++;
+    },
+    onMonthChange: () => {
+      onMonthChangeCalled++;
+    },
+  });
+
+  // Initial setup should trigger both events
+  expect(onSelectedDateChangeCalled).toBe(1); // Initial onSelectedDateChange
+  expect(onMonthChangeCalled).toBe(1); // Initial onMonthChange
+
+  // Reset counters
+  onSelectedDateChangeCalled = 0;
+  onMonthChangeCalled = 0;
+
+  // Navigate to next month - should only trigger onMonthChange
+  myCalendar.handleNextMonthButtonClick();
+  expect(onSelectedDateChangeCalled).toBe(0); // No onSelectedDateChange
+  expect(onMonthChangeCalled).toBe(1); // Only onMonthChange
+
+  // Reset counters
+  onSelectedDateChangeCalled = 0;
+  onMonthChangeCalled = 0;
+
+  // Navigate to previous month - should only trigger onMonthChange
+  myCalendar.handlePrevMonthButtonClick();
+  expect(onSelectedDateChangeCalled).toBe(0); // No onSelectedDateChange
+  expect(onMonthChangeCalled).toBe(1); // Only onMonthChange
+});
+
+test("should not automatically select dates when navigating months", () => {
+  const myCalendar = new Calendar();
+
+  // Set to a specific date
+  myCalendar.setSelectedDate(new Date(2024, 8, 15)); // September 15, 2024
+
+  // Verify the date is selected
+  expect(myCalendar.getSelectedDate().getDate()).toBe(15);
+  expect(myCalendar.getSelectedDate().getMonth()).toBe(8); // September
+
+  // Navigate to next month
+  myCalendar.handleNextMonthButtonClick();
+
+  // The selected date should remain September 15, but no date should be selected in October
+  expect(myCalendar.getSelectedDate().getDate()).toBe(15);
+  expect(myCalendar.getSelectedDate().getMonth()).toBe(8); // Still September
+
+  // Check that no date is selected in the current view (October)
+  const calendarElement = document.querySelector("#color-calendar .color-calendar");
+  const selectedDay = calendarElement?.querySelector(".calendar__day-selected");
+  expect(selectedDay).toBeNull(); // No date should be selected in October
+});
+
+test("should preserve selected date when navigating to months that contain it", () => {
+  const myCalendar = new Calendar();
+
+  // Set to September 15, 2024
+  myCalendar.setSelectedDate(new Date(2024, 8, 15));
+
+  // Navigate to October (different month)
+  myCalendar.handleNextMonthButtonClick();
+
+  // Navigate back to September
+  myCalendar.handlePrevMonthButtonClick();
+
+  // The selected date should still be September 15
+  expect(myCalendar.getSelectedDate().getDate()).toBe(15);
+  expect(myCalendar.getSelectedDate().getMonth()).toBe(8); // September
+
+  // And it should be visually selected in the calendar
+  const calendarElement = document.querySelector("#color-calendar .color-calendar");
+  const selectedDay = calendarElement?.querySelector(".calendar__day-selected");
+  expect(selectedDay).toBeTruthy();
+  expect(selectedDay?.textContent?.trim()).toBe("15");
 });

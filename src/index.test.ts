@@ -30,9 +30,9 @@ describe("default calendar options when instantiated", () => {
     calendarHTMLElement = document.querySelector(DEFAULT_ID)?.firstElementChild as HTMLElement;
   });
 
-  test("id should not be null", () => {
+  test("container should not be null", () => {
     calendarHTMLElement = document.querySelector(`${DEFAULT_ID} .color-calendar`);
-    expect(myCalendar.id).toBe(DEFAULT_ID);
+    expect(myCalendar.container).toBe(DEFAULT_ID);
     expect(calendarHTMLElement).not.toBeNull();
   });
 
@@ -144,21 +144,31 @@ describe("default calendar options when instantiated", () => {
     expect(myCalendar.disableMonthArrowClick).toBe(false);
   });
 
-  test("monthChanged should be undefined", () => {
-    expect(myCalendar.monthChanged).toBeUndefined();
+  test("onMonthChange should be undefined", () => {
+    expect(myCalendar.onMonthChange).toBeUndefined();
   });
 
-  test("dateChanged should be undefined", () => {
-    expect(myCalendar.dateChanged).toBeUndefined();
+  test("onSelectedDateChange should be undefined", () => {
+    expect(myCalendar.onSelectedDateChange).toBeUndefined();
+  });
+
+  test("initialSelectedDate should be undefined by default", () => {
+    expect(myCalendar.selectedDate).toBeInstanceOf(Date);
+    expect(myCalendar.currentViewDate).toBeInstanceOf(Date);
+    // Should default to today's date
+    const today = new Date();
+    expect(myCalendar.selectedDate.getDate()).toBe(today.getDate());
+    expect(myCalendar.selectedDate.getMonth()).toBe(today.getMonth());
+    expect(myCalendar.selectedDate.getFullYear()).toBe(today.getFullYear());
   });
 });
 
 describe("custom calendar options when instantiated", () => {
-  test("id should not be #MyTestCalendar", () => {
-    const id = "#MyTestCalendar";
-    const myCalendar = new Calendar({ id });
-    const calendarHTMLElement = document.querySelector(`${id} .color-calendar`);
-    expect(myCalendar.id).toBe(id);
+  test("container should not be #MyTestCalendar", () => {
+    const container = "#MyTestCalendar";
+    const myCalendar = new Calendar({ container });
+    const calendarHTMLElement = document.querySelector(`${container} .color-calendar`);
+    expect(myCalendar.container).toBe(container);
     expect(calendarHTMLElement).not.toBeNull();
   });
 
@@ -417,30 +427,83 @@ describe("custom calendar options when instantiated", () => {
     expect(myCalendar.disableMonthArrowClick).toBe(true);
   });
 
-  test.todo("monthChanged should be executed");
+  test("initialSelectedDate should be set to custom date", () => {
+    const customDate = new Date(2024, 5, 15); // June 15, 2024
+    const myCalendar = new Calendar({
+      initialSelectedDate: customDate,
+    });
 
-  test.todo("dateChanged should be executed");
+    expect(myCalendar.selectedDate).toBeInstanceOf(Date);
+    expect(myCalendar.currentViewDate).toBeInstanceOf(Date);
+
+    // Should be set to the custom date
+    expect(myCalendar.selectedDate.getDate()).toBe(15);
+    expect(myCalendar.selectedDate.getMonth()).toBe(5); // June (0-indexed)
+    expect(myCalendar.selectedDate.getFullYear()).toBe(2024);
+
+    expect(myCalendar.currentViewDate.getDate()).toBe(15);
+    expect(myCalendar.currentViewDate.getMonth()).toBe(5);
+    expect(myCalendar.currentViewDate.getFullYear()).toBe(2024);
+  });
+
+  test("initialSelectedDate should update calendar view to correct month", () => {
+    const customDate = new Date(2024, 8, 20); // September 20, 2024
+    new Calendar({
+      initialSelectedDate: customDate,
+    });
+
+    const calendarHTMLElement = document.querySelector(
+      `${DEFAULT_ID} .color-calendar`
+    ) as HTMLElement;
+
+    // Calendar should display September 2024
+    expect(calendarHTMLElement?.querySelector(".calendar__month")?.innerHTML).toBe("September");
+    expect(calendarHTMLElement?.querySelector(".calendar__year")?.innerHTML).toBe("2024");
+  });
+
+  test("initialSelectedDate should work with events data", () => {
+    const customDate = new Date(2024, 5, 15); // June 15, 2024
+    const myCalendar = new Calendar({
+      initialSelectedDate: customDate,
+      eventsData: [
+        {
+          start: "2024-06-15T10:00:00",
+          end: "2024-06-15T12:00:00",
+          name: "Test Event",
+        },
+      ],
+    });
+
+    expect(myCalendar.eventsData).toHaveLength(1);
+    expect(myCalendar.selectedDate.getDate()).toBe(15);
+    expect(myCalendar.selectedDate.getMonth()).toBe(5);
+    expect(myCalendar.selectedDate.getFullYear()).toBe(2024);
+  });
+
+  test.todo("onMonthChange should be executed");
+
+  test.todo("onSelectedDateChange should be executed");
 });
 
-describe("function-based id parameter", () => {
+describe("function-based container parameter", () => {
   test("should work with function that returns HTMLElement", () => {
     const mockElement = document.createElement("div");
     mockElement.id = "test-calendar";
     document.body.appendChild(mockElement);
 
-    const idFunction = () => mockElement;
-    const myCalendar = new Calendar({ id: idFunction });
+    const containerFunction = () => mockElement;
+    const myCalendar = new Calendar({ container: containerFunction });
 
     expect(myCalendar.calendar).toBe(mockElement);
     expect(myCalendar.calendar).not.toBeNull();
   });
 
   test("should work with function that returns null", () => {
-    const idFunction = () => null;
+    const containerFunction = () => null;
 
     expect(() => {
-      new Calendar({ id: idFunction });
-    }).toThrow("[COLOR-CALENDAR] Element with selector function not found");
+      new Calendar({ container: containerFunction });
+    }).toThrow("[COLOR-CALENDAR] Element with container function not found");
   });
 
   test("should work with function that returns different element each time", () => {
@@ -452,34 +515,45 @@ describe("function-based id parameter", () => {
     document.body.appendChild(element2);
 
     let callCount = 0;
-    const idFunction = () => {
+    const containerFunction = () => {
       callCount++;
       return callCount === 1 ? element1 : element2;
     };
 
-    const myCalendar = new Calendar({ id: idFunction });
+    const myCalendar = new Calendar({ container: containerFunction });
     expect(myCalendar.calendar).toBe(element1);
     expect(callCount).toBe(1);
   });
 
-  test("should maintain backward compatibility with string id", () => {
+  test("should maintain backward compatibility with string container", () => {
     const mockElement = document.createElement("div");
     mockElement.id = "string-calendar";
     document.body.appendChild(mockElement);
 
-    const myCalendar = new Calendar({ id: "#string-calendar" });
+    const myCalendar = new Calendar({ container: "#string-calendar" });
+
+    expect(myCalendar.calendar).toBe(mockElement);
+    expect(myCalendar.calendar).not.toBeNull();
+  });
+
+  test("should work with HTMLElement directly", () => {
+    const mockElement = document.createElement("div");
+    mockElement.id = "direct-element";
+    document.body.appendChild(mockElement);
+
+    const myCalendar = new Calendar({ container: mockElement });
 
     expect(myCalendar.calendar).toBe(mockElement);
     expect(myCalendar.calendar).not.toBeNull();
   });
 
   test("should handle function that throws error", () => {
-    const idFunction = () => {
+    const containerFunction = () => {
       throw new Error("Function error");
     };
 
     expect(() => {
-      new Calendar({ id: idFunction });
+      new Calendar({ container: containerFunction });
     }).toThrow("Function error");
   });
 });

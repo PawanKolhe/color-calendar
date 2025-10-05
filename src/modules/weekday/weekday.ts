@@ -30,9 +30,10 @@ export function generateAndRenderWeekdays(this: Calendar) {
     const weekdayIndex = (i + this.startWeekday) % 7;
     const weekdayValue = this.weekdays[weekdayIndex];
     newHTML += `
-      <div class="calendar__weekday">${weekdayValue}</div>
+      <div class="calendar__weekday" role="columnheader" aria-label="${weekdayValue}">${weekdayValue}</div>
     `;
   }
 
+  // Update DOM synchronously
   this.calendarWeekdays.innerHTML = newHTML;
 }

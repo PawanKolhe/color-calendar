@@ -3,8 +3,6 @@ import Calendar, { type CalendarOptions, type EventData } from "../index";
 export interface CalendarProps extends CalendarOptions {
   /** Sample events data for demonstration */
   sampleEvents?: EventData[];
-  /** Initial date to set the calendar to */
-  initialDate?: Date;
 }
 
 /** Dynamically generate sample events for the current month */
@@ -88,12 +86,11 @@ export const createCalendar = (props: CalendarProps) => {
   // Create a container div for the calendar
   const container = document.createElement("div");
   container.id = uniqueId;
-  container.style.minHeight = "400px";
   container.style.width = "100%";
 
   // Initialize the calendar with the provided options
   const calendarOptions: CalendarOptions = {
-    id: `#${uniqueId}`,
+    container: `#${uniqueId}`,
     calendarSize: props.calendarSize || "large",
     theme: props.theme || "basic",
     primaryColor: props.primaryColor,
@@ -115,10 +112,11 @@ export const createCalendar = (props: CalendarProps) => {
     customMonthValues: props.customMonthValues,
     customWeekdayValues: props.customWeekdayValues,
     eventBulletMode: props.eventBulletMode,
+    initialSelectedDate: props.initialSelectedDate,
     eventsData: props.sampleEvents ? sampleEvents : props.eventsData || [],
-    monthChanged: props.monthChanged,
-    dateChanged: props.dateChanged,
-    selectedDateClicked: props.selectedDateClicked,
+    onMonthChange: props.onMonthChange,
+    onSelectedDateChange: props.onSelectedDateChange,
+    onSelectedDateClick: props.onSelectedDateClick,
     layoutModifiers: props.layoutModifiers || [],
   };
 
@@ -126,21 +124,13 @@ export const createCalendar = (props: CalendarProps) => {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       try {
-        const calendar = new Calendar(calendarOptions);
-
-        // Set initial date if provided
-        if (props.initialDate) {
-          calendar.setDate(props.initialDate);
-        }
+        new Calendar(calendarOptions);
       } catch (error) {
         console.error("Calendar initialization error:", error);
         // Fallback retry
         setTimeout(() => {
           try {
-            const calendar = new Calendar(calendarOptions);
-            if (props.initialDate) {
-              calendar.setDate(props.initialDate);
-            }
+            new Calendar(calendarOptions);
           } catch (retryError) {
             console.error("Calendar initialization retry error:", retryError);
           }

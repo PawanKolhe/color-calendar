@@ -67,7 +67,7 @@ test("should handle cross-month date ranges correctly", () => {
   const myCalendar = new Calendar();
 
   // Set calendar to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1)); // September 2024
+  myCalendar.setSelectedDate(new Date(2024, 8, 1)); // September 2024
 
   const eventsData = [
     {
@@ -94,7 +94,7 @@ test("should handle cross-month date ranges correctly", () => {
   );
 
   // Navigate to October 2024
-  myCalendar.setDate(new Date(2024, 9, 1)); // October 2024
+  myCalendar.setSelectedDate(new Date(2024, 9, 1)); // October 2024
 
   // Check October events - should include the cross-month event
   const octoberEvents = myCalendar.getMonthEvents();
@@ -115,7 +115,7 @@ test("should handle events spanning multiple months", () => {
   const myCalendar = new Calendar();
 
   // Set calendar to August 2024
-  myCalendar.setDate(new Date(2024, 7, 1)); // August 2024
+  myCalendar.setSelectedDate(new Date(2024, 7, 1)); // August 2024
 
   const eventsData = [
     {
@@ -132,7 +132,7 @@ test("should handle events spanning multiple months", () => {
   expect(augustEvents[0]?.["name"]).toBe("Long event (Aug 15 - Sep 15)");
 
   // Navigate to September 2024
-  myCalendar.setDate(new Date(2024, 8, 1)); // September 2024
+  myCalendar.setSelectedDate(new Date(2024, 8, 1)); // September 2024
 
   // Check September events - should still include the long event
   const septemberEvents = myCalendar.getMonthEvents();
@@ -140,7 +140,7 @@ test("should handle events spanning multiple months", () => {
   expect(septemberEvents[0]?.["name"]).toBe("Long event (Aug 15 - Sep 15)");
 
   // Navigate to October 2024
-  myCalendar.setDate(new Date(2024, 9, 1)); // October 2024
+  myCalendar.setSelectedDate(new Date(2024, 9, 1)); // October 2024
 
   // Check October events - should not include the long event (it ended in September)
   const octoberEvents = myCalendar.getMonthEvents();
