@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { fn } from "storybook/test";
+import type Calendar from "../index";
 import type { EventData } from "../types";
 import { generateDynamicEvents, generateDynamicEventsForMonth } from "./DynamicEvents";
 import type { HTMLCalendarWrapperProps } from "./HTMLCalendarWrapper";
@@ -778,7 +779,7 @@ export const InteractiveNullSelectionDemo: Story = {
     container.appendChild(calendarContainer);
 
     // Calendar instance
-    let calendar: any = null; // eslint-disable-line @typescript-eslint/no-explicit-any
+    let calendar: Calendar | null = null;
 
     // Update status display
     const updateStatus = (selectedDate: Date | null) => {
@@ -863,4 +864,3 @@ export const InteractiveNullSelectionDemo: Story = {
     },
   },
 };
-
