@@ -639,7 +639,7 @@ export const ControlledWithNullSupport: Story = {
           <h3 style={{ margin: 0, fontSize: "1.25rem", fontWeight: "600", color: "#1e293b" }}>
             Controlled Component with Null Support
           </h3>
-          
+
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <button
               type="button"
@@ -657,7 +657,7 @@ export const ControlledWithNullSupport: Story = {
             >
               Set Today
             </button>
-            
+
             <button
               type="button"
               onClick={() => handleSetDate(new Date(2024, 5, 15))}
@@ -674,7 +674,7 @@ export const ControlledWithNullSupport: Story = {
             >
               Set June 15, 2024
             </button>
-            
+
             <button
               type="button"
               onClick={handleClearSelection}
@@ -745,12 +745,12 @@ export const EventsPersistenceTest: Story = {
     const [theme, setTheme] = useState<"basic" | "glass">("basic");
     const [calendarSize, setCalendarSize] = useState<"small" | "large">("large");
     const [primaryColor, setPrimaryColor] = useState("#3b82f6");
-    
+
     // Generate unique IDs for form elements
     const themeId = useId();
     const sizeId = useId();
     const colorId = useId();
-    
+
     // Memoize dynamic events to prevent re-creation
     const dynamicEvents = useMemo(() => generateDynamicEvents(), []);
 
@@ -798,7 +798,10 @@ export const EventsPersistenceTest: Story = {
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <label htmlFor={themeId} style={{ fontSize: "0.875rem", fontWeight: "500", color: "#374151" }}>
+              <label
+                htmlFor={themeId}
+                style={{ fontSize: "0.875rem", fontWeight: "500", color: "#374151" }}
+              >
                 Theme:
               </label>
               <select
@@ -816,9 +819,12 @@ export const EventsPersistenceTest: Story = {
                 <option value="glass">Glass</option>
               </select>
             </div>
-            
+
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <label htmlFor={sizeId} style={{ fontSize: "0.875rem", fontWeight: "500", color: "#374151" }}>
+              <label
+                htmlFor={sizeId}
+                style={{ fontSize: "0.875rem", fontWeight: "500", color: "#374151" }}
+              >
                 Size:
               </label>
               <select
@@ -836,9 +842,12 @@ export const EventsPersistenceTest: Story = {
                 <option value="large">Large</option>
               </select>
             </div>
-            
+
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <label htmlFor={colorId} style={{ fontSize: "0.875rem", fontWeight: "500", color: "#374151" }}>
+              <label
+                htmlFor={colorId}
+                style={{ fontSize: "0.875rem", fontWeight: "500", color: "#374151" }}
+              >
                 Primary Color:
               </label>
               <input
@@ -878,7 +887,7 @@ export const EventsPersistenceTest: Story = {
             eventBulletMode="multiple"
           />
         </div>
-        
+
         <div
           style={{
             background: "#f8fafc",
@@ -887,10 +896,25 @@ export const EventsPersistenceTest: Story = {
             border: "1px solid #e2e8f0",
           }}
         >
-          <h4 style={{ margin: "0 0 0.5rem 0", fontSize: "0.875rem", fontWeight: "600", color: "#1f2937" }}>
+          <h4
+            style={{
+              margin: "0 0 0.5rem 0",
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1f2937",
+            }}
+          >
             Test Instructions:
           </h4>
-          <ul style={{ margin: "0", paddingLeft: "1.25rem", fontSize: "0.75rem", color: "#6b7280", lineHeight: "1.5" }}>
+          <ul
+            style={{
+              margin: "0",
+              paddingLeft: "1.25rem",
+              fontSize: "0.75rem",
+              color: "#6b7280",
+              lineHeight: "1.5",
+            }}
+          >
             <li>Change the theme, size, or color using the controls above</li>
             <li>Verify that the events (colored dots) remain visible on the calendar</li>
             <li>Events should not disappear when props change</li>
