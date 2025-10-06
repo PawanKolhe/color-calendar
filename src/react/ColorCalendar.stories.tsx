@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useCallback, useId, useMemo, useState } from "react";
 import { fn } from "storybook/test";
-import { generateDynamicEvents, generateDynamicEventsForMonth } from "../stories/generateDynamicEvents";
+import {
+  generateDynamicEvents,
+  generateDynamicEventsForMonth,
+} from "../stories/generateDynamicEvents";
 import type { EventData } from "../types";
 import ColorCalendar from "./ColorCalendar";
 
