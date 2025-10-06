@@ -157,9 +157,9 @@ describe("default calendar options when instantiated", () => {
     expect(myCalendar.currentViewDate).toBeInstanceOf(Date);
     // Should default to today's date
     const today = new Date();
-    expect(myCalendar.selectedDate.getDate()).toBe(today.getDate());
-    expect(myCalendar.selectedDate.getMonth()).toBe(today.getMonth());
-    expect(myCalendar.selectedDate.getFullYear()).toBe(today.getFullYear());
+    expect(myCalendar.selectedDate?.getDate()).toBe(today.getDate());
+    expect(myCalendar.selectedDate?.getMonth()).toBe(today.getMonth());
+    expect(myCalendar.selectedDate?.getFullYear()).toBe(today.getFullYear());
   });
 });
 
@@ -437,9 +437,9 @@ describe("custom calendar options when instantiated", () => {
     expect(myCalendar.currentViewDate).toBeInstanceOf(Date);
 
     // Should be set to the custom date
-    expect(myCalendar.selectedDate.getDate()).toBe(15);
-    expect(myCalendar.selectedDate.getMonth()).toBe(5); // June (0-indexed)
-    expect(myCalendar.selectedDate.getFullYear()).toBe(2024);
+    expect(myCalendar.selectedDate?.getDate()).toBe(15);
+    expect(myCalendar.selectedDate?.getMonth()).toBe(5); // June (0-indexed)
+    expect(myCalendar.selectedDate?.getFullYear()).toBe(2024);
 
     expect(myCalendar.currentViewDate.getDate()).toBe(15);
     expect(myCalendar.currentViewDate.getMonth()).toBe(5);
@@ -475,9 +475,47 @@ describe("custom calendar options when instantiated", () => {
     });
 
     expect(myCalendar.eventsData).toHaveLength(1);
-    expect(myCalendar.selectedDate.getDate()).toBe(15);
-    expect(myCalendar.selectedDate.getMonth()).toBe(5);
-    expect(myCalendar.selectedDate.getFullYear()).toBe(2024);
+    expect(myCalendar.selectedDate?.getDate()).toBe(15);
+    expect(myCalendar.selectedDate?.getMonth()).toBe(5);
+    expect(myCalendar.selectedDate?.getFullYear()).toBe(2024);
+  });
+
+  test("initialSelectedDate should be null when explicitly set to null", () => {
+    const myCalendar = new Calendar({
+      initialSelectedDate: null,
+    });
+
+    expect(myCalendar.selectedDate).toBeNull();
+    expect(myCalendar.currentViewDate).toBeInstanceOf(Date);
+    // Should still show current month
+    const today = new Date();
+    expect(myCalendar.currentViewDate.getMonth()).toBe(today.getMonth());
+    expect(myCalendar.currentViewDate.getFullYear()).toBe(today.getFullYear());
+  });
+
+  test("setSelectedDate should handle null values", () => {
+    const myCalendar = new Calendar();
+
+    // Initially should have a selected date (today)
+    expect(myCalendar.selectedDate).toBeInstanceOf(Date);
+
+    // Set to null
+    myCalendar.setSelectedDate(null);
+    expect(myCalendar.selectedDate).toBeNull();
+
+    // Set back to a date
+    const testDate = new Date(2024, 5, 15);
+    myCalendar.setSelectedDate(testDate);
+    expect(myCalendar.selectedDate).toBeInstanceOf(Date);
+    expect(myCalendar.selectedDate?.getDate()).toBe(15);
+  });
+
+  test("getSelectedDate should return null when no date is selected", () => {
+    const myCalendar = new Calendar({
+      initialSelectedDate: null,
+    });
+
+    expect(myCalendar.getSelectedDate()).toBeNull();
   });
 
   test.todo("onMonthChange should be executed");
