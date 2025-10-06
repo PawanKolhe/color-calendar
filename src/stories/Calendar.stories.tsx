@@ -3,7 +3,7 @@ import React from "react";
 import { fn } from "storybook/test";
 import type Calendar from "../index";
 import type { EventData } from "../types";
-import { generateDynamicEvents, generateDynamicEventsForMonth } from "./DynamicEvents";
+import { generateDynamicEvents, generateDynamicEventsForMonth } from "./generateDynamicEvents";
 import type { HTMLCalendarWrapperProps } from "./HTMLCalendarWrapper";
 import HTMLCalendarWrapper from "./HTMLCalendarWrapper";
 

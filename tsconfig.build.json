@@ -14,5 +14,11 @@
     "src/react/**/*.ts",
     "src/react/**/*.tsx"
   ],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/testHelper.ts"]
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/testHelper.ts",
+    "**/*stories.ts",
+    "**/*stories.tsx"
+  ]
 }
