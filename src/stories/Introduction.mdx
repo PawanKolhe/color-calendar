@@ -1,6 +1,6 @@
 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
   <img 
-    src="./screenshots/poster.png" 
+    src="/poster.png" 
     alt="Color Calendar poster" 
     style={{ 
       maxWidth: '100%', 
@@ -25,6 +25,7 @@ Color Calendar is a fast, customizable, and colorful calendar widget for your we
 - 🛠️ **Fully Customizable**: Using CSS variables, options parameters, or CSS overrides
 - 📱 **Responsive Design**: Works seamlessly across desktop and mobile devices
 - ♿ **Accessibility**: Built with WCAG guidelines in mind
+- ⚛️ **React Integration**: Dedicated React wrapper component with TypeScript support
 
 ## Getting Started
 
@@ -43,19 +44,19 @@ import "color-calendar/dist/css/theme-basic.css";
 
 #### JavaScript
 ```html
-<script src="https://cdn.jsdelivr.net/npm/color-calendar/dist/bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/bundle.js"></script>
 ```
 
 #### CSS
 ```html
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-basic.css"
+  href="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/css/theme-basic.css"
 />
 <!-- or -->
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-glass.css"
+  href="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/css/theme-glass.css"
 />
 ```
 
@@ -113,11 +114,35 @@ new Calendar({
 
 ### React Integration
 
-[React Example](https://codesandbox.io/s/color-calendar-react-y0cyf?file=/src/CalendarComponent.jsx)
+Color Calendar includes a dedicated React wrapper component with full TypeScript support:
 
-### Vue Integration
+```tsx
+import React, { useState } from 'react';
+import { ColorCalendar } from 'color-calendar/react';
 
-[Vue Example](https://codesandbox.io/s/color-calendar-vue-byo6e?file=/src/components/ColorCalendar.vue)
+function App() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  return (
+    <ColorCalendar
+      calendarSize="large"
+      theme="basic"
+      selectedDate={selectedDate}
+      onSelectedDateChange={(date, events) => {
+        console.log('Selected date:', date);
+        console.log('Events:', events);
+        setSelectedDate(date);
+      }}
+    />
+  );
+}
+```
+
+**Key Features:**
+- 🚀 **React Integration**: Built specifically for React applications
+- 📱 **TypeScript Support**: Full type safety and IntelliSense
+- 🔄 **Controlled Component**: Use `selectedDate` prop for controlled date selection
+- 🎛️ **Imperative API**: Programmatic control via refs
 
 ## Links
 

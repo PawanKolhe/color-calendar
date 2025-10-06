@@ -78,7 +78,7 @@ export default class Calendar {
 
   weekdays: Weekdays;
   today: Date;
-  selectedDate: Date;
+  selectedDate: Date | null;
   currentViewDate: Date;
   pickerType: string;
   eventDayMap: Map<string, EventData[]>;
@@ -170,8 +170,8 @@ export default class Calendar {
   declare generateAndRenderWeekdays: () => void;
 
   // Day
-  declare setSelectedDate: (date: Date) => void;
-  declare getSelectedDate: () => Date;
+  declare setSelectedDate: (date: Date | null) => void;
+  declare getSelectedDate: () => Date | null;
   declare clearCalendarDays: () => void;
   declare updateCalendar: (isMonthChanged?: boolean) => void;
   declare setOldSelectedNode: () => void;
@@ -237,12 +237,18 @@ export default class Calendar {
     }
 
     this.today = new Date();
-    this.selectedDate = options.initialSelectedDate
-      ? new Date(options.initialSelectedDate)
-      : new Date();
-    this.currentViewDate = options.initialSelectedDate
-      ? new Date(options.initialSelectedDate)
-      : new Date();
+
+    // Handle initialSelectedDate: null means no selection, undefined means default to today
+    if (options.initialSelectedDate === null) {
+      this.selectedDate = null;
+      this.currentViewDate = new Date(); // Still show current month
+    } else if (options.initialSelectedDate) {
+      this.selectedDate = new Date(options.initialSelectedDate);
+      this.currentViewDate = new Date(options.initialSelectedDate);
+    } else {
+      this.selectedDate = new Date(); // Default to today when not specified
+      this.currentViewDate = new Date();
+    }
     this.pickerType = "month";
     this.eventDayMap = new Map();
     this.oldSelectedNode = null;
@@ -395,7 +401,13 @@ export default class Calendar {
     // Apply click listeners to HTML elements
     this.addEventListeners();
 
-    this.reset(options.initialSelectedDate ? new Date(options.initialSelectedDate) : new Date());
+    this.reset(
+      options.initialSelectedDate === null
+        ? null
+        : options.initialSelectedDate
+          ? new Date(options.initialSelectedDate)
+          : new Date()
+    );
   }
 
   /**
@@ -424,9 +436,9 @@ export default class Calendar {
     return this.calendar;
   }
 
-  reset(date: Date) {
-    this.selectedDate = date ? date : new Date();
-    this.currentViewDate = new Date(this.selectedDate);
+  reset(date: Date | null) {
+    this.selectedDate = date;
+    this.currentViewDate = date ? new Date(date) : new Date();
     this.clearCalendarDays();
     this.updateMonthYear();
     this.updateMonthPickerSelection(this.currentViewDate.getMonth());
@@ -441,7 +453,10 @@ export default class Calendar {
     this.setOldSelectedNode();
 
     if (this.onSelectedDateChange) {
-      this.onSelectedDateChange(this.selectedDate, this.getDateEvents(this.selectedDate));
+      this.onSelectedDateChange(
+        this.selectedDate || undefined,
+        this.selectedDate ? this.getDateEvents(this.selectedDate) : []
+      );
     }
 
     if (this.onMonthChange) {

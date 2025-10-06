@@ -10,7 +10,7 @@ export default create({
   // Branding - Inspired by the vibrant logo gradient
   brandTitle: "Color Calendar",
   brandUrl: "https://master--68dc1b2449e62022d61d079f.chromatic.com/",
-  brandImage: "./screenshots/logo.png", // Use the colorful gradient logo
+  brandImage: "/logo.png", // Use the colorful gradient logo
   brandTarget: "_self",
 
   // Color palette - Inspired by logo gradient and calendar themes

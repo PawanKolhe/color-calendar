@@ -23,7 +23,7 @@ export interface CalendarOptions {
   customMonthValues?: string[];
   customWeekdayValues?: string[];
   eventBulletMode?: EventBulletMode;
-  initialSelectedDate?: Date;
+  initialSelectedDate?: Date | null;
   onMonthChange?: (currentDate?: Date, filteredMonthEvents?: EventData[]) => void;
   onSelectedDateChange?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;
   onSelectedDateClick?: (currentDate?: Date, filteredDateEvents?: EventData[]) => void;

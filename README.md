@@ -20,6 +20,8 @@
     Add a colorful, interactive events calendar to your site in seconds. Try it: <a href="https://master--68dc1b2449e62022d61d079f.chromatic.com">Storybook</a> | <a href="https://codesandbox.io/s/color-calendar-bnwdu">CodeSandbox</a>
 </p>
 
+⚛️ [React wrapper](#usage-react) available
+
 <!-- # Color Calendar
 ![npm](https://img.shields.io/npm/v/color-calendar?style=flat-square)
 ![npm](https://img.shields.io/npm/dw/color-calendar?style=flat-square)
@@ -37,7 +39,6 @@
 - [Usage](#usage)
   - [Basic](#usage-basic)
   - [React](#usage-react)
-  - [Vue](#usage-vue)
 - [Options](#options)
 - [Events](#events)
 - [Methods](#methods)
@@ -60,6 +61,7 @@
 - 🛠️ **Fully Customizable**: Using CSS variables, options parameters, or CSS overrides
 - 📱 **Responsive Design**: Works seamlessly across desktop and mobile devices
 - ♿ **Accessibility**: Built with WCAG guidelines in mind
+- ⚛️ **React Integration**: Dedicated React wrapper component with TypeScript support
 - [Request more features](#feature-request)...
 
 <a id="getting-started"></a>
@@ -88,12 +90,14 @@ import Calendar from "color-calendar";
 import "color-calendar/dist/css/theme-<THEME-NAME>.css";
 ```
 
+Check the [themes](#themes) section for available themes.
+
 ### CDN
 
 #### JavaScript
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/color-calendar/dist/bundle.js">
+<script src="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/bundle.js">
 ```
 
 Also available on [unpkg](https://unpkg.com/browse/color-calendar/dist/).
@@ -105,12 +109,12 @@ Pick a css file according to the theme you want.
 ```html
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-basic.css"
+  href="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/css/theme-basic.css"
 />
 <!-- or -->
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/color-calendar/dist/css/theme-glass.css"
+  href="https://cdn.jsdelivr.net/npm/color-calendar@3.0.0/dist/css/theme-glass.css"
 />
 ```
 
@@ -157,7 +161,7 @@ new Calendar({
 <div id="color-calendar"></div>
 ```
 
-[Example](https://codesandbox.io/s/color-calendar-bnwdu)
+[CodeSandbox](https://codesandbox.io/s/color-calendar-bnwdu)
 
 #### Function-Based ID
 
@@ -212,22 +216,39 @@ new Calendar({
 });
 ```
 
-**Key Features:**
-- **Individual Event Colors**: Each event can have its own color
-- **Cross-Month Support**: Events spanning multiple months display correctly
-- **Configurable Bullet Modes**: Choose between multiple bullets or single bullet per day
-
 <a id="usage-react"></a>
 
 ### React
 
-[Example](https://codesandbox.io/s/color-calendar-react-y0cyf?file=/src/CalendarComponent.jsx)
+Color Calendar includes a dedicated React wrapper component with full TypeScript support:
 
-<a id="usage-vue"></a>
+```tsx
+import React, { useState } from 'react';
+import { ColorCalendar } from 'color-calendar/react';
 
-### Vue
+function App() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-[Example](https://codesandbox.io/s/color-calendar-vue-byo6e?file=/src/components/ColorCalendar.vue)
+  return (
+    <ColorCalendar
+      calendarSize="large"
+      theme="basic"
+      selectedDate={selectedDate}
+      onSelectedDateChange={(date, events) => {
+        console.log('Selected date:', date);
+        console.log('Events:', events);
+        setSelectedDate(date);
+      }}
+    />
+  );
+}
+```
+
+**Key Features:**
+- 🚀 **React Integration**: Built specifically for React applications
+- 📱 **TypeScript Support**: Full type safety and IntelliSense
+- 🔄 **Controlled Component**: Use `selectedDate` prop for controlled date selection
+- 🎛️ **Imperative API**: Programmatic control via refs
 
 <a id="options"></a>
 
@@ -276,15 +297,31 @@ const calendar = new ColorCalendar({
 
 ### `initialSelectedDate`  
 
-Type: `Date`  
+Type: `Date | null`  
 Default: `undefined` (uses current date)  
 
 Sets the initial selected date when the calendar is first rendered. The calendar will open with this date selected and the view will be set to the month containing this date.
 
+- `undefined`: Defaults to today's date
+- `Date`: Sets the specified date as selected
+- `null`: No date is selected initially (calendar shows current month but no day is highlighted)
+
 ```javascript
+// Default behavior - selects today's date
+new Calendar({
+  container: "#calendar"
+});
+
+// Select a specific date
 new Calendar({
   container: "#calendar",
   initialSelectedDate: new Date(2024, 5, 15) // June 15, 2024
+});
+
+// No initial selection
+new Calendar({
+  container: "#calendar",
+  initialSelectedDate: null // No date selected
 });
 ```
 
@@ -581,23 +618,26 @@ myCal.reset();
 Props:
 | Props | Type | Required | Description |
 |-------|------|----------|--------------------|
-| date | Date | required | New date to be set |
+| date | Date \| null | required | New date to be set, or null to clear selection |
 
-Set new selected date.
+Set new selected date or clear selection.
 
 ```javascript
-// Example
+// Set a specific date
 myCal.setSelectedDate(new Date());
+
+// Clear selection (no date selected)
+myCal.setSelectedDate(null);
 ```
 
 ### `getSelectedDate()`
 
 Return:
 
-- Type: `Date`
-- Description: `Currently selected date`
+- Type: `Date | null`
+- Description: `Currently selected date, or null if no date is selected`
 
-Get currently selected date.
+Get currently selected date. Returns `null` if no date is currently selected.
 
 ### `getEventsData()`
 

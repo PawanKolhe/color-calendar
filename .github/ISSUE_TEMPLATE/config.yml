@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/PawanKolhe/color-calendar/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: Storybook
+    url: https://master--68dc1b2449e62022d61d079f.chromatic.com
+    about: View live examples and test the calendar interactively

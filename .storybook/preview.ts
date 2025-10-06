@@ -1,8 +1,8 @@
 import type { Preview } from "@storybook/html-vite";
 
 // Import calendar CSS themes
-import "../dist/css/theme-basic.css";
-import "../dist/css/theme-glass.css";
+import "../src/sass/theme-basic.scss";
+import "../src/sass/theme-glass.scss";
 
 const preview: Preview = {
   parameters: {

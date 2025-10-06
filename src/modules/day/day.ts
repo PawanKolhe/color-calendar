@@ -1,11 +1,10 @@
 import type Calendar from "../../index";
 import type { Day, EventData, StartWeekday } from "../../types";
 
-export function setSelectedDate(this: Calendar, date: Date) {
-  if (!date) {
-    return;
-  }
-  if (date instanceof Date) {
+export function setSelectedDate(this: Calendar, date: Date | null) {
+  if (date === null) {
+    this.reset(null);
+  } else if (date instanceof Date) {
     this.reset(date);
   } else {
     this.reset(new Date(date));
@@ -39,7 +38,7 @@ export function updateCalendar(this: Calendar, isMonthChanged?: boolean) {
 }
 
 export function setOldSelectedNode(this: Calendar) {
-  if (!this.oldSelectedNode) {
+  if (!this.oldSelectedNode && this.selectedDate) {
     let selectedNode: HTMLElement | undefined;
     for (let i = 1; i < this.calendarDays?.childNodes.length; i += 2) {
       const ele = this.calendarDays?.childNodes[i] as HTMLElement;
@@ -59,7 +58,7 @@ export function setOldSelectedNode(this: Calendar) {
 
 /** Updates which element is to be selected when month changes */
 export function selectDayInitial(this: Calendar, setDate?: boolean) {
-  if (setDate) {
+  if (setDate && this.selectedDate) {
     // Only select a date when explicitly setting a date (like during reset with a specific date)
     const idx = this.selectedDate.getDate() - 1;
     const dayItem = this.daysIn_CurrentMonth[idx];
@@ -69,7 +68,7 @@ export function selectDayInitial(this: Calendar, setDate?: boolean) {
         selected: true,
       };
     }
-  } else {
+  } else if (this.selectedDate) {
     // During month navigation, only select if the selected date exists in the current month
     const selectedDateInCurrentMonth =
       this.selectedDate.getFullYear() === this.currentViewDate.getFullYear() &&
@@ -87,6 +86,7 @@ export function selectDayInitial(this: Calendar, setDate?: boolean) {
     }
     // If selected date is not in current month, don't select anything
   }
+  // If selectedDate is null, don't select anything
 }
 
 /**
@@ -156,32 +156,115 @@ export function handleCalendarDayClick(this: Calendar, e: MouseEvent) {
     return;
   }
 
-  // Invoke user provided callback
-  if (target.parentElement?.classList.contains("calendar__day-selected")) {
-    if (this.onSelectedDateClick) {
+  // Find the day element
+  const dayElement = target.closest(".calendar__day") as HTMLElement;
+  if (!dayElement) return;
+
+  // Check if this is already the selected day
+  if (dayElement.classList.contains("calendar__day-selected")) {
+    if (this.onSelectedDateClick && this.selectedDate) {
       this.onSelectedDateClick(this.selectedDate, this.getDateEvents(this.selectedDate));
     }
     return;
   }
 
-  // Find which day of the month is clicked
-  const day = target.parentElement?.innerText || "0";
-  const dayNum = parseInt(day, 10);
+  // Get the day number from the day text element
+  const dayTextElement = dayElement.querySelector(".calendar__day-text");
+  if (!dayTextElement) return;
 
-  //Remove old day selection
+  const dayNum = parseInt(dayTextElement.textContent || "0", 10);
+  if (dayNum <= 0) return;
+
+  // Determine if this is a current month day or previous/next month day
+  const isCurrentMonth = dayElement.classList.contains("calendar__day-active");
+  const isOtherMonth = dayElement.classList.contains("calendar__day-other");
+
+  let clickedDate: Date;
+
+  if (isCurrentMonth) {
+    // Current month day
+    clickedDate = new Date(
+      this.currentViewDate.getFullYear(),
+      this.currentViewDate.getMonth(),
+      dayNum
+    );
+  } else if (isOtherMonth) {
+    // Determine if it's previous or next month based on position in calendar grid
+    const allDays = Array.from(
+      this.calendarDays.querySelectorAll(".calendar__day")
+    ) as HTMLElement[];
+    const currentDayIndex = allDays.indexOf(dayElement);
+
+    // Calculate the day offset for the current month
+    let dayOffset: number;
+    if (this.firstDay_CurrentMonth < this.startWeekday) {
+      dayOffset = 7 + this.firstDay_CurrentMonth - this.startWeekday;
+    } else {
+      dayOffset = this.firstDay_CurrentMonth - this.startWeekday;
+    }
+
+    if (currentDayIndex < dayOffset) {
+      // Previous month day
+      clickedDate = new Date(
+        this.currentViewDate.getFullYear(),
+        this.currentViewDate.getMonth() - 1,
+        dayNum
+      );
+    } else {
+      // Next month day
+      clickedDate = new Date(
+        this.currentViewDate.getFullYear(),
+        this.currentViewDate.getMonth() + 1,
+        dayNum
+      );
+    }
+  } else {
+    // Fallback - should not happen with proper calendar structure
+    clickedDate = new Date(
+      this.currentViewDate.getFullYear(),
+      this.currentViewDate.getMonth(),
+      dayNum
+    );
+  }
+
+  // Update selected date
+  this.selectedDate = clickedDate;
+
+  // Remove old day selection
   this.removeOldDaySelection();
 
-  // Select clicked day
-  if (day) {
-    this.updateSelectedDate(dayNum);
+  // Update the day item if it's a current month day
+  if (isCurrentMonth) {
     const dayItem = this.daysIn_CurrentMonth[dayNum - 1];
     if (dayItem) {
       Object.assign(dayItem, { selected: true });
     }
-    const parentElement = target.parentElement;
-    if (parentElement) {
-      this.rerenderSelectedDay(parentElement, dayNum, true);
+    this.rerenderSelectedDay(dayElement, dayNum, true);
+  } else if (isOtherMonth) {
+    // For previous/next month days, we need to navigate to that month first
+    this.updateCurrentDate(0, clickedDate.getMonth(), clickedDate.getFullYear());
+    // Then select the day
+    const dayItem = this.daysIn_CurrentMonth[dayNum - 1];
+    if (dayItem) {
+      Object.assign(dayItem, { selected: true });
     }
+    // Re-render the day after navigation
+    setTimeout(() => {
+      const newDayElement = this.calendarDays.querySelector(
+        `[aria-label*="${clickedDate.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}"]`
+      ) as HTMLElement;
+      if (newDayElement) {
+        this.rerenderSelectedDay(newDayElement, dayNum, true);
+      }
+    }, 0);
+  }
+
+  // Invoke user provided callback
+  if (this.onSelectedDateChange) {
+    this.onSelectedDateChange(
+      this.selectedDate,
+      this.selectedDate ? this.getDateEvents(this.selectedDate) : []
+    );
   }
 }
 

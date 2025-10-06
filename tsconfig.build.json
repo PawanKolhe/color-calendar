@@ -7,6 +7,12 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": ["src/index.ts", "src/types.ts", "src/modules/**/*.ts"],
-  "exclude": ["**/*.test.ts", "**/testHelper.ts"]
+  "include": [
+    "src/index.ts",
+    "src/types.ts",
+    "src/modules/**/*.ts",
+    "src/react/**/*.ts",
+    "src/react/**/*.tsx"
+  ],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/testHelper.ts"]
 }
