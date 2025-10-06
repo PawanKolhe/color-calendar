@@ -351,15 +351,23 @@ test("should not automatically select dates when navigating months", () => {
   myCalendar.setSelectedDate(new Date(2024, 8, 15)); // September 15, 2024
 
   // Verify the date is selected
-  expect(myCalendar.getSelectedDate().getDate()).toBe(15);
-  expect(myCalendar.getSelectedDate().getMonth()).toBe(8); // September
+  const selectedDate = myCalendar.getSelectedDate();
+  expect(selectedDate).not.toBeNull();
+  if (selectedDate) {
+    expect(selectedDate.getDate()).toBe(15);
+    expect(selectedDate.getMonth()).toBe(8); // September
+  }
 
   // Navigate to next month
   myCalendar.handleNextMonthButtonClick();
 
   // The selected date should remain September 15, but no date should be selected in October
-  expect(myCalendar.getSelectedDate().getDate()).toBe(15);
-  expect(myCalendar.getSelectedDate().getMonth()).toBe(8); // Still September
+  const selectedDateAfterNav = myCalendar.getSelectedDate();
+  expect(selectedDateAfterNav).not.toBeNull();
+  if (selectedDateAfterNav) {
+    expect(selectedDateAfterNav.getDate()).toBe(15);
+    expect(selectedDateAfterNav.getMonth()).toBe(8); // Still September
+  }
 
   // Check that no date is selected in the current view (October)
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
@@ -380,8 +388,12 @@ test("should preserve selected date when navigating to months that contain it", 
   myCalendar.handlePrevMonthButtonClick();
 
   // The selected date should still be September 15
-  expect(myCalendar.getSelectedDate().getDate()).toBe(15);
-  expect(myCalendar.getSelectedDate().getMonth()).toBe(8); // September
+  const selectedDateAfterReturn = myCalendar.getSelectedDate();
+  expect(selectedDateAfterReturn).not.toBeNull();
+  if (selectedDateAfterReturn) {
+    expect(selectedDateAfterReturn.getDate()).toBe(15);
+    expect(selectedDateAfterReturn.getMonth()).toBe(8); // September
+  }
 
   // And it should be visually selected in the calendar
   const calendarElement = document.querySelector("#color-calendar .color-calendar");
